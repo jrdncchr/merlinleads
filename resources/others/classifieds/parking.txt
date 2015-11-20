@@ -1,0 +1,6 @@
+Carport
+Attached garage
+Detached garage
+Off-street parking
+Street parking
+Valet parking

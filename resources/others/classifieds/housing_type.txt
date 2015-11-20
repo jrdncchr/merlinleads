@@ -1,0 +1,12 @@
+Apartment
+Condo
+Cottage/cabin
+Duplex
+Flat
+House
+In-law
+Loft
+Townhouse
+Manufactured
+Assisted living
+Land

@@ -1,0 +1,291 @@
+[18-Feb-2014 14:31:02 America/Chicago] PHP Fatal error:  Call to undefined method Input_Model::getPropertyTypes() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 62
+[18-Feb-2014 14:31:05 America/Chicago] PHP Fatal error:  Call to undefined method Input_Model::getPropertyTypes() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 62
+[18-Feb-2014 14:31:06 America/Chicago] PHP Fatal error:  Call to undefined method Input_Model::getPropertyTypes() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 62
+[19-Feb-2014 12:26:58 America/Chicago] PHP Fatal error:  Call to undefined method Input_Model::getPropertyTypes() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 62
+[17-Mar-2014 00:07:50 America/Chicago] PHP Fatal error:  Call to undefined method Template_Model::getPropertyTemplatesCount() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 133
+[17-Mar-2014 00:08:44 America/Chicago] PHP Fatal error:  Call to undefined method Template_Model::getPropertyTemplatesCount() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 133
+[07-Apr-2014 11:01:24 America/Chicago] PHP Fatal error:  Call to undefined method Template_Model::getPropertyTemplatesCount() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 27
+[08-Apr-2014 06:46:56 America/Chicago] PHP Fatal error:  Call to undefined method Template_Model::getPropertyTemplatesCount() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 27
+[12-May-2014 11:06:04 America/Chicago] PHP Fatal error:  Class 'Securimage' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/pages.php on line 63
+[12-May-2014 11:08:46 America/Chicago] PHP Fatal error:  Class 'Securimage' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/pages.php on line 63
+[06-Aug-2014 04:25:53 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 577
+[06-Aug-2014 10:48:30 America/Chicago] PHP Fatal error:  Call to undefined method Template_Model::getPropertyYoutubeTemplatesCount() in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 354
+[04-Sep-2014 22:47:32 America/Chicago] PHP Parse error:  syntax error, unexpected end of file in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property.php on line 280
+[26-Sep-2014 01:13:14 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 579
+[26-Sep-2014 01:16:58 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 580
+[26-Sep-2014 01:19:58 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 581
+[26-Sep-2014 01:20:46 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 581
+[26-Sep-2014 01:26:12 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 581
+[26-Sep-2014 01:29:55 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'PHPPowerPoint/Slide.php' (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerpoint.php on line 30
+[26-Sep-2014 01:33:47 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'PHPPowerPoint.php' (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Slide.php on line 30
+[26-Sep-2014 01:35:39 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 581
+[26-Sep-2014 01:37:39 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 581
+[26-Sep-2014 01:40:06 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 01:40:37 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 01:42:07 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(668): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(601): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 01:44:02 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 01:58:41 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:00:13 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:04:57 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:05:30 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:09:46 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:15:03 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:17:59 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:26:07 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:29:08 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'PHPPowerPoint.php' (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Slide.php on line 30
+[26-Sep-2014 02:31:07 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'PHPPowerPoint.php' (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Slide.php on line 30
+[26-Sep-2014 02:31:25 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:40:21 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(664): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(597): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:48:39 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(662): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(595): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:55:51 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(663): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(596): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[26-Sep-2014 02:59:05 America/Chicago] PHP Fatal error:  Class 'PHPPowerPoint' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php on line 580
+[26-Sep-2014 03:03:21 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(663): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(596): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 00:53:09 America/Chicago] PHP Fatal error:  Class 'Stripe' not found in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/main.php on line 73
+[01-Oct-2014 00:59:18 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(665): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(598): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:08:51 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(665): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(598): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/phpppt/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:26:12 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:27:17 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:27:34 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), '')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:30:50 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), '')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:34:38 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[01-Oct-2014 01:45:39 America/Chicago] PHP Fatal error:  Uncaught exception 'Exception' with message 'File /home/yatesh/public_html/leadgeneratortools.net/resources/images/ppt/bg_1.png not found!' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php:121
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(676): PHPPowerPoint_Shape_Drawing->setPath('/home/yatesh/pu...')
+#1 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/property_module.php(609): Property_Module->createTemplatedSlide(Object(PHPPowerPoint), Object(stdClass), 'front')
+#2 [internal function]: Property_Module->generateSlideshareSlide()
+#3 /home/yatesh/public_html/leadgeneratortools.net/system/core/CodeIgniter.php(359): call_user_func_array(Array, Array)
+#4 /home/yatesh/public_html/leadgeneratortools.net/index.php(202): require_once('/home/yatesh/pu...')
+#5 {main}
+  thrown in /home/yatesh/public_html/leadgeneratortools.net/resources/others/Classes/PHPPowerPoint/Shape/Drawing.php on line 121
+[05-Dec-2014 01:15:42 America/Chicago] PHP Fatal error:  Uncaught exception 'Stripe_InvalidRequestError' with message 'You cannot use a Stripe token more than once: tok_156GGRD9gPse4F0vWktTx2jy' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php:153
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(219): Stripe_ApiRequestor->handleApiError('{\n  "error": {\n...', 400, Array)
+#1 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(115): Stripe_ApiRequestor->_interpretResponse('{\n  "error": {\n...', 400)
+#2 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiResource.php(117): Stripe_ApiRequestor->request('post', '/v1/customers', Array)
+#3 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/Customer.php(38): Stripe_ApiResource::_scopedCreate('Stripe_Customer', Array, NULL)
+#4 /home/yatesh/public_html/leadgeneratortools.net/application/contr in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php on line 153
+[05-Dec-2014 01:17:54 America/Chicago] PHP Fatal error:  Uncaught exception 'Stripe_InvalidRequestError' with message 'Invalid positive integer' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php:153
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(219): Stripe_ApiRequestor->handleApiError('{\n  "error": {\n...', 400, Array)
+#1 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(115): Stripe_ApiRequestor->_interpretResponse('{\n  "error": {\n...', 400)
+#2 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiResource.php(117): Stripe_ApiRequestor->request('post', '/v1/charges', Array)
+#3 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/Charge.php(38): Stripe_ApiResource::_scopedCreate('Stripe_Charge', Array, NULL)
+#4 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/main.php(182): Stripe_Charge::create(Array)
+#5 [i in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php on line 153
+[05-Dec-2014 01:20:25 America/Chicago] PHP Fatal error:  Uncaught exception 'Stripe_InvalidRequestError' with message 'You cannot use a Stripe token more than once: tok_156GLZD9gPse4F0vCmawui6F' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php:153
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(219): Stripe_ApiRequestor->handleApiError('{\n  "error": {\n...', 400, Array)
+#1 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(115): Stripe_ApiRequestor->_interpretResponse('{\n  "error": {\n...', 400)
+#2 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiResource.php(117): Stripe_ApiRequestor->request('post', '/v1/customers', Array)
+#3 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/Customer.php(38): Stripe_ApiResource::_scopedCreate('Stripe_Customer', Array, NULL)
+#4 /home/yatesh/public_html/leadgeneratortools.net/application/contr in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php on line 153
+[05-Dec-2014 01:21:00 America/Chicago] PHP Fatal error:  Uncaught exception 'Stripe_InvalidRequestError' with message 'You cannot use a Stripe token more than once: tok_156GLZD9gPse4F0vCmawui6F' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php:153
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(219): Stripe_ApiRequestor->handleApiError('{\n  "error": {\n...', 400, Array)
+#1 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(115): Stripe_ApiRequestor->_interpretResponse('{\n  "error": {\n...', 400)
+#2 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiResource.php(117): Stripe_ApiRequestor->request('post', '/v1/customers', Array)
+#3 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/Customer.php(38): Stripe_ApiResource::_scopedCreate('Stripe_Customer', Array, NULL)
+#4 /home/yatesh/public_html/leadgeneratortools.net/application/contr in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php on line 153
+[05-Dec-2014 01:22:02 America/Chicago] PHP Fatal error:  Uncaught exception 'Stripe_InvalidRequestError' with message 'Invalid positive integer' in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php:153
+Stack trace:
+#0 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(219): Stripe_ApiRequestor->handleApiError('{\n  "error": {\n...', 400, Array)
+#1 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php(115): Stripe_ApiRequestor->_interpretResponse('{\n  "error": {\n...', 400)
+#2 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiResource.php(117): Stripe_ApiRequestor->request('post', '/v1/charges', Array)
+#3 /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/Charge.php(38): Stripe_ApiResource::_scopedCreate('Stripe_Charge', Array, NULL)
+#4 /home/yatesh/public_html/leadgeneratortools.net/application/controllers/main.php(182): Stripe_Charge::create(Array)
+#5 [i in /home/yatesh/public_html/leadgeneratortools.net/resources/others/stripe/lib/Stripe/ApiRequestor.php on line 153
+[06-Jan-2015 03:04:43 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'resources/others/twitter/codebird.php' (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/yatesh/public_html/leadgeneratortools.net/application/libraries/custom_library.php on line 18
+[13-Jan-2015 23:51:45 America/Chicago] PHP Fatal error:  Call to a member function checkEmailFP() on a non-object in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/stripe_api.php on line 35
+[13-Jan-2015 23:52:31 America/Chicago] PHP Fatal error:  Call to a member function checkEmailFP() on a non-object in /home/yatesh/public_html/leadgeneratortools.net/application/controllers/stripe_api.php on line 35

@@ -1,0 +1,283 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500);
+* {
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .5px;
+}
+
+@media screen and (max-width: 1124px) {
+    .container {
+        width: 1124px;
+    }
+}
+
+html,
+body {
+height: 100%;
+/* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+.wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -40px;
+}
+
+/* Set the fixed height of the footer here */
+.push,
+.footer {
+    height: 40px;
+}
+.footer {
+    background-color: #f5f5f5;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/*
+ * Bootstrap Modification
+ */
+
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu-3{top:0;left:100%;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu:hover>.dropdown-menu{display:block;}
+/*.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}*/
+/*.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}*/
+/*.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}*/
+
+.navbar .container-fluid, .navbar-collapse {
+    padding-left:0;
+}
+.navbar-collapse.in {
+    padding-left:30px;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+code {
+    font-size: 80%;
+}
+
+.spacer {
+    margin-top: 10px;
+}
+
+.lgt-text {
+    padding: 0;
+    overflow: hidden;
+    white-space: pre-wrap;
+}
+
+.helper {
+    cursor: pointer;
+}
+
+.alert {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.alert-error, .alert-danger {
+    background-color: #d9534f;
+    border: #d9534f;
+}
+
+.popover {
+    z-index: 9999;
+    position: fixed;
+}
+
+.input-error {
+    background-color: #F9E3D6;
+}
+
+input, textarea {
+    color: #222 !important;
+    padding: 2px 10px !important;
+}
+
+select {
+    color: #222 !important;
+}
+
+.popover-select {
+    margin-bottom: 10px !important;
+}
+
+.p-counter {
+    font-weight: bold;
+    color: white; 
+    padding: 2px;
+    border-radius: 2px;
+    text-align: center;
+    margin: 0 0 2px 0 !important;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    width: 80px;
+    height: 80px;
+    filter: alpha(opacity=0);
+}
+
+.lgt-image {
+    height: 60px;
+    width: 60px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat:  no-repeat;
+    background-position: center center;
+}
+
+.show-image {
+    position: relative;
+    float:left;
+    margin:5px;
+}
+.show-image button {
+    display: none;
+    position:absolute;
+    top:0;
+    left:0; 
+}
+
+.upload-image-btn {
+    height: 60px;
+    width: 60px;
+    opacity: .6;
+}
+
+.modal-error {
+    height: 35px;
+    padding: 8px;
+    display: none;
+}
+
+
+.custom-loading {
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+textarea {
+    resize: none;
+}
+
+
+.#{$fa-css-prefix}-spin {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+.#{$fa-css-prefix}-pulse {
+    -webkit-animation: fa-spin 1s infinite steps(8);
+    animation: fa-spin 1s infinite steps(8);
+}
+
+@-webkit-keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+
+.navbar {
+    background: #0762b7;
+}
+
+.btn-primary {
+    background: #064787;
+    border: none;
+}
+
+.alert-info {
+    background: #1476d5;
+}
+
+/*
+ * DataTables FixedColumn
+ */
+ table.DTFC_Cloned th { 
+    white-space: nowrap;
+ }  
+table.DTFC_Cloned thead,table.DTFC_Cloned tfoot {
+    background-color:white
+}
+div.DTFC_Blocker {
+    background-color:white
+}
+div.DTFC_LeftWrapper table.dataTable,div.DTFC_RightWrapper table.dataTable {
+    margin-bottom:0 ;z-index:2
+}
+div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataTable.no-footer {
+    border-bottom:none
+}
+
+/*
+ * Navbar
+ */
+
+ .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: darkblue;
+    color: white;
+    border-color: #dadada;
+    font-weight: bold;
+ }
