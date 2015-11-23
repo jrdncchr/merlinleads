@@ -65,7 +65,7 @@
                                 <div class='col-xs-9'>
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control input-sm" value="<?php if (isset($pTitle)) echo $pTitle; ?>" id="title" />
-                                        <a class="input-group-addon" id='copyTitle'><i class='fa fa-clipboard'></i></a>
+                                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                 <div class="col-xs-9">
                                     <div class="input-group input-group-sm">
                                         <textarea class="form-control input-sm" style="min-height: 150px;" id="description"><?php if (isset($pDescription)) echo $pDescription ?></textarea>
-                                        <a class="input-group-addon" id='copyDescription'><i class='fa fa-clipboard'></i></a>
+                                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                 <div class="col-xs-9">
                                     <div class="input-group input-group-sm">
                                         <textarea class="form-control input-sm" id="keyword" style="min-height: 80px;"><?php if (isset($pKeyword)) echo $pKeyword; ?></textarea>
-                                        <a class="input-group-addon" id='copyKeyword'><i class='fa fa-clipboard'></i></a>
+                                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                     </div>
                                 </div>
                             </div>

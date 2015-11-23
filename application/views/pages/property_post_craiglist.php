@@ -51,7 +51,7 @@
                                             <label for="text">Phone Number </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="phone" />
-                                                <a class="input-group-addon" id='copyPhone'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                                             <label for="text">Contact Name </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="contactName" />
-                                                <a class="input-group-addon" id='copyContactName'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                             </label>
                                             <div class="input-group input-group-sm">
                                                 <input type="text" class="form-control input-sm" id="postingTitle" placeholder="Posting Title">
-                                                <a class="input-group-addon" id='copyPostingTitle'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                             </label>
                                             <div class="input-group input-group-sm">
                                                 <input type="text" class="form-control input-sm" id="specificLocation" placeholder="Specific Location">
-                                                <a class="input-group-addon" id='copySpecificLocation'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@
                                             </label>
                                             <div class="input-group input-group-sm">
                                                 <input type="text" class="form-control input-sm" id="postalCode" placeholder="Postal Title">
-                                                <a class="input-group-addon" id='copyPostalCode'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@
                                             </label>
                                             <div class="input-group input-group-sm">
                                                 <textarea class="form-control" id="postingBody" style="height: 100px;" placeholder="Posting Body"></textarea>
-                                                <a class="input-group-addon" id='copyPostingBody'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                             <label for="text">Sqft </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="sqft" />
-                                                <a class="input-group-addon" id='copySqft'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                             <label for="text">Price($) </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="price" />
-                                                <a class="input-group-addon" id='copyPrice'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -202,7 +202,7 @@
                                             <label for="text">Street </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="street" />
-                                                <a class="input-group-addon" id='copyStreet'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +211,7 @@
                                             <label for="text">Cross Street</label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="crossStreet" />
-                                                <a class="input-group-addon" id='copyCrossStreet'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -220,7 +220,7 @@
                                             <label for="text">City </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="city" />
-                                                <a class="input-group-addon" id='copyCity'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@
                                             <label for="text">State Abbr </label>
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control input-sm" id="stateAbbr" />
-                                                <a class="input-group-addon" id='copyStateAbbr'><i class='fa fa-clipboard'></i></a>
+                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                             </div>
                                         </div>
                                     </div>

@@ -273,42 +273,42 @@
                             <label for="page_name">Page Name</label>
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" id="page_name" />
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="meta_description">Meta Description</label>
                             <div class="input-group input-group-sm">
                                 <textarea style="height: 70px;"  class="form-control" id="meta_description"></textarea>
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="meta_tags_keywords">Meta Tags Keywords</label>
                             <div class="input-group input-group-sm">
                                 <textarea style="height: 70px;"  class="form-control" id="meta_tags_keywords"></textarea>
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="link_display">Link Display</label>
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" id="link_display" />
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="link_description">Link Description</label>
                             <div class="input-group input-group-sm">
                                 <textarea style="height: 70px;"  class="form-control" id="link_description"></textarea>
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="sub_header_paragraph">Sub Header Paragraph</label>
                             <div class="input-group input-group-sm">
                                 <textarea style="height: 100px;"  class="form-control" id="sub_header_paragraph"></textarea>
-                                <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                     </form>
@@ -368,9 +368,6 @@
                             $("#sub_header_paragraph").val(data.result.sub_header_paragraph);
 
                             loading("success", "Generating SEO builder successful!");
-                            setTimeout(function() {
-                                activateCopyToClipboard();
-                            }, 1000);
                         } else {
                             loading("danger", data.error);
                         }
@@ -552,15 +549,5 @@
         "</div>";
 
         return htmlTemplate;
-    }
-
-
-    function activateCopyToClipboard() {
-        $("a.copy").zclip({
-            path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-            copy: function () {
-                return $(this).closest(".form-group").find("input, textarea").val();
-            }
-        });
     }
 </script>

@@ -2,7 +2,6 @@ $(document).ready(function () {
     activatePopovers();
     activateEvents();
     activateAdvanceEvents();
-    activateCopyToClipboard();
 });
 
 function activatePopovers() {
@@ -176,24 +175,4 @@ function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text/html");
     ev.target.appendChild(document.getElementById(data));
-}
-function activateCopyToClipboard() {
-    $("a#copyDescription").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function () {
-            return $('#description').html();
-        }
-    });
-    $("a#copyTitle").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function () {
-            return $('#title').val();
-        }
-    });
-    $("a#copyKeyword").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function () {
-            return $('#keyword').html();
-        }
-    });
 }

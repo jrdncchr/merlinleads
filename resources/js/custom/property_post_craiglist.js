@@ -52,7 +52,6 @@ function activateEvents() {
                         $('#furnished').prop('checked', true);
                     }
                     $('#type').attr('disabled', true);
-                    activateCopyToClipboard();
                     $('#postCompleteDiv').fadeIn("slow");
                     $('#postMessage').removeClass().addClass('alert alert-info')
                             .html("<i class='fa fa-info'></i> Generating successful! Don't forget to click post complete button after you finish posting the generated information.");
@@ -93,79 +92,5 @@ function activateEvents() {
             $('#generateDiv').fadeIn("fast");
         }
     });
-}
-
-function activateCopyToClipboard() {
-    $("a#copyPhone").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#phone').val();
-        }
-    });
-    $("a#copyContactName").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#contactName').val();
-        }
-    });
-    $("a#copyPostingTitle").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#postingTitle').val();
-        }
-    });
-    $("a#copySpecificLocation").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#specificLocation').val();
-        }
-    });
-    $("a#copyPostalCode").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#postalCode').val();
-        }
-    });
-    $("a#copyPostingBody").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#postingBody').val();
-        }
-    });
-    $("a#copySqft").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#sqft').val();
-        }
-    });
-    $("a#copyPrice").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#price').val();
-        }
-    });
-    $("a#copyStreet").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#street').val();
-        }
-    });
-    $("a#copyCrossStreet").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#crossStreet').val();
-        }
-    });
-    $("a#copyCity").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#city').val();
-        }
-    });
-    $("a#copyStateAbbr").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#stateAbbr').val();
-        }
-    });
+    
 }

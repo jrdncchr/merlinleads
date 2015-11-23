@@ -62,7 +62,7 @@
                         <div class='col-xs-9'>
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control input-sm" value="" id="title" />
-                                <a class="input-group-addon" id='copyTitle'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <div class="col-xs-9">
                             <div class="input-group input-group-sm">
                                 <textarea class="form-control input-sm" style="min-height: 150px;" id="description"></textarea>
-                                <a class="input-group-addon" id='copyDescription'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <div class="col-xs-9">
                             <div class="input-group input-group-sm">
                                 <textarea class="form-control input-sm" id="keyword" style="min-height: 80px;"></textarea>
-                                <a class="input-group-addon" id='copyKeyword'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                     </div>

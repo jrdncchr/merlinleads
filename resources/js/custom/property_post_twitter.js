@@ -82,10 +82,4 @@ function activateBasicEvents() {
             $("#tweet").val(data.description);
         }, "json");
     });
-    $("a#copyTweet").zclip({
-        path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-        copy: function() {
-            return $('#tweet').val();
-        }
-    });
 }

@@ -57,7 +57,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="title"/>
-                                <a class="input-group-addon" id='copyTitle'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,7 +68,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="price"/>
-                                <a class="input-group-addon" id='copyPrice'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -79,7 +79,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="bedrooms"/>
-                                <a class="input-group-addon" id='copyBedrooms'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -90,7 +90,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="bathrooms"/>
-                                <a class="input-group-addon" id='copyBathrooms'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -101,7 +101,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="sqft"/>
-                                <a class="input-group-addon" id='copySize'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -112,7 +112,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="yearBuilt"/>
-                                <a class="input-group-addon" id='copyYearBuilt'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -124,7 +124,7 @@
                             <div class="input-group input-group-sm col-xs-6">
                                 <textarea class="form-control input-sm" style="height: 100px;"
                                           id="description"></textarea>
-                                <a class="input-group-addon" id='copyDescription'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -135,7 +135,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="email"/>
-                                <a class="input-group-addon" id='copyEmail'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -146,7 +146,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="phone"/>
-                                <a class="input-group-addon" id='copyPhone'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -157,7 +157,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="street"/>
-                                <a class="input-group-addon" id='copyStreet'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -168,7 +168,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="zipcode"/>
-                                <a class="input-group-addon" id='copyZipcode'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -179,7 +179,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="city"/>
-                                <a class="input-group-addon" id='copyCity'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -190,7 +190,7 @@
 
                             <div class="input-group input-group-sm col-xs-6">
                                 <input type="text" class="form-control input-sm" id="state"/>
-                                <a class="input-group-addon" id='copyState'><i class='fa fa-clipboard'></i></a>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                             </div>
                         </div>
                     </div>

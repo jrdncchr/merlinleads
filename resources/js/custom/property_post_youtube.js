@@ -1,9 +1,6 @@
 $(document).ready(function() {
     activatePopovers();
     activateEvents();
-    setTimeout( function() {
-        activateCopyToClipboard();
-    }, 1000);
 });
 
 function activatePopovers() {

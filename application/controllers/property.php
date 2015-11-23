@@ -96,6 +96,7 @@ class Property extends MY_Controller {
 
         try {
             $selectedModule = $this->session->userdata('selectedModule');
+            // $this->data['modules'] = $this->modules_model->get_modules("all", true);
             if (null == $selectedModule) {
                 $this->data['modules'] = $this->modules_model->get_modules($this->main_f, true);
             } else {
@@ -108,7 +109,9 @@ class Property extends MY_Controller {
         // $this->session->unset_userdata('selectedProfile');
         // $this->session->unset_userdata('property_id');
 
-        $this->data['available_modules'] = $this->modules_model->get_modules($this->main_f);
+        // $this->data['available_modules'] = $this->modules_model->get_modules("all");
+         $this->data['available_modules'] = $this->modules_model->get_modules($this->main_f);
+        
         $this->title = "Merlin Leads &raquo; Property";
 //        $this->data['user'] = $this->session->userdata('user');
 //        $this->js[] = "custom/property.js";

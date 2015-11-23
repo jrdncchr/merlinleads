@@ -281,3 +281,8 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataT
     border-color: #dadada;
     font-weight: bold;
  }
+
+
+.clip {
+    cursor: pointer;
+}

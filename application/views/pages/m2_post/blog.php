@@ -45,21 +45,21 @@
                 <label class="control-label">* Headline</label>
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control required" id="headline">
-                    <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                    <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label">* Body</label>
                 <div class="input-group input-group-sm">
                     <textarea rows="4" class="form-control required" style="height: 100px;" id="body"></textarea>
-                    <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                    <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label">* Keywords</label>
                 <div class="input-group input-group-sm">
                     <textarea rows="3" class="form-control required" style="height: 100px;" id="keywords"></textarea>
-                    <a class="input-group-addon copy"><i class='fa fa-clipboard'></i></a>
+                    <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                 </div>
             </div>
         </div>
@@ -163,7 +163,6 @@
                 $("#generateFields, #postPostBtn, #postSaveBtn").show();
                 buttonLoadEnd($("#postGenerateBtn"), "Generate");
                 $("#postGenerateBtn").hide();
-                activateCopyToClipboard();
             }, "json");
         });
 
@@ -232,9 +231,6 @@
         $("#generateFields").show();
 
         $("#postSaveBtn").show();
-        setTimeout(function() {
-            activateCopyToClipboard();
-        }, 1000);
 
     }
 
@@ -262,15 +258,6 @@
         $("#postPostBtn").hide();
         $("#postSaveBtn").hide();
         $("#postGenerateBtn").hide();
-    }
-
-    function activateCopyToClipboard() {
-        $("a.copy").zclip({
-            path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-            copy: function () {
-                return $(this).closest(".form-group").find("input, textarea").val();
-            }
-        });
     }
 
 </script>

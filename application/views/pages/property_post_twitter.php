@@ -52,7 +52,7 @@
                                                         <div class="col-xs-5">
                                                             <div class="input-group input-group-sm">
                                                                 <textarea class="form-control input-sm" id="tweet" style="min-height: 80px;"></textarea>
-                                                                <a class="input-group-addon" id='copyTweet'><i class='fa fa-clipboard'></i></a>
+                                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                                             </div>
                                                         </div>
                                                     </div>

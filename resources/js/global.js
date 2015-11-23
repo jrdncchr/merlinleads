@@ -100,4 +100,25 @@ $(function() {
         $(this).toggleClass('selected');
     });
 
+
+    /* Copy to Clipboard */
+    $(".clip").off("click").click(function() {
+        var text = $(this).closest(".input-group").find("input").val();
+        if(!text) {
+            text = $(this).closest(".input-group").find("textarea").val();
+        }
+        copyToClipBoard(text);
+    });
+
 });
+
+function copyToClipBoard(text) {   
+    var copyElement = document.createElement('input');      
+    copyElement.setAttribute('type', 'text');   
+    copyElement.setAttribute('value', text);    
+    copyElement = document.body.appendChild(copyElement);   
+    copyElement.select();   
+    document.execCommand('copy');   
+    copyElement.remove();
+    loading('info', "Copied to clipboard.");
+}

@@ -1,5 +1,4 @@
-<div class="container">
-    <div class="row">
+<div class="row">
         <div class="col-xs-12">
             <h2>IDX - SEO Builder</h2>
             <a href="<?php echo base_url() . "seo_builder/manage"; ?>" class="btn btn-success btn-sm pull-right"><i class="fa fa-plus-circle"></i> Create</a>
@@ -19,7 +18,6 @@
             </table>
         </div>
     </div>
-</div>
 
 <script>
     var actionUrl = "<?php echo base_url() . "seo_builder/action" ?>";
