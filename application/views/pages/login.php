@@ -6,7 +6,7 @@
             <img src="<?php echo base_url() . IMG . 'merlin-leads-logo.jpg'; ?>" class="img-responsive" />
             <div class="col-xs-1"></div>
             <div class="col-xs-10">
-                <h3 class="text-center" style="font-weight: bold;">Login :)</h3>
+                <h3 class="text-center" style="font-weight: bold;">Login</h3>
                 <hr />
                 <form class="form-horizontal" role="form" action="<?php echo base_url() . "pages/login_attempt" ?>" method="post">
                     <div class="form-group">
