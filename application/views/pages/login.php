@@ -17,6 +17,7 @@
                                 echo $_SESSION['message'];
                                 unset($_SESSION['message']);
                             }
+                            //                            echo $_SERVER['SERVER_NAME'];
                             ?>
                         </div>
                     </div>
