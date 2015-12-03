@@ -137,7 +137,7 @@
                     <br/>
                     <h4 style="font-weight: bold;">Basic Information</h4>
 
-                    <div class="col-xs-8 col-xs-offset-2">
+                    <div class="col-xs-9 col-xs-offset-1">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -147,13 +147,15 @@
                             <div class="form-group">
                                 <label for="email" class="col-xs-3 control-label">Email Address
                                     <i class="fa fa-question-circle text-info helper" data-container="body"
-                                    data-toggle="popover" data-placement="top" data-content="Enter your email address."></i>
+                                       data-toggle="popover" data-placement="top"
+                                       data-content="Enter your email address."></i>
                                 </label>
 
                                 <div class="input-group input-group-sm col-xs-9">
-                                    <input type="email" class="form-control required" value='<?php echo $user->email; ?>' id="email"
-                                    placeholder="Email Address" disabled>
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <input type="email" class="form-control required"
+                                           value='<?php echo $user->email; ?>' id="email"
+                                           placeholder="Email Address" disabled>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -165,7 +167,7 @@
                                 <div class="input-group input-group-sm col-xs-9">
                                     <input type="text" class="form-control required" value='<?php echo $user->firstname; ?>'
                                     id="firstname" placeholder="First Name">
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -177,7 +179,7 @@
                                 <div class="input-group input-group-sm col-xs-9">
                                     <input type="text" class="form-control required" value='<?php echo $user->lastname; ?>'
                                     id="lastname" placeholder="Last Name">
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -189,7 +191,7 @@
                                 <div class="input-group input-group-sm col-xs-9">
                                     <input type="text" class="form-control required" value='<?php echo $user->phone; ?>' id="phone"
                                     placeholder="Primary Phone">
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <hr/>
@@ -210,7 +212,7 @@
                                         Canada
                                     </option>
                                 </select>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -221,7 +223,7 @@
 
                             <div class="input-group input-group-sm col-xs-9">
                                 <select class="form-control" id="state"><?php echo $states; ?></select>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <hr/>
@@ -238,7 +240,7 @@
             <div class="tab-pane" id="passwordDiv">
                 <br/>
 
-                <div class="col-xs-8 col-xs-offset-2">
+                <div class="col-xs-9 col-xs-offset-1">
                     <h4 style="font-weight: bold;">Change Password</h4>
 
                     <div class="form-horizontal">
@@ -248,14 +250,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="password" class="col-xs-3 control-label">Current Password
+                            <label for="password" class="col-xs-3 control-label">Password
                                 <i class="fa fa-question-circle text-info helper" data-container="body"
                                 data-toggle="popover" data-placement="top" data-content="Enter your current password."></i>
                             </label>
 
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="password" class="form-control" id="currentPassword" placeholder="Current Password">
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -266,7 +268,7 @@
 
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="password" class="form-control" id="newPassword" placeholder="New Password"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -278,7 +280,7 @@
 
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <hr/>
@@ -293,88 +295,103 @@
 
             <!-- Advance Div -->
             <div class="tab-pane" id="advance">
+                <div class="tabbable tabs-left" style="margin-top: 20px;">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#integration-twitter" data-toggle="tab">Twitter</a></li>
+                        <li><a href="#integration-slideshare" data-toggle="tab">SlideShare</a></li>
+                    </ul>
 
-                <?php $twitter = json_decode($user->advance_twitter); ?>
-                <br/>
-                <h4 style="font-weight: bold;">Twitter</h4>
+                    <div class="tab-content">
+                        <!-- Twitter -->
+                        <div class="tab-pane active" id="integration-twitter" style="margin-left: 145px;">
 
-                <p class="text-info"><i class="fa fa-question-circle"></i> This is for twitter module which allows you to auto
-                    post.
-                    <a target="_blank" class="pull-right"
-                    href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/">How to get this
-                    information?</a>
-                </p>
+                            <?php $twitter = json_decode($user->advance_twitter); ?>
+                            <br/>
+                            <h5>
+                                <span style="font-weight: bold;">Twitter</span>
+                                <a target="_blank" class="pull-right"
+                                   href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/">
+                                    How to get this information?
+                                </a>
+                            </h5>
 
-                <div class="col-xs-10 col-xs-offset-1">
+                            <div id="advanceMessage" class="alert alert-danger" style="display: none;"></div>
+                            <div class="form-horizontal col-xs-11" style="margin-top: 10px;">
+                                <div class="form-group">
+                                    <label for="text" class="col-xs-4 control-label">Consumer Key
+                                        <i class="fa fa-question-circle text-info helper" data-container="body"
+                                           data-toggle="popover" data-placement="top"
+                                           data-content="Enter your twitter app consumer key."></i>
+                                    </label>
 
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="input-group input-group-sm col-xs-12">
-                                <div id="advanceMessage"></div>
+                                    <div class="input-group input-group-sm col-xs-8">
+                                        <input type="text" class="form-control" id="consumerKey"
+                                               placeholder="Consumer Key"
+                                               value="<?php echo $twitter->consumer_key; ?>"/>
+                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-xs-4 control-label">Consumer Secret
+                                        <i class="fa fa-question-circle text-info helper" data-container="body"
+                                           data-toggle="popover" data-placement="top"
+                                           data-content="Enter your twitter app consumer secret."></i>
+                                    </label>
+
+                                    <div class="input-group input-group-sm col-xs-8">
+                                        <input type="text" class="form-control" id="consumerSecret"
+                                               placeholder="Consumer Secret"
+                                               value="<?php echo $twitter->consumer_secret; ?>"/>
+                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-xs-4 control-label">Access Token
+                                        <i class="fa fa-question-circle text-info helper" data-container="body"
+                                           data-toggle="popover" data-placement="top"
+                                           data-content="Enter your twitter app access token."></i>
+                                    </label>
+
+                                    <div class="input-group input-group-sm col-xs-8">
+                                        <input type="text" class="form-control" id="accessToken"
+                                               placeholder="Access Token"
+                                               value="<?php echo $twitter->access_token; ?>"/>
+                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-xs-4 control-label">Access Token Secret
+                                        <i class="fa fa-question-circle text-info helper" data-container="body"
+                                           data-toggle="popover" data-placement="top"
+                                           data-content="Enter your twitter app access token secret."></i>
+                                    </label>
+
+                                    <div class="input-group input-group-sm col-xs-8">
+                                        <input type="text" class="form-control" id="accessTokenSecret"
+                                               placeholder="Access Token Secret"
+                                               value="<?php echo $twitter->access_token_secret; ?>"/>
+                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-xs-4 control-label"></label>
+
+                                    <div class="input-group input-group-sm col-xs-8">
+                                        <button type="button" id="updateAdvanceBtn"
+                                                class="btn btn-sm btn-primary pull-right"><i
+                                                class="fa fa-save"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="text" class="col-xs-4 control-label">Consumer Key
-                                <i class="fa fa-question-circle text-info helper" data-container="body"
-                                data-toggle="popover" data-placement="top"
-                                data-content="Enter your twitter app consumer key."></i>
-                            </label>
 
-                            <div class="input-group input-group-sm col-xs-8">
-                                <input type="text" class="form-control" id="consumerKey" placeholder="Consumer Key"
-                                value="<?php echo $twitter->consumer_key; ?>"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
-                            </div>
+                        <!-- SlideShare -->
+                        <div class="tab-pane" id="integration-slideshare">
+                            Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                            Aliquam in felis sit amet augue.
                         </div>
-                        <div class="form-group">
-                            <label for="text" class="col-xs-4 control-label">Consumer Secret
-                                <i class="fa fa-question-circle text-info helper" data-container="body"
-                                data-toggle="popover" data-placement="top"
-                                data-content="Enter your twitter app consumer secret."></i>
-                            </label>
-
-                            <div class="input-group input-group-sm col-xs-8">
-                                <input type="text" class="form-control" id="consumerSecret" placeholder="Consumer Secret"
-                                value="<?php echo $twitter->consumer_secret; ?>"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="text" class="col-xs-4 control-label">Access Token
-                                <i class="fa fa-question-circle text-info helper" data-container="body"
-                                data-toggle="popover" data-placement="top"
-                                data-content="Enter your twitter app access token."></i>
-                            </label>
-
-                            <div class="input-group input-group-sm col-xs-8">
-                                <input type="text" class="form-control" id="accessToken" placeholder="Access Token"
-                                value="<?php echo $twitter->access_token; ?>"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="text" class="col-xs-4 control-label">Access Token Secret
-                                <i class="fa fa-question-circle text-info helper" data-container="body"
-                                data-toggle="popover" data-placement="top"
-                                data-content="Enter your twitter app access token secret."></i>
-                            </label>
-
-                            <div class="input-group input-group-sm col-xs-8">
-                                <input type="text" class="form-control" id="accessTokenSecret" placeholder="Access Token Secret"
-                                value="<?php echo $twitter->access_token_secret; ?>"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="text" class="col-xs-4 control-label"></label>
-
-                            <div class="input-group input-group-sm col-xs-8">
-                                <button type="button" id="updateAdvanceBtn" class="btn btn-sm btn-primary pull-right"><i
-                                    class="fa fa-save"></i> Save
-                                </button>
-                            </div>
-                        </div>
-                        <hr/>
                     </div>
                 </div>
             </div>
@@ -409,7 +426,7 @@
                             </label>
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="number" class="form-control" id="card_number" />
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
 
@@ -430,7 +447,7 @@
                             </label>
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="number" class="form-control" min="1" max="2" id="exp_month" placeholder="MM"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
 
@@ -441,7 +458,7 @@
                             </label>
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="number" class="form-control" min="4" max="4" id="exp_year" placeholder="YYYY"/>
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
 
@@ -519,7 +536,7 @@
                             </label>
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="number" id="u_exp_month" min="1" max="2" class="form-control" placeholder="MM" value="<?php if(isset($card->exp_month)) { echo $card->exp_month; } ?>" />
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
 
@@ -530,7 +547,7 @@
                             </label>
                             <div class="input-group input-group-sm col-xs-9">
                                 <input type="number" id="u_exp_year" min="4" max="4" class="form-control" placeholder="YYYY" value="<?php if(isset($card->exp_year)) { echo $card->exp_year; } ?>" />
-                                <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
