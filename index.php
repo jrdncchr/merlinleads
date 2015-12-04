@@ -18,6 +18,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
+//define('ENVIRONMENT', 'development');
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('ENVIRONMENT', 'development');
 } else {
