@@ -359,3 +359,7 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataT
     border-right-color: #ffffff;
     outline: 0;
 }
+
+li.disabled {
+    background-color: #808080;
+}

@@ -10,101 +10,88 @@
             <a class="navbar-brand" href="<?php echo base_url() . "property"; ?>">Merlin Leads &raquo;</a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav blog-nav">
+            <ul class="nav navbar-nav">
                 <li id="propertyNav"><a href="<?php echo base_url() . 'property' ?>"><i class="fa fa-home"></i> Properties</a></li>
                 <li class="dropdown-submenu">
-                    <a target="_blank" href="http://support.leadgeneratortools.net/tool-overview/">Getting Started <i class="fa fa-caret-down"></i></a>
+                    <a href="#">Getting Started <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
+                        <!-- PROFILE -->
                         <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/profile-inputs/">Filling out Profile <i class="fa fa-caret-right"></i></a>
+                            <a href="#">Profile <i class="fa fa-caret-right"></i></a>
                             <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/agent-info/">Agent Info</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/testimonials/">Testimonials</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/broker-info/">Broker Info</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/social-media/">Social Media</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/profile-setup/">Setup</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/profile-agent-info/">Agent Info</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/profile-testimonials//">Testimonials</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/profile-broker-info/">Broker Info</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/profile-images/">Images</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/activate-profile/">Activate</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/add-profile/">Add</a></li>
                             </ul>
                         </li>
+
+                        <!-- PROPERTY -->
                         <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/property-inputs/">Filling out Property <i class="fa fa-caret-right"></i></a>
+                            <a href="#">Property <i class="fa fa-caret-right"></i></a>
                             <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/property-details/">Property Details</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/classified-module-details/">Classified Module Details</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/images/">Images</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/reports-generator/">Reports Generator</a></li>
+                                <li><a target="_blank" href="#">Overview</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-input-basic-info/">Basic Info</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-details-detail-info-tab/">Detail Info</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-details-type-and-features-tab/">Types & Features</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-details-keywords-tab/">Keywords</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-details-link-inputs/">Links</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-details-activate-tab/">Activate</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-images/">Images</a></li>
+                                <li class="divider"></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/add-property/">Add</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/edit-property/">Edit</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/delete-property/">Delete</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/archive-property/">Archive</a></li>
+                                <li class="divider"></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/posting-overview/">Posting Overview</a></li>
                             </ul>
                         </li>
+
+                        <!-- MY ACCOUNT -->
                         <li class="dropdown-submenu">
                             <a target="_blank" href="http://support.leadgeneratortools.net/my-account/">My Account <i class="fa fa-caret-right"></i></a>
                             <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/forgot-password/">Forgot Password</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/update-credit-card/">Update Credit Card</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/change-subscription/">Change Subscription</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/cancel-subscription/">Cancel Subscription</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/my-account-overview/">My Account Overview</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/change-password/">Change Password</a></li>
+                                <li class="disabled"><a href="#">Change Subscription</a></li>
+                                <li class="disabled"><a href="#">Update Subscription</a></li>
+                                <li class="disabled"><a href="#">Pause Subscription</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/cancel-subscription/">Cancel Subscription</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/update-credit-card/">Update Credit Card</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/change-credit-cards/">Change Credit Card</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/contact-information-my-account/">Contact Information</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/how-to-set-up-integration-twitter/">Setup Twitter Integration</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/my-account-change-subscription-overview/">Change Subscription</a></li>
+
                             </ul>
                         </li>
                     </ul>
                 </li>
-                <li><a target="_blank" href="http://support.leadgeneratortools.net/faqs/">FAQ's</a></li>
+                <!--                <li><a target="_blank" href="http://support.merlinleads.com/faqs/">FAQ's</a></li>-->
                 <li class="dropdown-submenu">
                     <a href="#">Module Inputs <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/craigslist-module/">Cragilist Module <i class="fa fa-caret-right"></i></a>
+                            <a href="#">Classfied <i class="fa fa-caret-right"></i></a>
                             <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/craigslist-setup/">Craiglist Setup</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/craigslist-inputs/">Craiglist Inputs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/posting-to-craigslist/">Posting to Craiglist</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/craigslist-faqs/">Craiglist FAQs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/how-i-use-craigslist/">How to use Craiglist</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-module-details/">Overview</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-basic-tab/">Basic</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-headline-statements/">Headline</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-call-to-action/">Call to Action</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-open-house/">Open House</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/property-classified-optional-fields/">Optional Fields</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/classified-video-inputs/">Video</a></li>
+                                <li><a target="_blank" href="http://support.merlinleads.com/activate-classified-inputs/">Activate</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/backpage-module/">Backpage Module <i class="fa fa-caret-right"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/backpage-setup/">Backpage Setup</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/backpage-inputs/">Backpage Inputs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/posting-to-backpage/">Posting to Backpage</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/backpage-faqs/">Backpage FAQs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/how-i-use-backpage/">How to use Backpage</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/ebay-classifieds-module/">Ebay Classifieds Module <i class="fa fa-caret-right"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/ebay-classifieds-setup/">Ebay Classifieds Setup</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/ebay-classifieds-inputs/">Ebay Classifieds Inputs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/posting-to-ebay-classifieds/">Posting to Ebay Classifieds</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/ebay-classifieds-faqs/">Ebay Classifieds FAQs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/how-i-use-ebay-classifieds/">How to use Ebay Classifieds</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/youtube-module/">Backpage Module <i class="fa fa-caret-right"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/youtube-setup/">Youtube Setup</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/youtube-inputs/">Youtube Inputs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/posting-to-youtube/">Posting to Youtube</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/youtube-faqs/">Youtube FAQs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/how-i-use-youtube/">How to use Youtube</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/slideshare-module/">Slideshare Module <i class="fa fa-caret-right"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-3">
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/slideshare-setup/">Slideshare Setup</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/slideshare-inputs/">Slideshare Inputs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/posting-to-slideshare/">Posting to Slideshare</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/slideshare-faqs/">Slideshare FAQs</a></li>
-                                <li><a target="_blank" href="http://support.leadgeneratortools.net/how-i-use-slideshare/">How to use Slideshare</a></li>
-                            </ul>
-                        </li>
-                        <li><a target="_blank" href="http://support.leadgeneratortools.net/facebook-module/">Facebook Module</a></li>
-                        <li><a target="_blank" href="http://support.leadgeneratortools.net/pinterest-module/">Pinterest Module</a></li>
-                        <li><a target="_blank" href="http://support.leadgeneratortools.net/google-plus-module/">Google Plus Module</a></li>
                     </ul>
                 </li>
-                <li><a target="_blank" href="http://support.leadgeneratortools.net/contact/">Contact Us</a></li>
-                <li><a target="_blank" href="http://support.leadgeneratortools.net/">Support</a></li>
+                <li><a target="_blank" href="http://support.merlinleads.com/contact/">Contact Us</a></li>
+                <li><a target="_blank" href="http://support.merlinleads.com/">Support</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-user">
                 <li class="dropdown user-dropdown">
