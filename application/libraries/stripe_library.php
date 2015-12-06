@@ -93,11 +93,15 @@ class Stripe_Library{
      */
 
     public function getDefaultCard($customer_id) {
-        $cards = Stripe_Customer::retrieve($customer_id)->cards->all();
-        if(sizeof($cards->data) > 0) {
-            return $cards->data[0];
-        }
 
+        try {
+            $cards = Stripe_Customer::retrieve($customer_id)->sources->all(array(
+                'limit'=>3, 'object' => 'card'));
+            if(sizeof($cards->data) > 0) {
+                return $cards->data[0];
+            }
+        } catch(Exception $e) { }
+        return false;
     }
 
 }

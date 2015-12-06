@@ -104,14 +104,14 @@ class Property extends MY_Controller {
             }
         } catch(Exception $e) { }
 
-        // $this->session->unset_userdata('poID');
-        // $this->session->unset_userdata('pmID');
-        // $this->session->unset_userdata('selectedProfile');
-        // $this->session->unset_userdata('property_id');
+         $this->session->unset_userdata('poID');
+         $this->session->unset_userdata('pmID');
+         $this->session->unset_userdata('selectedProfile');
+         $this->session->unset_userdata('property_id');
 
         // $this->data['available_modules'] = $this->modules_model->get_modules("all");
          $this->data['available_modules'] = $this->modules_model->get_modules($this->main_f);
-        
+        $this->data['subscription'] = $this->subscription;
         $this->title = "Merlin Leads &raquo; Property";
 //        $this->data['user'] = $this->session->userdata('user');
 //        $this->js[] = "custom/property.js";

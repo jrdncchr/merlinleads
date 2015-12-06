@@ -70,13 +70,13 @@
                 }
                 ?>
                 <?php
-                if (!$profiles || !$modules) { ?>
+                if (!$profiles || !$subscription) { ?>
                     <div class="alert alert-warning">
                         <?php if (!$profiles) { ?>
                         <i class="fa fa-warning"></i>
                         You don't have any profiles yet, <a href="<?php echo base_url() . 'profiles/add'; ?>">create a profile now</a>. <br />
                         <?php } ?>
-                        <?php if (!$modules) { ?>
+                        <?php if (!$subscription) { ?>
                         <i class="fa fa-warning"></i>
                         You don't have any subscription yet, <a href="<?php echo base_url() . 'main/upgrade'; ?>">subscribe now</a>. <br />
                         <?php } ?>
