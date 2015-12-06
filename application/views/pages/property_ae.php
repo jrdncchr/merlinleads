@@ -573,11 +573,6 @@
             CLASSIFIEDS
             -->
             <div class="tab-pane fade in" id="classified-tab">
-                <h4>Property Name: <strong><?php
-                        if (isset($po)) {
-                            echo $po->name;
-                        }
-                        ?></strong></h4>
                 <div class="alert alert-info" id="message">
                     Changing tabs will auto save. Please fill up all required <i class="fa fa-asterisk"></i> fields.
                 </div>
