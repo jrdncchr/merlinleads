@@ -29,7 +29,8 @@ class Stripe_Api extends MY_Controller {
                     $subscription->card = $_POST['stripeToken'];
                     $subscription->save();
                 } else {
-                    $customer->subscriptions->create(array("plan" => $plan->id, "trial_end" => 'now', 'card' => $_POST['stripeToken']));
+                    $customer->subscriptions->create(
+                        array("plan" => $plan->id, "trial_end" => 'now', 'card' => $_POST['stripeToken']));
                 }    
             } else { //Package is Addon
                 $customer->subscriptions->create(array("plan" => $plan->id, 'card' => $_POST['stripeToken']));

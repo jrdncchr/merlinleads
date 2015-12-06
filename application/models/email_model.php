@@ -6,8 +6,8 @@ if (!defined('BASEPATH'))
 class Email_Model extends CI_Model {
 
     protected $from = "support@merlinleads.net";
-    protected $cc = "Yates Harrison <yatesharrison@yahoo.com>, Jordan Cachero <jrdncchr@gmail.com>";
-//    protected $cc = ", Jordan Cachero <jrdncchr@gmail.com>";
+//    protected $cc = "Yates Harrison <yatesharrison@yahoo.com>, Jordan Cachero <jrdncchr@gmail.com>";
+    protected $cc = ", Jordan Cachero <jrdncchr@gmail.com>";
 
     public function sendConfirmationEmail($email, $key, $random_password = false) {
         $message = "<html><body>";
