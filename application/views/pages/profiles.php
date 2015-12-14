@@ -9,7 +9,7 @@
         </div>
         <div class="col-xs-3 col-xs-offset-6">
             <a class="btn btn-default btn-sm btn-block" target="_blank"
-            href="http://support.leadgeneratortools.net/profile-inputs/"><i
+            href="http://support.merlinleads.com/profile-setup/"><i
             class="fa fa-video-camera"></i> Setting up a Profile Guide</a>
 
         </div>

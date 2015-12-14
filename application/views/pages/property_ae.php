@@ -38,7 +38,7 @@
                 <div class="tab-content">
                     <!-- Basic Info -->
                     <div class="tab-pane fade in active" id="basic">
-                        <h3>Basic Info <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/basic-info/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Basic Info <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-input-basic-info/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <input type="text" value="<?php if (isset($po)) echo $po->status; ?>" id="status" class="hidden" />
                             <div class="form-group">
@@ -183,7 +183,7 @@
 
                     <!-- Detail -->
                     <div class="tab-pane fade" id="detail">
-                        <h3>Detail Info <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/detail-info/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Detail Info <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-details-detail-info-tab/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -324,7 +324,7 @@
 
                     <!-- Features -->
                     <div class="tab-pane fade" id="typeAndFeatures">
-                        <h3>Type and Features <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/property-type-and-features/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Type and Features <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-details-type-and-features-tab/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -338,7 +338,7 @@
                                 </label>
                                 <div class="input-group input-group-sm col-xs-9">
                                     <select class="form-control required" id="main"><?php echo $feature_main; ?></select>
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -348,7 +348,7 @@
                                 </label>
                                 <div class="input-group input-group-sm col-xs-9">
                                     <select class="form-control required" id="secondary"><?php echo $feature_secondary; ?></select>
-                                    <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                 </div>
                             </div>
                             <hr />
@@ -366,7 +366,7 @@
                                                 <button class="btn btn-default" id="feature1Btn" type="button"><i class="fa fa-lg fa-lightbulb-o"></i></button>
                                             </span>
                                         </div>
-                                        <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
+                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -411,7 +411,7 @@
 
                     <!-- Keywords -->
                     <div class="tab-pane fade" id="keywords">
-                        <h3>Keywords <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/keywords/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Keywords <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-details-keywords-tab/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-12">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -470,7 +470,7 @@
 
                     <!-- Links -->
                     <div class="tab-pane fade" id="links">
-                        <h3>Links <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/links/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Links <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-details-link-inputs/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -591,7 +591,7 @@
                 <div class="tab-content">
                     <!-- Basics -->
                     <div class="tab-pane fade in active" id="moduleBasics">
-                        <h3>General <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/basic/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>General <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-classified-basic-tab/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -723,7 +723,7 @@
 
                     <!-- Headline Statements -->
                     <div class="tab-pane fade in" id="headlineStatements">
-                        <h3>Headline Statements <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/headline-statements/"><i class="fa fa-question-circle"></i> Help</a> <button class="btn btn-primary btn-xs pull-right" style="margin-right: 15px;" data-toggle="modal" data-target="#hsModal" data-backdrop="static" data-keyboard="false" >Headline Statement Library</button></h3>
+                        <h3>Headline Statements <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-classified-headline-statements/"><i class="fa fa-question-circle"></i> Help</a> <button class="btn btn-primary btn-xs pull-right" style="margin-right: 15px;" data-toggle="modal" data-target="#hsModal" data-backdrop="static" data-keyboard="false" >Headline Statement Library</button></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -762,7 +762,7 @@
 
                     <!-- Call to Action -->
                     <div class="tab-pane fade in" id="callToAction">
-                        <h3>Call To Action <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/call-to-action/"><i class="fa fa-question-circle"></i> Help</a> <button class="btn btn-primary btn-xs pull-right" style="margin-right:15px;" data-toggle="modal" data-target="#ctaModal" data-backdrop="static" data-keyboard="false" >Call To Action Library</button></h3>
+                        <h3>Call To Action <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-classified-call-to-action/"><i class="fa fa-question-circle"></i> Help</a> <button class="btn btn-primary btn-xs pull-right" style="margin-right:15px;" data-toggle="modal" data-target="#ctaModal" data-backdrop="static" data-keyboard="false" >Call To Action Library</button></h3>
 
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
@@ -802,7 +802,7 @@
 
                     <!-- Open House -->
                     <div class="tab-pane fade in" id="openHouse">
-                        <h3>Open House <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/open-house/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Open House <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-classified-open-house/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -881,7 +881,7 @@
 
                     <!-- Optional Fields -->
                     <div class="tab-pane fade in" id="optionalFields">
-                        <h3>Optional Fields <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/optional-fields/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Optional Fields <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/property-classified-optional-fields/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -912,7 +912,7 @@
 
                     <!-- Video -->
                     <div class="tab-pane fade in" id="video">
-                        <h3>Video <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.leadgeneratortools.net/video/"><i class="fa fa-question-circle"></i> Help</a></h3>
+                        <h3>Video <a target="_blank" class="pull-right" style="font-size: 20px;" href="http://support.merlinleads.com/classified-video-inputs/"><i class="fa fa-question-circle"></i> Help</a></h3>
                         <form class="form-horizontal col-xs-11">
                             <div class="form-group">
                                 <div class="input-group input-group-sm col-xs-12">
@@ -1058,7 +1058,7 @@
             -->
             <div class="tab-pane fade in" id="images-tab" style="min-height: 400px;">
                 <?php if (isset($po)) { ?>
-                    <h4>Property Name: <strong><?php echo $po->name; ?></strong> <a target="_blank" class="pull-right" style="font-size: 20px; margin-right: 10px;" href="http://support.leadgeneratortools.net/images/"><i class="fa fa-question-circle"></i> Help</a></h4>
+                    <h4>Property Name: <strong><?php echo $po->name; ?></strong> <a target="_blank" class="pull-right" style="font-size: 20px; margin-right: 10px;" href="http://support.merlinleads.com/property-images/"><i class="fa fa-question-circle"></i> Help</a></h4>
                 <?php } ?>
                 <div class="alert alert-info" id="images-tab-message">
                     <p><i class="fa fa-info"></i> Click on the image placeholder to upload/add images on the selected field.</p>

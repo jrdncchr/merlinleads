@@ -7,7 +7,7 @@ class Borino extends MY_Controller
 {
 
     public function index() {
-        header("Location: http://leadgeneratortools.com/ebook#_a_borino");
+        header("Location: http://merlinlead.net/ebook#_a_borino");
         die();
     }
 

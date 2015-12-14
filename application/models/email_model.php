@@ -38,7 +38,7 @@ class Email_Model extends CI_Model {
         $message .= "<p><a href='".base_url(). "pages/login'>Login Now</a></p>";
         $message .= "</body></html>";
 
-        $from = "support@leadgeneratortools.net";
+        $from = "support@merlinleads.net";
         $to = $user->email;
         $subject = 'Merlin Leads - Forget Password';
 

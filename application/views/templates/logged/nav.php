@@ -53,7 +53,7 @@
 
                         <!-- MY ACCOUNT -->
                         <li class="dropdown-submenu">
-                            <a target="_blank" href="http://support.leadgeneratortools.net/my-account/">My Account <i class="fa fa-caret-right"></i></a>
+                            <a target="_blank" href="http://support.merlinleads.com/my-account-overview/">My Account <i class="fa fa-caret-right"></i></a>
                             <ul class="dropdown-menu dropdown-menu-3">
                                 <li><a target="_blank" href="http://support.merlinleads.com/my-account-overview/">My Account Overview</a></li>
                                 <li><a target="_blank" href="http://support.merlinleads.com/change-password/">Change Password</a></li>
