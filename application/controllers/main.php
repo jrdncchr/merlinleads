@@ -43,7 +43,7 @@ class Main extends MY_Controller {
         $this->_renderL('pages/main');
     }
 
-    public function myaccount() {
+    public function myaccount($redirect = "subscription") {
         $user = $this->session->userdata('user');
 
         //get user subscription from stripe
@@ -73,6 +73,14 @@ class Main extends MY_Controller {
         //get countries states
         $this->load->model('input_model');
         $this->data['states'] = $this->input_model->getCountryStates($user->country, $user->state_abbr);
+
+        //facebook integration
+        $this->load->model('facebook_model');
+        $fb = $this->facebook_model->verify_access_key($this->user);
+        $this->data['fb'] = $fb;
+        if($redirect == "facebook") {
+            $this->data['fb_redirect'] = true;
+        }
 
         $this->title = "Merlin Leads &raquo; My Account";
         $this->data['user'] = $user;
@@ -289,94 +297,4 @@ class Main extends MY_Controller {
 
     /* Store Methods */
 
-//    public function saveByLine() {
-//        $file = fopen("C:\Users\Jordan\Desktop\\temp.txt", "r");
-//        if ($file) {
-//            while (($line = fgets($file)) !== false) {
-//                $data = array(
-//                    'category'=> 'HS',
-//                    'module' => 'Classified Ads',
-//                    'type' => 'POST',
-//                    'content' => $line,
-//                );
-//                $this->load->database();
-//                $this->db->insert('call_to_actions', $data);
-//            }
-//            echo "Done";
-//        } else {
-//            echo "Server Error";
-//        }
-//    }
-//    public function saveBySymbol() {
-//        $file = file_get_contents("C:\Users\Danero\Desktop\\temp.txt");
-//        if ($file) {
-//            $this->load->database();
-//            $fileSplit = explode("-----", $file);
-//            for ($i = 0; $i < sizeof($fileSplit); $i++) {
-//                $split = explode('|', $fileSplit[$i]);
-//                $data = array(
-//                    'module'=> 'youtube',
-//                    'type' => 'cta',
-//                    'content' => trim($split[0]),
-//                    'shortcode' => $split[1]
-//                );
-//                $this->db->insert('properties_templates_sc', $data);
-//            }
-//        } else {
-//            echo "Server Error";
-//        }
-//    }
-//    public function saveCustom() {
-//        $this->load->database();
-//        for ($i = 1; $i < 41; $i++) {
-//            $data = array(
-//                'number' => $i,
-//                'phone' => '[Agent Phone]',
-//                'contact_name' => "[Agent First Name] [Agent Last Name]",
-//                'posting_title' => "[Title $i]",
-//                'video_term' => "[Video Term $i]",
-//                'specific_location' => "[Specific Location $i]",
-//                'postal_code' => "[Zipcode]",
-//                'posting_body' => "[Body Title $i]
-//[Openhouse $i]
-//[Agent Info $i]
-//[Property Address $i]
-//[Video-Bullet-CTA $i]
-//[Video-CL-Link $i]
-//[Bed-Bath $i]
-//[CL-School $i]
-//[Broker-Info $i]
-//[Broker-License $i]
-//[Ad Tags $i]",
-//                'sqft' => "[Building SqFt]",
-//                'price' => "[Price]",
-//                'bedrooms' => "[Bed]",
-//                'bathrooms' => "[CL-Bath]",
-//                'housing_type' => "[Housing Type]",
-//                'laundry' => "[Laundry]",
-//                'parking' => "[Parking]",
-//                'wheelchair_accessible' => "[Wheelchair]",
-//                'no_smoking' => "[No Smoking]",
-//                'furnished' => "[Furnished]",
-//                'maps_section' => "[Address]",
-//                'cross_street' => "[Cross Street]",
-//                'city' => "[City]",
-//                'state_abbr' => "[State Abbr]",
-//            );
-//            $this->db->insert('properties_templates_craiglist_video', $data);
-//        }
-//    }
-//
-//        public function saveCustom2() {
-//        $this->load->database();
-//        for ($i = 1; $i < 41; $i++) {
-//            $data = array(
-//                'module' => 'ebay',
-//                'type' => 'Zipcode',
-//                'shortcode' => "[zipcode $i]",
-//                'content' => "[Zipcode]"
-//            );
-//            $this->db->insert('properties_templates_sc', $data);
-//        }
-//    }
 }

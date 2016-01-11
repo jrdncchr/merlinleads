@@ -310,7 +310,7 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataT
 
 .tabs-left > .nav-tabs {
     border-bottom: 0;
-    height: 100px;
+    min-height: 400px;
 }
 
 .tab-content > .tab-pane,
@@ -346,6 +346,7 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataT
     -moz-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px;
 }
+
 
 .tabs-left > .nav-tabs > li > a:hover,
 .tabs-left > .nav-tabs > li > a:focus {

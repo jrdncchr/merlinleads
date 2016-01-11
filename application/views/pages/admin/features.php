@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <?php if(sizeof($features) > 0) { ?>
-                        <select multiple id="features" class="form-control" style="height: 200px;">
+                        <select multiple id="features" class="form-control" style="height: 400px;">
                             <?php
                             foreach($features as $feature){
                                 ?>

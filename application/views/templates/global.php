@@ -1,4 +1,25 @@
 
+<div class="modal fade" id="globalConfirmModal" backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="padding: 10px 20px 0 20px;">
+                <div class="alert alert-danger modal-error"></div>
+                <div id="globalConfirmModalContent">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <a id="globalConfirmBtn" href="#" class="btn btn-sm btn-primary">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="globalFormModal" backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -34,7 +55,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button disabled id="postPostBtn" type="button" class="btn btn-sm btn-success pull-left" style="display: none;">Post</button>
+                <button id="postPostBtn" type="button" class="btn btn-sm btn-success pull-left" style="display: none;">Post</button>
                 <button id="postGenerateBtn" type="button" class="btn btn-sm btn-primary" style="display: none;">Generate</button>
                 <button id="postSaveBtn" type="button" class="btn btn-sm btn-primary" style="display: none;">Save</button>
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>

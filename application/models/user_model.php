@@ -46,9 +46,19 @@ class User_Model extends CI_Model {
         $user = $this->db->get_where('users', array('id' => $id));
         $this->load->library('session');
         $this->session->set_userdata('user', $user->row());
-//        session_start();
         $_SESSION['user'] = $user->row();
         echo "OK";
+    }
+
+    public function updateInfo($update, $id) {
+        $this->db->where('id', $id);
+        $this->db->update('users', $update);
+
+        $user = $this->db->get_where('users', array('id' => $id));
+        $this->load->library('session');
+        $this->session->set_userdata('user', $user->row());
+        $_SESSION['user'] = $user->row();
+        return true;
     }
 
     public function updateByUsername($update, $username) {
@@ -109,7 +119,7 @@ class User_Model extends CI_Model {
             $user = $result->row();
             if ($this->_validatePassword($password, $user)) {
                 if ($user->status == "active") {
-                    session_start();
+//                    session_start();
                     $_SESSION['user'] = $user;
                     $this->load->library('session');
                     $this->session->set_userdata('user', $user);

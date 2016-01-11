@@ -151,10 +151,10 @@ class Property extends MY_Controller {
                             /*
                              * ---- YOUTUBE / SLIDESHARE POSTING FEATURE
                              */
-                            $this->data['template_count'] = $this->template_model->getPropertyMediaTemplatesForStaticInput($main_f->youtube_posting_templates, $template_no);
-
+                            $module_feature = $main_f->youtube_posting_templates;
 
                             if ($selectedModule == "Slideshare") {
+                                $module_feature = $main_f->slideshare_posting_templates;
                                 $this->load->model('slideshare_model');
                                 $images = $this->property_module_model->getPropertyImage($property->id);
                                 $available_slides = array();
@@ -183,7 +183,7 @@ class Property extends MY_Controller {
                                     $this->data['bg'] = $bg;
                                 }
                             }
-
+                            $this->data['template_count'] = $this->template_model->getPropertyMediaTemplatesForStaticInput($module_feature, $template_no);
                             $this->title = "Merlin Leads &raquo; Post Property";
                             $this->data['user'] = $this->session->userdata('user');
                             $this->data['features'] = $main_f;

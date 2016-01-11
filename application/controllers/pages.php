@@ -69,6 +69,7 @@ class Pages extends MY_Controller
             $this->login();
         } else {
             header("Location: " . base_url() . "property");
+//            var_dump($this->user);
         }
     }
 
