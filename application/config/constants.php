@@ -8,7 +8,6 @@ define('JS', 'resources/js/');
 define('IMG', 'resources/images/');
 define('FONT', 'resources/font-awesome/');
 define('OTHERS', 'resources/others/');
-define('VENDOR', 'vendor/');
 
 define('DB_DATABASE', 'merlinle_mldb');
 define('DB_USERNAME', 'merlinle_admin');
@@ -23,8 +22,8 @@ define('TIME_ADJUST', 8);
 //define('TIME_ADJUST', 5);
 
 //STRIPE
-//$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_test.txt", FILE_IGNORE_NEW_LINES);
-$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_live.txt", FILE_IGNORE_NEW_LINES);
+$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_test.txt", FILE_IGNORE_NEW_LINES);
+//$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_live.txt", FILE_IGNORE_NEW_LINES);
 //$stripe_keys = file(FCPATH . OTHERS . "stripe/lgt_live.txt", FILE_IGNORE_NEW_LINES);
 //$stripe_keys = file(FCPATH . OTHERS . "stripe/lgt_test.txt", FILE_IGNORE_NEW_LINES);
 define('STRIPE_PUBLISHABLE_KEY', $stripe_keys[0]);
