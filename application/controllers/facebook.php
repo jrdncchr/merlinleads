@@ -82,9 +82,9 @@ class Facebook extends MY_Controller {
             'app_secret' => FB_SECRET_KEY
         ]);
 
-        $message = $_POST['headline'] .  "\n\n" . $_POST['body'] . "\n\n" . $_POST['keywords'];
+        $message = $this->input->post('headline') .  "\n\n" . $this->input->post('body') . "\n\n" . $this->input->post('keywords');
         $linkData = [
-            'link' => $_POST['link'],
+            'link' => $this->input->post('link'),
             'message' => $message
         ];
 

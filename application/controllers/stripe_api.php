@@ -137,12 +137,18 @@ class Stripe_Api extends MY_Controller {
         $plan = $event_json->data->object;
         // mail("jrdncchr@gmail.com","Create Plan",$input);
 
+        /*
+         * Get the plan information that was created in Stripe.
+         */
         $publishable_key = STRIPE_PUBLISHABLE_KEY;
         $action = base_url() . "stripe_api/chargePackage";
         $amount = $plan->amount;
         $planName = $plan->name;
         $planId = $plan->id;
 
+        /*
+         * This stripe form is saved in the database, and is shown in the upgrade page.
+         */
         $stripe_form = "<form id='payment-form' class='monthly-form payment-form' action='$action' method='POST'>
                             <script
                                 src='https://checkout.stripe.com/checkout.js' class=stripe-button

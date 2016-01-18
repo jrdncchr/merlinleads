@@ -68,7 +68,12 @@ class Post extends MY_Controller {
         }
     }
 
+
+    /*
+     * Facebook Posting
+     */
     public function facebook($poId = 0) {
+        // If poId is set, then we show the facebook post table view.
         if($poId) {
             $property_overview = $this->property_model->getOverview($poId);
             $this->session->set_userdata("selectedPropertyId", $property_overview->property_id);
@@ -77,6 +82,9 @@ class Post extends MY_Controller {
             $this->data['categories'] = $this->m2_category_model->get_list("Property");
             $this->data['property_overview'] = $property_overview;
             $this->_renderL("pages/m2_post/facebook");
+
+        // If poId is not set, it means that we are in AJAX request.
+        // Post needs to have an 'action variable.' returns a json encoded object.
         } else {
             $user = $this->session->userdata('user');
             $property_id = $this->session->userdata("selectedPropertyId");

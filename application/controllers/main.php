@@ -43,6 +43,9 @@ class Main extends MY_Controller {
         $this->_renderL('pages/main');
     }
 
+    /*
+     * The redirect parameter is for adding a class 'active' in a specific tab when myaccount view is shown.
+     */
     public function myaccount($redirect = "subscription") {
         $user = $this->session->userdata('user');
 

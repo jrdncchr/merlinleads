@@ -32,12 +32,15 @@ class MY_Controller extends CI_Controller
 
         $this->load->helper('url');
 
+        /*
+         * Set the web page information for SEO.
+         */
         $this->title = $this->config->item('site_title');
         $this->description = $this->config->item('site_description');
         $this->keywords = $this->config->item('site_keywords');
         $this->author = $this->config->item('site_author');
 
-        //Get Subscription and Features
+        // Get Subscription and Features
         if (null != $this->user) {
             $this->load->library('stripe_library');
             $this->load->model('package_model');
@@ -72,6 +75,9 @@ class MY_Controller extends CI_Controller
         }
     }
 
+    /*
+     * Rendering for unauthorized users.
+     */
     public function _render($view)
     {
         $this->data['admin'] = false;
@@ -99,6 +105,9 @@ class MY_Controller extends CI_Controller
         $this->load->view('templates/skeleton', $data);
     }
 
+    /*
+     * Rendering for authorized users.
+     */
     public function _renderL($view)
     {
         $this->data['admin'] = false;
@@ -124,6 +133,9 @@ class MY_Controller extends CI_Controller
         $this->load->view('templates/logged/skeleton', $data);
     }
 
+    /*
+     * Rendering for the admin.
+     */
     public function _renderA($content, $main = "")
     {
         $this->data['admin'] = true;

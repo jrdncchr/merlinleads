@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct access is allowed!');
 
-class Stripe_Library{
+class Stripe_Library {
 
 	public function __construct() {
 		include_once OTHERS . 'stripe/lib/Stripe.php';

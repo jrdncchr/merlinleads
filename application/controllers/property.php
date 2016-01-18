@@ -17,76 +17,9 @@ class Property extends MY_Controller {
         $this->load->model('property_post_model');
     }
 
-
-    public function getPropertyOverviewDetails($status = 'Active') {
-        $user = $this->session->userdata('user');
-        $property_overview = $this->property_model->getOverviews($user->id);
-
-        $this->load->model("m2_post_model");
-
-        $data = [];
-
-        foreach($property_overview as $po) {
-            if($po->status == $status) {
-                $row['poId'] = $po->id;
-                $row['propertyId'] = $po->property_id;
-                $row['status'] = $po->status;
-                $row['propertyName'] = $po->name;
-
-//                var_dump($po);
-
-                //CRAIGLIST
-                $craiglist = json_decode($po->craiglist);
-                $row['craiglistRegular'] = isset($craiglist->regular) ? $craiglist->regular : 0;
-                $row['craiglistRegularHours'] = isset($craiglist->regular_ldp) ? ((time() - strtotime($craiglist->regular_ldp)) / 60) / 60 : 100;
-                $row['craiglistVideo'] = isset($craiglist->video) ? $craiglist->video : 0;
-                $row['craiglistVideoHours'] = isset($craiglist->video_ldp) ? ((time() - strtotime($craiglist->video_ldp)) / 60) / 60 : 100;
-
-                //EBAY
-                $ebay = json_decode($po->ebay);
-                $row['ebayRegular'] = isset($ebay->regular) ? $ebay->regular : 0;
-                $row['ebayRegularHours'] = isset($ebay->regular_ldp) ? ((time() - strtotime($ebay->regular_ldp)) / 60) / 60 : 100;
-                $row['ebayVideo'] = isset($ebay->video) ? $ebay->video : 0;
-                $row['ebayVideoHours'] = isset($ebay->video_ldp) ? ((time() - strtotime($ebay->video_ldp)) / 60) / 60 : 100;
-
-                //BACKPAGE
-                $backpage = json_decode($po->backpage);
-                $row['backpageRegular'] = isset($backpage->regular) ? $backpage->regular : 0;
-                $row['backpageRegularHours'] = isset($backpage->regular_ldp) ? ((time() - strtotime($backpage->regular_ldp)) / 60) / 60 : 100;
-                $row['backpageVideo'] = isset($backpage->video) ? $backpage->video : 0;
-                $row['backpageVideoHours'] = isset($backpage->video_ldp) ? ((time() - strtotime($backpage->video_ldp)) / 60) / 60 : 100;
-
-                //YOUTUBE
-                $row['youtube'] = isset($po->youtube) ? $po->youtube : 0;
-
-                //SLIDE SHARE
-                $row['slideshare'] = isset($po->slideshare) ? $po->slideshare : 0;
-
-                //TWITTER
-                $row['twitter'] = isset($po->twitter) ? $po->twitter : 0;
-
-                //FACEBOOK
-                $row['facebook'] = $this->m2_post_model->count(array('module' => 'FACEBOOK', 'user_id' => $user->id, 'property_id' => $po->property_id));
-
-                //GOOGLE PLUS
-                $row['googlePlus'] = $this->m2_post_model->count(array('module' => 'GOOGLE_PLUS', 'user_id' => $user->id, 'property_id' => $po->property_id));
-
-                //LINKED IN
-                $row['linkedIn'] = $this->m2_post_model->count(array('module' => 'LINKED_IN', 'user_id' => $user->id, 'property_id' => $po->property_id));
-
-                //BLOG
-                $row['blog'] = $this->m2_post_model->count(array('module' => 'BLOG', 'user_id' => $user->id, 'property_id' => $po->property_id));
-
-
-                $data[] = $row;
-            }
-        }
-
-
-        echo json_encode(array('data' => $data));
-    }
-
-
+    /*
+     * Shows the dashboard.
+     */
     public function index() 
     {
         $user = $this->user;
@@ -540,6 +473,75 @@ class Property extends MY_Controller {
             echo $this->property_model->deleteProperty($po);
         }
     }
+
+    public function getPropertyOverviewDetails($status = 'Active') {
+        $user = $this->session->userdata('user');
+        $property_overview = $this->property_model->getOverviews($user->id);
+
+        $this->load->model("m2_post_model");
+
+        $data = [];
+
+        foreach($property_overview as $po) {
+            if($po->status == $status) {
+                $row['poId'] = $po->id;
+                $row['propertyId'] = $po->property_id;
+                $row['status'] = $po->status;
+                $row['propertyName'] = $po->name;
+
+//                var_dump($po);
+
+                //CRAIGLIST
+                $craiglist = json_decode($po->craiglist);
+                $row['craiglistRegular'] = isset($craiglist->regular) ? $craiglist->regular : 0;
+                $row['craiglistRegularHours'] = isset($craiglist->regular_ldp) ? ((time() - strtotime($craiglist->regular_ldp)) / 60) / 60 : 100;
+                $row['craiglistVideo'] = isset($craiglist->video) ? $craiglist->video : 0;
+                $row['craiglistVideoHours'] = isset($craiglist->video_ldp) ? ((time() - strtotime($craiglist->video_ldp)) / 60) / 60 : 100;
+
+                //EBAY
+                $ebay = json_decode($po->ebay);
+                $row['ebayRegular'] = isset($ebay->regular) ? $ebay->regular : 0;
+                $row['ebayRegularHours'] = isset($ebay->regular_ldp) ? ((time() - strtotime($ebay->regular_ldp)) / 60) / 60 : 100;
+                $row['ebayVideo'] = isset($ebay->video) ? $ebay->video : 0;
+                $row['ebayVideoHours'] = isset($ebay->video_ldp) ? ((time() - strtotime($ebay->video_ldp)) / 60) / 60 : 100;
+
+                //BACKPAGE
+                $backpage = json_decode($po->backpage);
+                $row['backpageRegular'] = isset($backpage->regular) ? $backpage->regular : 0;
+                $row['backpageRegularHours'] = isset($backpage->regular_ldp) ? ((time() - strtotime($backpage->regular_ldp)) / 60) / 60 : 100;
+                $row['backpageVideo'] = isset($backpage->video) ? $backpage->video : 0;
+                $row['backpageVideoHours'] = isset($backpage->video_ldp) ? ((time() - strtotime($backpage->video_ldp)) / 60) / 60 : 100;
+
+                //YOUTUBE
+                $row['youtube'] = isset($po->youtube) ? $po->youtube : 0;
+
+                //SLIDE SHARE
+                $row['slideshare'] = isset($po->slideshare) ? $po->slideshare : 0;
+
+                //TWITTER
+                $row['twitter'] = isset($po->twitter) ? $po->twitter : 0;
+
+                //FACEBOOK
+                $row['facebook'] = $this->m2_post_model->count(array('module' => 'FACEBOOK', 'user_id' => $user->id, 'property_id' => $po->property_id));
+
+                //GOOGLE PLUS
+                $row['googlePlus'] = $this->m2_post_model->count(array('module' => 'GOOGLE_PLUS', 'user_id' => $user->id, 'property_id' => $po->property_id));
+
+                //LINKED IN
+                $row['linkedIn'] = $this->m2_post_model->count(array('module' => 'LINKED_IN', 'user_id' => $user->id, 'property_id' => $po->property_id));
+
+                //BLOG
+                $row['blog'] = $this->m2_post_model->count(array('module' => 'BLOG', 'user_id' => $user->id, 'property_id' => $po->property_id));
+
+
+                $data[] = $row;
+            }
+        }
+
+
+        echo json_encode(array('data' => $data));
+    }
+
 
     public function archiveProperty() {
         /*
