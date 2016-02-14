@@ -160,10 +160,12 @@ class Post extends MY_Controller {
         }
     }
 
-    public function linked_in($poId = 0) {
+    public function linkedin($poId = 0) {
         if($poId) {
             $property_overview = $this->property_model->getOverview($poId);
             $this->session->set_userdata("selectedPropertyId", $property_overview->property_id);
+            $property = $this->property_model->getProperty($property_overview->property_id);
+            $this->data['postLink'] = $property->webpage;
             $this->data['categories'] = $this->m2_category_model->get_list("Property");
             $this->data['property_overview'] = $property_overview;
             $this->_renderL("pages/m2_post/linked_in");

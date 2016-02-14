@@ -46,22 +46,56 @@ function saveImages(tabToLook, tabToShow) {
     });
 }
 
+function displayAlertModal() {
+    $("#globalAlertModal").modal({
+        show: true,
+        backdrop: true
+    });
+}
+
 function activateImageUpload() {
+    var alertModal = $("#globalAlertModal");
     $('.upload').fileupload({
         dataType: 'json',
         add: function(e, data) {
+            alertModal.find('.modal-title').html("Upload Image");
+
             var goUpload = true;
             var uploadFile = data.files[0];
             if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
-                alert('You must select an image file only');
+                alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i> Invalid image file.");
                 goUpload = false;
             }
             if (uploadFile.size > 1000000) { // 1mb
-                alert('Please upload a smaller image, max size is 1 MB');
+                alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Upload size cannot be greater than 1MB.");
                 goUpload = false;
             }
-            if (goUpload) {
-                data.submit();
+
+            var file, img;
+            if ((file = data.files[0])) {
+                if (goUpload) {
+                    img = new Image();
+                    img.onload = function() {
+                        if(this.height != 800 || this.width != 600) {
+                            alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Image dimension should be 800x600.");
+                            goUpload = false;
+                            displayAlertModal();
+                        }
+                        if(goUpload) {
+                            data.submit();
+                        }
+                    };
+                    img.onerror = function() {
+                        alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Invalid image file.");
+                        goUpload = false;
+                        displayAlertModal();
+                    };
+                    img.src = URL.createObjectURL(file);
+                } else {
+                    displayAlertModal();
+                }
+            } else {
+                displayAlertModal();
             }
         },
         progressall: function(e, data) {

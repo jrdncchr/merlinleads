@@ -103,22 +103,10 @@ $(function() {
 
     /* Copy to Clipboard */
     $(".clip").off("click").click(function() {
-        var text = $(this).closest(".input-group").find("input").val();
-        if(!text) {
-            text = $(this).closest(".input-group").find("textarea").val();
-        }
-        copyToClipBoard(text);
+        var e = $(this).closest(".input-group").find(".form-control");
+        e.select();
+        document.execCommand('copy');
+        loading('info', "Copied to clipboard.");
     });
 
 });
-
-function copyToClipBoard(text) {   
-    var copyElement = document.createElement('input');      
-    copyElement.setAttribute('type', 'text');   
-    copyElement.setAttribute('value', text);    
-    copyElement = document.body.appendChild(copyElement);   
-    copyElement.select();   
-    document.execCommand('copy');   
-    copyElement.remove();
-    loading('info', "Copied to clipboard.");
-}

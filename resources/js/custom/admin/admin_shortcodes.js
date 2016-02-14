@@ -33,25 +33,29 @@ function activateEvents() {
 
     // add shortcode validation
     var validShortcode = true;
-    $('#addScShortcode').focusout(function() {
-        $.ajax({
-            url: base_url + 'admin/validateTemplateScShortcode',
-            data: {category: $('#tscCategory').val(), module: $('#tscModule').val(), shortcode: $('#addScShortcode').val()},
-            cache: false,
-            type: 'post',
-            success: function(data) {
-                if (data === "Unavailable") {
-                    $('#addScShortcode').addClass('input-error');
-                    $('#addScMessage').removeClass().addClass('alert alert-danger')
+    $('#addScShortcode').blur(function() {
+        if($(this).val() !== "") {
+            $.ajax({
+                url: base_url + 'admin/validateTemplateScShortcode',
+                data: {category: $('#tscCategory').val(), module: $('#tscModule').val(), shortcode: $('#addScShortcode').val()},
+                cache: false,
+                type: 'post',
+                success: function(data) {
+                    if (data === "Unavailable") {
+                        $('#addScShortcode').addClass('input-error');
+                        $('#addScMessage').removeClass().addClass('alert alert-danger')
                             .html("<i class='fa fa-exclamation'></i> The shortcode you entered is similar to an existing shortcode or invalid!");
-                    validShortcode = false;
-                } else {
-                    $('#addScShortcode').removeClass('input-error');
-                    $('#addScMessage').removeClass().html("");
-                    validShortcode = true;
+                        validShortcode = false;
+                    } else {
+                        $('#addScShortcode').removeClass('input-error');
+                        $('#addScMessage').removeClass().html("");
+                        validShortcode = true;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            validShortcode = false;
+        }
     });
 
     $('#addScBtn').click(function() {

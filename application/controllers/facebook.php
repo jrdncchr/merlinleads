@@ -77,31 +77,14 @@ class Facebook extends MY_Controller {
 
 
     function post() {
-        $fb = new \Facebook\Facebook([
-            'app_id' => FB_APP_ID,
-            'app_secret' => FB_SECRET_KEY
-        ]);
-
         $message = $this->input->post('headline') .  "\n\n" . $this->input->post('body') . "\n\n" . $this->input->post('keywords');
         $linkData = [
             'link' => $this->input->post('link'),
             'message' => $message
         ];
-
-        try {
-            $response = $fb->post('/me/feed', $linkData, $this->user->fb_access_token);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
-
-        $graphNode = $response->getGraphNode();
-        if(isset($graphNode['id'])) {
-            echo json_encode(array("success" => true));
-        }
+        $this->load->model('api_model');
+        $result = $this->api_model->post_facebook($linkData, $this->user->fb_access_token);
+        echo json_encode($result);
     }
 
 }

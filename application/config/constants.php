@@ -14,21 +14,23 @@ define('DB_USERNAME', 'merlinle_admin');
 define('DB_PASSWORD', 'ml143');
 define('DB_HOST', 'localhost');
 
+/* API Integration
+ */
 define('FB_APP_ID', '995734017131931');
 define('FB_SECRET_KEY', 'ddc7e43bde20c8bd37bb180cdbecc6cc');
 
-//OTHERS
-define('TIME_ADJUST', 8);
-//define('TIME_ADJUST', 5);
+define('LI_CLIENT_ID', '75d3bm3svzr0ar');
+define('LI_SECRET_KEY', '6s4F3ExHzXlti54j');
+define('LI_CALLBACK', 'http://127.0.0.1:80/merlinleads/linkedin/auth');
 
-//STRIPE
 $stripe_keys = file(FCPATH . OTHERS . "stripe/ml_test.txt", FILE_IGNORE_NEW_LINES);
 //$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_live.txt", FILE_IGNORE_NEW_LINES);
-//$stripe_keys = file(FCPATH . OTHERS . "stripe/lgt_live.txt", FILE_IGNORE_NEW_LINES);
-//$stripe_keys = file(FCPATH . OTHERS . "stripe/lgt_test.txt", FILE_IGNORE_NEW_LINES);
 define('STRIPE_PUBLISHABLE_KEY', $stripe_keys[0]);
 define('STRIPE_SECRET_KEY', $stripe_keys[1]);
 
+/* Others
+ */
+define('TIME_ADJUST', 8);
 
 
 /*

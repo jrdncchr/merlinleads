@@ -46,7 +46,7 @@ class Main extends MY_Controller {
     /*
      * The redirect parameter is for adding a class 'active' in a specific tab when myaccount view is shown.
      */
-    public function myaccount($redirect = "subscription") {
+    public function myaccount($redirect = false) {
         $user = $this->session->userdata('user');
 
         //get user subscription from stripe
@@ -77,13 +77,12 @@ class Main extends MY_Controller {
         $this->load->model('input_model');
         $this->data['states'] = $this->input_model->getCountryStates($user->country, $user->state_abbr);
 
-        //facebook integration
-        $this->load->model('facebook_model');
-        $fb = $this->facebook_model->verify_access_key($this->user);
-        $this->data['fb'] = $fb;
-        if($redirect == "facebook") {
-            $this->data['fb_redirect'] = true;
-        }
+        //API integrations
+        $this->load->model('api_model');
+        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
+        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
+
+        $this->data['redirect'] = $redirect;
 
         $this->title = "Merlin Leads &raquo; My Account";
         $this->data['user'] = $user;

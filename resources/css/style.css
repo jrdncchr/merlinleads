@@ -1,7 +1,11 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500);
 * {
     font-family: 'Roboto', sans-serif;
-    letter-spacing: .5px;
+    letter-spacing: .3px;
+}
+
+*:focus, *:active {
+    outline: 0 !important;
 }
 
 @media screen and (max-width: 1124px) {
@@ -12,8 +16,10 @@
 
 html,
 body {
-height: 100%;
-/* The html and body elements cannot have any padding or margin. */
+    height: 100%;
+    overflow-x: hidden;
+
+    /* The html and body elements cannot have any padding or margin. */
 }
 
 /* Wrapper for page content to push down footer */

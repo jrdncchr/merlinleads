@@ -66,11 +66,18 @@
     </form>
 </div>
 
+<div id="modalContentUnavailable" style="display: none;">
+    <p class="text-primary"><i class="fa fa-question-circle"></i> You did not integrate or authorized LinkedIn into your account yet, proceed to My Account page and Integration section to setup it.</p>
+</div>
+
 <script>
 
 var dt;
-var actionUrl = "<?php echo base_url(); ?>post/linked_in";
+var actionUrl = "<?php echo base_url(); ?>post/linkedin";
 var selectedPostId, selectedSubCategoryId, selectedRows;
+var postLink = "<?php echo isset($postLink) ? $postLink : ''; ?>";
+var allowFeedPosting = "<?php echo isset($main_f->linkedin_feed_posting) && $user->li_access_token != '' ? 'yes' : 'no'; ?>";
+
 
 $(function() {
     setupDataTables();
@@ -118,6 +125,7 @@ function setupDataTables() {
 
 function activateEvents() {
     $("#globalFormModalPost").find("#globalFormModalContentPost").html($("#modalContent").html());
+    $("#globalConfirmModal").find("#globalConfirmModalContent").html($("#modalContentUnavailable").html());
 
     $('#showBtn').off("click").click(function() {
         update = false;
@@ -210,6 +218,42 @@ function activateEvents() {
             toastr.warning("Select an item to delete.");
         }
     });
+
+
+    $("#postPostBtn").off("click").click(function() {
+        if(allowFeedPosting == "yes") {
+            if(validateGlobalFormModalPost()) {
+                var data = {
+                    link                : postLink,
+                    headline            : $("#headline").val(),
+                    body                : $("#body").val(),
+                    keywords            : $("#keywords").val()
+                };
+                proccess({
+                    dt: dt,
+                    url: "<?php echo base_url(). "linkedin/post"; ?>",
+                    data: data,
+                    btn: $("#postPostBtn"),
+                    btnLoadText: "Posting...",
+                    btnText: "Post",
+                    success: "Successfully Posted.",
+                    modal: $('#globalFormModalPost'),
+                    hideModal: false
+                });
+            }
+        } else {
+
+            $("#globalFormModalPost").modal('hide');
+            $("#globalConfirmModal").find(".modal-title").html("Facebook Feed Posting");
+            $("#globalConfirmModal").modal({
+                show: true,
+                keyboard: false,
+                backdrop: "static"
+            });
+        }
+    });
+
+    $("#globalConfirmBtn").attr('href', '<?php echo base_url() . "main/myaccount/linkedin"?>');
 }
 
 function showAddEditModal(data) {

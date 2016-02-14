@@ -75,7 +75,7 @@ class Admin extends MY_Controller
     public function short_codes()
     {
         $this->load->model('modules_model');
-        $this->data['modules'] = $this->modules_model->get_modules("all");
+        $this->data['modules'] = $this->modules_model->get_modules("M1");
         $this->load->model('template_model');
         $this->data['template_sc_types'] = $this->template_model->getPropertyTemplateScTypesForInput('youtube');
 
@@ -882,7 +882,7 @@ class Admin extends MY_Controller
             $config['upload_path'] = getcwd() . "/resources/images/ppt/bg";
             $config['allowed_types'] = 'gif|jpg|png|doc|txt';
             $config['max_size'] = 1024 * 8;
-            $config['encrypt_name'] = TRUE;
+//            $config['encrypt_name'] = TRUE;
 
             $this->load->library('upload', $config);
 
@@ -891,7 +891,7 @@ class Admin extends MY_Controller
                 $msg = $this->upload->display_errors('', '');
             } else {
                 $data = $this->upload->data();
-                $bg_id = $this->slideshare_model->addBackground(array('image' => $data['file_name'], 'title' => $title));
+                $bg_id = $this->slideshare_model->addBackground(array('image' => $data['file_name'], 'title' => urldecode($title)));
                 if ($bg_id) {
                     $status = "success";
                     $msg = "File successfully uploaded";

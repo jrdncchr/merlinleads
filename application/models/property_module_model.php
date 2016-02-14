@@ -41,7 +41,7 @@ class Property_Module_Model extends CI_Model {
     }
 
     public function updateSlidesharePost($data, $template_no, $property_id) {
-        $this->db->where(array('property_id' => $property_id, 'template_no' => $template_no));
+        $this->db->where(array('property_id' => $property_id, 'template' => $template_no));
         if ($this->db->update('properties_post_slideshare', $data)) {
             return "OK";
         }

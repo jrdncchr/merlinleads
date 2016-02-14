@@ -67,7 +67,7 @@
 </div>
 
 <div id="modalContentUnavailable" style="display: none;">
-    <p class="text-primary"><i class="fa fa-question-circle"></i> You did not integrate or authorized facebook into your account yet, proceed to My Account page and Integration section to setup it.</p>
+    <p class="text-primary"><i class="fa fa-question-circle"></i> You did not integrate or authorized Facebook into your account yet, proceed to My Account page and Integration section to setup it.</p>
 </div>
 
 <script>
@@ -242,7 +242,7 @@ function activateEvents() {
         } else {
 
             $("#globalFormModalPost").modal('hide');
-            $("#globalConfirmModal").find(".modal-title").html("Facebook Feed Posting");
+            $("#globalConfirmModal").find(".modal-title").html("LinkedIn Feed Posting");
             $("#globalConfirmModal").modal({
                 show: true,
                 keyboard: false,

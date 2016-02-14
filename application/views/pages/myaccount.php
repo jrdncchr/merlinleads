@@ -7,15 +7,15 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
-        <li <?php echo !isset($fb_redirect) ? "class='active'" : '' ?>><a href="#subscription" data-toggle="tab">Subscription</a></li>
+        <li <?php echo !$redirect ? "class='active'" : '' ?>><a href="#subscription" data-toggle="tab">Subscription</a></li>
         <li><a href="#basic" data-toggle="tab">Basic</a></li>
         <li><a href="#passwordDiv" data-toggle="tab">Password</a></li>
-        <li <?php echo isset($fb_redirect) ? "class='active'" : '' ?>><a href="#advance" data-toggle="tab">Integrations</a></li>
+        <li <?php echo $redirect == 'facebook' || $redirect == 'linkedin' ? "class='active'" : '' ?>><a href="#advance" data-toggle="tab">Integrations</a></li>
         <li><a href="#card" data-toggle="tab">Card</a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane <?php echo !isset($fb_redirect) ? 'active' : '' ?>" id="subscription">
+        <div class="tab-pane <?php echo !$redirect ? 'active' : '' ?>" id="subscription">
             <br/>
             <h4 style="font-weight: bold">Subscription <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-xs btn-primary pull-right"><i
                             class="fa fa-shopping-cart"></i> Upgrade</a></h4>
@@ -294,16 +294,17 @@
             </div>
 
             <!-- Advance Div -->
-            <div class="tab-pane <?php echo isset($fb_redirect) ? 'active' : '' ?>" id="advance">
+            <div class="tab-pane <?php echo $redirect ? 'active' : '' ?>" id="advance">
                 <div class="tabbable tabs-left" style="margin-top: 20px; text-overflow: ellipsis">
                     <ul class="nav nav-tabs">
                         <li><a href="#integration-twitter" data-toggle="tab">Twitter</a></li>
-                        <li <?php echo isset($fb_redirect) ? "class='active'" : '' ?>><a href="#integration-facebook" data-toggle="tab">Facebook</a></li>
+                        <li <?php echo $redirect == 'facebook' ? "class='active'" : '' ?>><a href="#integration-facebook" data-toggle="tab">Facebook</a></li>
+                        <li <?php echo $redirect == 'linkedin' ? "class='active'" : '' ?>><a href="#integration-linkedin" data-toggle="tab">Linked In</a>
                     </ul>
 
                     <div class="tab-content">
                         <!-- Twitter -->
-                        <div class="tab-pane <?php echo !isset($fb_redirect) ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
+                        <div class="tab-pane <?php echo !$redirect ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
 
                             <?php $twitter = json_decode($user->advance_twitter); ?>
                             <br/>
@@ -388,23 +389,49 @@
                         </div>
 
                         <!-- Facebook -->
-                        <div class="tab-pane <?php echo isset($fb_redirect) ? 'active' : '' ?>" id="integration-facebook">
+                        <div class="tab-pane <?php echo $redirect == 'facebook' ? 'active' : '' ?>" id="integration-facebook">
                             <?php
                             if(isset($main_f->facebook_feed_posting)) { ?>
                                 <?php if(isset($fb['valid_access_token'])) { ?>
                                     <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Facebook integration into your account! </p>
                                     <p>Expiry Date: <b><?php echo $fb['expires_at']; ?></b></p>
                                     <br />
-                                    <p><i>Authorize your facebook integration again before it expires.</i></p>
+                                    <p><i>Authorize your Facebook integration again before it expires.</i></p>
                                     <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
                                 <?php } else { ?>
                                     <?php if(isset($fb['expired_access_token'])) { ?>
-                                        <p class="text-warning">Your access token had already expired, please authorize your facebook again.</p>
+                                        <p class="text-warning">Your Facebook access token had already expired, please authorize your Facebook again.</p>
                                     <?php } else { ?>
-                                        <p class="text-warning">You have NOT yet authorized Facebook integration into your account.</p>
+                                        <p class="text-warning">You have NOT yet authorized Facebook integration into your account yet.</p>
                                     <?php } ?>
 
                                     <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
+                                <?php }  ?>
+                            <?php } else { ?>
+                                <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
+                                <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i
+                                        class="fa fa-shopping-cart"></i> Upgrade Subscription</a></h4>
+                            <?php } ?>
+                        </div>
+
+                        <!-- Linked In -->
+                        <div class="tab-pane <?php echo $redirect == 'linkedin' ? 'active' : '' ?>" id="integration-linkedin">
+                            <?php
+                            if(isset($main_f->linkedin_feed_posting)) { ?>
+                                <?php if(!$linkedIn['expired_access_token']) { ?>
+                                    <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized LinkedIn integration into your account! </p>
+                                    <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
+                                    <br />
+                                    <p><i>Authorize your LinkedIn integration again before it expires.</i></p>
+                                    <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
+                                <?php } else { ?>
+                                    <?php if($linkedIn['expired_access_token']) { ?>
+                                        <p class="text-warning">Your LinkedIn access token had already expired, please authorize your LinkedIn again.</p>
+                                    <?php } else { ?>
+                                        <p class="text-warning">You have NOT yet authorized LinkedIn integration into your account yet.</p>
+                                    <?php } ?>
+
+                                    <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
                                 <?php }  ?>
                             <?php } else { ?>
                                 <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>

@@ -32,14 +32,6 @@ class MY_Controller extends CI_Controller
 
         $this->load->helper('url');
 
-        /*
-         * Set the web page information for SEO.
-         */
-        $this->title = $this->config->item('site_title');
-        $this->description = $this->config->item('site_description');
-        $this->keywords = $this->config->item('site_keywords');
-        $this->author = $this->config->item('site_author');
-
         // Get Subscription and Features
         if (null != $this->user) {
             $this->load->library('stripe_library');

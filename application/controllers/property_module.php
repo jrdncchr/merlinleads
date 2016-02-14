@@ -61,20 +61,20 @@ class Property_Module extends MY_Controller {
     public function overviewOutputCheck($usedCount, $usedCountVideo, $ldp, $ldp_video) {
         if ($ldp && $ldp_video) {
             $output = array(
-                'regular' => mysql_real_escape_string($usedCount),
-                'regular_ldp' => mysql_real_escape_string($ldp->date_created),
-                'video' => mysql_real_escape_string($usedCountVideo),
-                'video_ldp' => mysql_real_escape_string($ldp_video->date_created)
+                'regular' => $usedCount,
+                'regular_ldp' => $ldp->date_created,
+                'video' => $usedCountVideo,
+                'video_ldp' => $ldp_video->date_created
             );
         } else if ($ldp) {
             $output = array(
-                'regular' => mysql_real_escape_string($usedCount),
-                'regular_ldp' => mysql_real_escape_string($ldp->date_created)
+                'regular' => $usedCount,
+                'regular_ldp' => $ldp->date_created
             );
         } else if ($ldp_video) {
             $output = array(
-                'video' => mysql_real_escape_string($usedCountVideo),
-                'video_ldp' => mysql_real_escape_string($ldp_video->date_created)
+                'video' => $usedCountVideo,
+                'video_ldp' => $ldp_video->date_created
             );
         }
         return $output;
@@ -623,6 +623,7 @@ class Property_Module extends MY_Controller {
         if (null != $template) {
             return $this->template_model->generatePropertyMediaTitle('slideshare', $template, $property, null, null);
         }
+        return false;
     }
 
     public function generateSlideshareSlide() {

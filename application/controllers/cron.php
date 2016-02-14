@@ -60,4 +60,37 @@ class Cron extends CI_Controller {
         }
     }
 
+    public function scheduled_posting($time) {
+        $posts = array();
+
+        $this->load->model('scheduler_model');
+        $schedulers = $this->scheduler_model->getListByTimeForScheduledPosting($time . ":00");
+
+        $this->load->model('api_model');
+        foreach($schedulers as $s) {
+            $result = [];
+            switch($s->interval_code) {
+                case "E":
+                    $result = $this->api_model->post($s);
+                    break;
+
+                case "W":
+                    break;
+
+                case "S":
+                    break;
+
+                default;
+            }
+            if($result['success']) {
+                $posts[] = array('scheduler_id' => $s->scheduler_id, 'link' => $result['link']);
+            }
+        }
+
+        $this->db->reconnect();
+        for($i = 0; $i < sizeof($posts); $i++) {
+            $this->api_model->insertPosts($posts[$i]);
+        }
+    }
+
 }

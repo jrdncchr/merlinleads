@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label for="type" class="col-xs-4 control-label"></label>
                         <div class="col-xs-5">
-                            <button class="btn btn-danger" id="deleteBtn" type="button"> Trash</button>
+                            <button class="btn" id="deleteBtn" type="button"> Remove</button>
                         </div>
                     </div>
                 </form>
@@ -51,15 +51,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="type" class="col-xs-3 control-label">Image</label>
+                        <label for="type" class="col-xs-3 control-label">Select</label>
                         <div class="col-xs-9">
-                            <input type="file" name="userfile" id="userfile" size="20" class="form-control" />
+                            <input type="file" name="userfile" id="userfile"  style="box-shadow: none;" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="type" class="col-xs-3 control-label"></label>
                         <div class="col-xs-9">
-                            <button class="btn btn-success"><i class="fa fa-plus"></i> Add</button>
+                            <button class="btn btn-success">Upload</button>
                         </div>
                     </div>
                 </form>

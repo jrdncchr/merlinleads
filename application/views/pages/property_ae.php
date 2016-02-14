@@ -7,9 +7,9 @@
         <hr style="margin: 20px 170px;" />
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="main-tabs">
-            <li class="active"><a href="#property-tab">Property Details</a></li>
-            <li><a href="#classified-tab">Classified Module Details</a></li>
-            <li><a href="#images-tab">Images</a></li>
+            <li <?php echo $redirect == "" ? 'class="active"' : ''; ?>><a href="#property-tab">Property Details</a></li>
+            <li <?php echo $redirect == "classified" ? 'class="active"': ''; ?>><a href="#classified-tab">Classified Module Details</a></li>
+            <li <?php echo $redirect == "images" ? 'class="active"': ''; ?>><a href="#images-tab">Images</a></li>
         </ul>
 
         <div class="tab-content">
@@ -17,7 +17,7 @@
             <!--
             PROPERTY
             -->
-            <div class="tab-pane fade in active" id="property-tab">
+            <div class="tab-pane fade in <?php echo $redirect == "" ? 'active': ''; ?>" id="property-tab">
                 <?php if (isset($po)) { ?>
                     <h4>Property Name: <strong><?php echo $po->name; ?></strong></h4>
                 <?php } ?>
@@ -572,7 +572,7 @@
             <!--
             CLASSIFIEDS
             -->
-            <div class="tab-pane fade in" id="classified-tab">
+            <div class="tab-pane fade in <?php echo $redirect == "classified" ? 'active': ''; ?>" id="classified-tab">
                 <div class="alert alert-info" id="message">
                     Changing tabs will auto save. Please fill up all required <i class="fa fa-asterisk"></i> fields.
                 </div>
@@ -1056,7 +1056,7 @@
             <!--
             IMAGES
             -->
-            <div class="tab-pane fade in" id="images-tab" style="min-height: 400px;">
+            <div class="tab-pane fade in <?php echo $redirect == "images" ? 'active': ''; ?>" id="images-tab" style="min-height: 400px;">
                 <?php if (isset($po)) { ?>
                     <h4>Property Name: <strong><?php echo $po->name; ?></strong> <a target="_blank" class="pull-right" style="font-size: 20px; margin-right: 10px;" href="http://support.merlinleads.com/property-images/"><i class="fa fa-question-circle"></i> Help</a></h4>
                 <?php } ?>

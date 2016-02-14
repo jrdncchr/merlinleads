@@ -500,7 +500,7 @@ function activateEvents() {
     $('#addPropertyBtn').click(function() {
         setup('add', 0);
     });
-    var genericModules = ["Blog", "Facebook", "Google Plus"];
+    var genericModules = ["Blog", "Facebook", "Google Plus", "LinkedIn"];
     $("#module").change(function() {
         if(genericModules.indexOf($(this).val()) > -1) {
             $("#genericPost").show();

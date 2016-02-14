@@ -39,7 +39,6 @@ class Property extends MY_Controller {
 
          $this->session->unset_userdata('poID');
          $this->session->unset_userdata('pmID');
-         $this->session->unset_userdata('selectedProfile');
          $this->session->unset_userdata('property_id');
 
         // $this->data['available_modules'] = $this->modules_model->get_modules("all");
@@ -62,11 +61,11 @@ class Property extends MY_Controller {
                 $selectedModule = $this->session->userdata('selectedModule');
                 $this->load->library('stripe_library');
                 // check subscription
-                $subscription = $this->stripe_library->get_main_subscription($user->stripe_customer_id);
-                $this->data['main_subscription'] = $subscription->plan->name;
+//                $subscription = $this->stripe_library->get_main_subscription($user->stripe_customer_id);
+//                $this->data['main_subscription'] = $subscription->plan->name;
 
                 $subscriptions = $this->stripe_library->get_subscriptions($user->stripe_customer_id);
-
+                $classified_error_message = "The module selected is not yet activated, please go to Edit Property -> <a href='" . base_url() . "property/edit/$id/classified'>Classified Module Details Tab.</a>";
                 if(sizeof($subscriptions) > 0 || $user->type == "admin") {
                     $main_f = $this->main_f;
 
@@ -146,13 +145,11 @@ class Property extends MY_Controller {
                                     $this->js[] = "custom/property_post_craiglist.js";
                                     $this->_renderL('pages/property_post_craiglist');
                                 } else {
-//                                    session_start();
-                                    $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                    $_SESSION['message'] = $classified_error_message;
                                     $this->index();
                                 }
                             } else {
-//                                session_start();
-                                $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                $_SESSION['message'] = $classified_error_message;
                                 $this->index();
                             }
                             break;
@@ -173,12 +170,12 @@ class Property extends MY_Controller {
                                     $this->_renderL('pages/property_post_backpage');
                                 } else {
 //                                    session_start();
-                                    $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                    $_SESSION['message'] = $classified_error_message;
                                     $this->index();
                                 }
                             } else {
 //                                session_start();
-                                $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                $_SESSION['message'] = $classified_error_message;
                                 $this->index();
                             }
                             break;
@@ -198,13 +195,11 @@ class Property extends MY_Controller {
                                     $this->js[] = "custom/property_post_ebay.js";
                                     $this->_renderL('pages/property_post_ebay');
                                 } else {
-//                                    session_start();
-                                    $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                    $_SESSION['message'] = $classified_error_message;
                                     $this->index();
                                 }
                             } else {
-//                                session_start();
-                                $_SESSION['message'] = "The module selected is not yet activated, please go to Edit Property -> Classified Module Details Tab.";
+                                $_SESSION['message'] = $classified_error_message;
                                 $this->index();
                             }
                             break;
@@ -229,12 +224,10 @@ class Property extends MY_Controller {
                             $this->_renderL('pages/property_post_twitter');
                             break;
                         default:
-//                            session_start();
                             $_SESSION['message'] = "This module post feature is not yet implemented.";
                             $this->index();
                     }
                 } else {
-//                    session_start();
                     $_SESSION['message'] = "You are not subscribed, please upgrade your package in the <a href='" . base_url() . "main/upgrade'>upgrade page.</a>";
                     $this->index();
                 }
@@ -322,7 +315,7 @@ class Property extends MY_Controller {
         
     }
 
-    public function edit($id = 0) {
+    public function edit($id = 0, $redirect = "") {
         if ($id > 0) {
             $user = $this->session->userdata('user');
             $po = $this->property_model->getOverview($id);
@@ -380,8 +373,8 @@ class Property extends MY_Controller {
                 } else {
                     $this->data['images'] = $images;
                 }
+                $this->data['redirect'] = $redirect;
                 $this->js[] = "custom/property_images.js";
-
                 $this->_renderL('pages/property_ae');
             } else {
                 show_404();

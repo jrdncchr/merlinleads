@@ -799,7 +799,7 @@
             success: function(data) {
                 if (data === "OK") {
                     if (status === "Active") {
-                        var m2 = ['Facebook', 'Blog', 'Google Plus', 'Linked In'];
+                        var m2 = ['Facebook', 'Blog', 'Google Plus', 'LinkedIn'];
                         if(m2.indexOf(module) > -1) {
                             window.location = base_url + 'post/' + module.toLowerCase().replace(" ", "_") + "/" + id;
                         } else {

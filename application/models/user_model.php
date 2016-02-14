@@ -23,6 +23,7 @@ class User_Model extends CI_Model {
                 return null;
             }
         }
+        return false;
     }
 
     public function getByEmail($email) {

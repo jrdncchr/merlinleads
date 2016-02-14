@@ -16,7 +16,10 @@
                 <label for="type" class="col-xs-1 control-label">Module</label>
                 <div class="col-xs-3">
                     <select class="form-control" id="tscModule">
-                        <?php echo $modules; ?>
+                        <option value="">- Select Module -</option>
+                        <?php foreach($modules as $m): ?>
+                            <option value="<?php echo $m ?>" <?php echo $m == "Youtube" ? "selected" : ""; ?>><?php echo $m; ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <label for="type" class="col-xs-1 control-label">Type</label>
@@ -40,11 +43,11 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-success btn-sm pull-left" data-toggle="modal" data-target="#addTemplateScModal"><i class="fa fa-plus"></i> Add Short Code</button>
+                    <button type="button" class="btn btn-success btn-xs pull-left" data-toggle="modal" data-target="#addTemplateScModal"><i class="fa fa-plus"></i> Add Short Code</button>
                 </div>
-                <div class="col-xs-3 pull-right">
-                    <button type="button" class="btn btn-danger btn-sm pull-right" id="deleteScBtn">Delete</button>
-                    <button type="button" class="btn btn-primary btn-sm pull-right" id="updateScBtn">Update</button>
+                <div class="col-xs-3 pull-right text-right">
+                    <button type="button" class="btn btn-xs" id="deleteScBtn">Delete</button>
+                    <button type="button" class="btn btn-primary btn-xs" id="updateScBtn">Update</button>
                 </div>
             </div>
         </form>

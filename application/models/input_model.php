@@ -9,6 +9,15 @@ class Input_Model extends CI_Model {
         $this->load->database();
     }
 
+    public function getSchedulerSelectOptions($type) {
+        if($type == 'module') {
+            $result = $this->db->get_where('modules', array('allow_scheduler' => 1));
+        } else {
+            $result = $this->db->get('scheduler_' . $type);
+        }
+        return $result->result();
+    }
+
     public function getSlideshareCategories($selected = "Homes") {
         $file = fopen(base_url() . OTHERS . "slideshare/categories.txt", "r");
         $categories = "";
