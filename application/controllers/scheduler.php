@@ -64,6 +64,11 @@ class scheduler extends MY_Controller {
                 echo json_encode($result);
                 break;
 
+            case 'posts_list' :
+                $list = $this->scheduler_model->get_post($this->input->post('scheduler_id'));
+                echo json_encode(array('data' => $list ));
+                break;
+
             default:
                 echo json_encode(array(
                     'success' => false,

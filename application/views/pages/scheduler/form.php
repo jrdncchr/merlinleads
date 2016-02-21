@@ -151,25 +151,18 @@
 
                 <div id="tab-posts" class="tab-pane" role="tabpanel">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Posts</h3>
-                        </div>
-                        <table class="table">
+
+                        <table id="schedulerPostsDt" class="table-bordered" style="width: 100%;">
                             <thead>
                             <tr>
-                                <th>Col 1</th>
-                                <th>Col 2</th>
-                                <th>Col 3</th>
+                                <th>Date Posted</th>
+                                <th>Module</th>
+                                <th>Link</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>Test 1</td>
-                                <td>Test 1</td>
-                                <td>Test 1</td>
-                            </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
+
                     </div>
 
                 </div>
@@ -191,6 +184,7 @@
     var schedulerId = "<?php echo isset($scheduler) ? $scheduler->scheduler_id : "" ?>";
     var contentId = "<?php echo isset($scheduler) ? $scheduler->content_id : "" ?>";
     var actionUrl = "<?php echo base_url(); ?>scheduler/action";
+    var dt;
 
     $(function() {
         $('#schedulerTabs a').click(function (e) {
@@ -294,6 +288,8 @@
                 }, 'json');
             });
         });
+
+        initDt();
     });
 
 
@@ -312,5 +308,30 @@
             loading("danger", "A required field is empty.");
         }
         return valid;
+    }
+
+    function initDt() {
+        dt = $("#schedulerPostsDt").dataTable({
+            "bJQueryUI": true,
+            "aaSorting": [],
+            "bDestroy": true,
+            "filter": false,
+            "ajax": {
+                "type": "POST",
+                "url": actionUrl,
+                "data": {action: "posts_list", scheduler_id: schedulerId}
+            },
+            columns: [
+                {data: "date_posted"},
+                {data: "module"},
+                {data: "link",
+                    render: function(data, type, row) {
+                        return "<a target='_blank' href='" + data.toString() + "'>" +
+                        "<i class='fa fa-eye'></i> " +
+                        "View Post</a>";
+                    }
+                }
+            ]
+        });
     }
 </script>

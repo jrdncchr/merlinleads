@@ -23,6 +23,15 @@ class scheduler_model extends CI_Model {
         return $result;
     }
 
+    public function get_post($scheduler_id, $post_id = 0) {
+        $where = array('scheduler_id' => $scheduler_id);
+        if($post_id > 0) {
+            $where['id'] = $post_id;
+        }
+        $result = $this->db->get_where('scheduler_posts', $where);
+        return $result->result();
+    }
+
     public function save($data) {
         $result = array('success' => false, 'message' => 'Something went wrong!');
 

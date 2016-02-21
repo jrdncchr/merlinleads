@@ -76,7 +76,7 @@ function activateImageUpload() {
                 if (goUpload) {
                     img = new Image();
                     img.onload = function() {
-                        if(this.height != 800 || this.width != 600) {
+                        if(this.height != 500 || this.width != 850) {
                             alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Image dimension should be 800x600.");
                             goUpload = false;
                             displayAlertModal();

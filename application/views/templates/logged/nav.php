@@ -107,7 +107,7 @@
                         <?php if($seo_builder['auth'] == true) { ?>
                             <li><a href="<?php echo base_url() . 'seo_builder' ?>"><i class="fa fa-star"></i> IDX - SEO Builder</a></li>
                         <?php } ?>
-                        <li style="display: none;"><a href="<?php echo base_url() . 'scheduler' ?>"><i class="fa fa-clock-o"></i> Scheduler</a></li>
+                        <li><a href="<?php echo base_url() . 'scheduler' ?>"><i class="fa fa-clock-o"></i> Scheduler</a></li>
                         <li class="divider"></li>
                         <?php if ($user->type == 'admin') { ?>
                             <li><a href="<?php echo base_url() . 'admin' ?>"><i class="fa fa-gear"></i> Administration</a></li>

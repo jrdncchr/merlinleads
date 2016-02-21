@@ -83,7 +83,11 @@ class Cron extends CI_Controller {
                 default;
             }
             if($result['success']) {
-                $posts[] = array('scheduler_id' => $s->scheduler_id, 'link' => $result['link']);
+                $posts[] = array(
+                    'scheduler_id' => $s->scheduler_id,
+                    'link' => $result['link'],
+                    'module' => $s->module
+                );
             }
         }
 

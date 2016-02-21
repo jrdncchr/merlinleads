@@ -132,7 +132,7 @@ class Api_Model extends CI_Model {
             $graphNode = $response->getGraphNode();
             if(isset($graphNode['id'])) {
                 $result['success'] = true;
-                $result['link'] = "www.facebook.com/" . $graphNode['id'];
+                $result['link'] = "https://www.facebook.com/" . $graphNode['id'];
             }
         } catch(Exception $e) {
             $result['message'] = $e->getMessage();
