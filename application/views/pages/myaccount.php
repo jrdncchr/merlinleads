@@ -395,6 +395,8 @@
                                 <?php if(isset($fb['valid_access_token'])) { ?>
                                     <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Facebook integration into your account! </p>
                                     <p>Expiry Date: <b><?php echo $fb['expires_at']; ?></b></p>
+                                    <img class="img img-thumbnail" src="//graph.facebook.com/<?php echo $fb['user']['id']?>/picture" />
+                                    <?php echo $fb['user']['name']; ?>
                                     <br />
                                     <p><i>Authorize your Facebook integration again before it expires.</i></p>
                                     <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
@@ -446,7 +448,6 @@
         <!-- Card Div -->
         <div class="tab-pane" id="card">
             <br/>
-
 
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="form-horizontal" id="cardForm">

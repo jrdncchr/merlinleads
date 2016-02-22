@@ -16,7 +16,6 @@ class Api_Model extends CI_Model {
             'app_secret' => FB_SECRET_KEY
         ]);
 
-
         if($user->fb_access_token) {
             $oAuth2Client = $fb->getOAuth2Client();
             $tokenMetadata = $oAuth2Client->debugToken($user->fb_access_token);
@@ -25,18 +24,17 @@ class Api_Model extends CI_Model {
                 strtotime($tokenMetadata->getExpiresAt()->format('M d, Y'))
             );
 
-
             if($accessToken->isExpired()) {
                 $result['valid_access_token'] = false;
                 $result['expired_access_token'] = true;
             } else {
                 $result['valid_access_token'] = true;
                 $result['expires_at'] = $tokenMetadata->getExpiresAt()->format('M d, Y');
+                $result['user'] = $this->facebook_get_user($user->fb_access_token);
             }
         } else {
             $result['valid_fb_access_token'] = false;
         }
-
 
         $helper = $fb->getRedirectLoginHelper();
 
@@ -47,6 +45,27 @@ class Api_Model extends CI_Model {
 
         return $result;
 
+    }
+
+    public function facebook_get_user($access_key) {
+        $fb = new Facebook\Facebook([
+            'app_id' => FB_APP_ID,
+            'app_secret' => FB_SECRET_KEY,
+            'default_graph_version' => 'v2.2',
+        ]);
+
+        try {
+            $response = $fb->get('/me?fields=id,name', $access_key);
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+
+        $user = $response->getGraphUser();
+        return $user;
     }
 
     public function linkedin_verify_access_key($user) {
