@@ -420,21 +420,21 @@
                         <div class="tab-pane <?php echo $redirect == 'linkedin' ? 'active' : '' ?>" id="integration-linkedin">
                             <?php
                             if(isset($main_f->linkedin_feed_posting)) { ?>
-                                <?php if(!$linkedIn['expired_access_token']) { ?>
-                                    <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized LinkedIn integration into your account! </p>
-                                    <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
-                                    <br />
-                                    <p><i>Authorize your LinkedIn integration again before it expires.</i></p>
-                                    <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
-                                <?php } else { ?>
-                                    <?php if($linkedIn['expired_access_token']) { ?>
-                                        <p class="text-warning">Your LinkedIn access token had already expired, please authorize your LinkedIn again.</p>
+                                <?php if(isset($linkedIn['access_token'])) { ?>
+                                    <?php if(!$linkedIn['expired_access_token']) { ?>
+                                        <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized LinkedIn integration into your account! </p>
+                                        <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
+                                        <img class="img img-thumbnail" src="<?php echo $linkedIn['user']->pictureUrl; ?>" />
+                                        <?php echo $linkedIn['user']->formattedName; ?>
+                                        <br />
+                                        <p><i>Authorize your LinkedIn integration again before it expires.</i></p>
                                     <?php } else { ?>
-                                        <p class="text-warning">You have NOT yet authorized LinkedIn integration into your account yet.</p>
-                                    <?php } ?>
-
-                                    <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
-                                <?php }  ?>
+                                        <p class="text-warning">Your LinkedIn access token had already expired, please authorize your LinkedIn again.</p>
+                                    <?php }  ?>
+                                <?php } else {  ?>
+                                    <p class="text-warning">You have NOT yet authorized LinkedIn integration into your account yet.</p>
+                                <?php } ?>
+                                <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
                             <?php } else { ?>
                                 <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
                                 <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i

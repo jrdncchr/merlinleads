@@ -17,27 +17,42 @@ class scheduler extends MY_Controller {
     }
 
     public function form($id = 0) {
-        $this->load->model('input_model');;
-        $this->data['module'] = $this->input_model->getSchedulerSelectOptions('module');
+        $this->load->model('input_model');
+
+        /* Get only the available modules that the user has access token set */
+        $this->db->reconnect();
+        $module = $this->input_model->getSchedulerSelectOptions('module');
+        $available_modules = array();
+        foreach($module as $m) {
+            if($m->module_name == "Facebook") {
+                if($this->user->fb_access_token != "") {
+                    $available_modules[] = $m;
+                }
+            } else if($m->module_name == "LinkedIn") {
+                if($this->user->li_access_token != "") {
+                    $available_modules[] = $m;
+                }
+            }
+        }
+
         $this->data['interval'] = $this->input_model->getSchedulerSelectOptions('interval');
         $this->data['time'] = $this->input_model->getSchedulerSelectOptions('time');
 
         if($id > 0) {
-            /* Make sure that the parameter scheduler ID is owned by the logged in user.
-             */
+            /* Make sure that the parameter scheduler ID is owned by the logged in user. */
             $allow = false;
             $scheduler = $this->scheduler_model->get($this->user->id, $id);
             if($scheduler) {
                 if($this->user->id == $scheduler->user_id) {
-                    $this->data['scheduler'] = $scheduler;
                     $allow = true;
+                    $this->data['scheduler'] = $scheduler;
                 }
             }
             if(!$allow) {
                 header("Location: " . base_url() . "scheduler");
             }
         }
-
+        $this->data['module'] = $available_modules;
         $this->_renderL('pages/scheduler/form');
     }
 

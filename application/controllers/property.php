@@ -302,6 +302,7 @@ class Property extends MY_Controller {
                 $this->title = "Merlin Leads &raquo; Add Property";
                 $this->data['h2'] = "Add New Property";
                 $this->data['user'] = $user;
+                $this->data['redirect'] = "";
                 $this->js[] = "custom/property_ae.js";
                 $this->_renderL('pages/property_ae');
             } else {

@@ -70,12 +70,18 @@ class Api_Model extends CI_Model {
 
     public function linkedin_verify_access_key($user) {
         if($user->li_access_token) {
+            $result['access_token'] = $user->li_access_token;
             $result['expired_access_token'] = false;
             // check if expired
             $li = json_decode($user->li_access_token);
             $result['expires_at'] = $li->expires_in;
             if (time() > strtotime($li->expires_in)) {
                 $result['expired_access_token'] = true;
+            } else {
+                $get_user = $this->linkedin_get_user_info(json_decode($user->li_access_token));
+                if($get_user['success']) {
+                    $result['user'] = $get_user['result'];
+                }
             }
         }
         $params = array(
@@ -90,6 +96,35 @@ class Api_Model extends CI_Model {
 
         $result['auth_url'] = 'https://www.linkedin.com/uas/oauth2/authorization?' . http_build_query($params);
         return $result;
+    }
+
+    public function linkedin_get_user_info($li) {
+        $result['success'] = false;
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://api.linkedin.com/v1/people/~:(id,email-address,first-name,last-name,formatted-name,picture-url)?format=json");
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer ' . $li->access_token,
+                'Content-Type: application/json',
+                'Connection: Closed',
+                'x-li-format: json'
+            ));
+
+            $xmlstr = curl_exec($ch);
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $body = substr($xmlstr, $header_size);
+            curl_close($ch);
+            $result['result'] = json_decode($body);
+            $result['success'] = true;
+        } catch(Exception $e) {
+            $result['error'] = $e->getMessage();
+        }
+        return $result;
+
     }
 
     public function insertPosts($post) {
@@ -192,5 +227,6 @@ class Api_Model extends CI_Model {
         }
         return $result;
     }
+
 
 } 

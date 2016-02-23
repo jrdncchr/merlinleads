@@ -21,7 +21,15 @@
                 <div id="tab-settings" class="tab-pane active" role="tabpanel" >
 
                     <div class="row">
-                        <div class="alert-danger"></div>
+                        <div class="col-xs-12">
+                            <div class="alert-danger"></div>
+                            <?php if(sizeof($module) == 0) { ?>
+                                <div class="alert alert-warning"><i class="fa fa-exclamation"></i>
+                                    You don't have any integrations to any social media yet.
+                                    <a href="<?php echo base_url() . "main/myaccount/facebook"; ?>">Integrate now.</a>
+                                </div>
+                            <?php } ?>
+                        </div>
                     </div>
 
                     <div class="panel panel-default">

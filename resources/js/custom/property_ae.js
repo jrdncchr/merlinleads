@@ -4,23 +4,28 @@ $(document).ready(function() {
     activateBasicEvents();
     activateSaving();
     $('#main-tabs a[href="#property-tab"]').click(function(e) {
-        e.preventDefault();
-        saveTab($(this), function() {
-            lastTab = "property";
-        });
+        if(lastTab != "property") {
+            e.preventDefault();
+            saveTab($(this), function() {
+                lastTab = "property";
+            });
+        }
     });
     $('#main-tabs a[href="#classified-tab"]').click(function(e) {
-        e.preventDefault();
-        saveTab($(this), function() {
-            lastTab = "classified";
-        });
+        if(lastTab != "classified") {
+            e.preventDefault();
+            saveTab($(this), function() {
+                lastTab = "classified";
+            });
+        }
     });
     $('#main-tabs a[href="#images-tab"]').click(function(e) {
-        e.preventDefault();
-        saveTab($(this), function() {
-            lastTab = "images";
-        });
-
+        if(lastTab != "images") {
+            e.preventDefault();
+            saveTab($(this), function() {
+                lastTab = "images";
+            });
+        }
     });
 });
 
@@ -189,40 +194,52 @@ function activateTermFeatureEvents() {
 var currentTab = "basic";
 function activateSaving() {
     $('#propertyTabs a[href="#basic"]').click(function(e) {
-        e.preventDefault();
-        currentTab = "basic";
-        save($(this));
+        if(currentTab != "basic") {
+            e.preventDefault();
+            currentTab = "basic";
+            save($(this));
+        }
     });
     $('#propertyTabs a[href="#activate"]').click(function(e) {
-        e.preventDefault();
-        if (ready()) {
-            currentTab = "activate";
-            save($(this));
+        if(currentTab != "activate") {
+            e.preventDefault();
+            if (ready()) {
+                currentTab = "activate";
+                save($(this));
+            }
         }
     });
     $('#propertyTabs a[href="#detail"]').click(function(e) {
-        e.preventDefault();
-        if (ready()) {
-            currentTab = "detail";
-            save($(this));
+        if(currentTab != "detail") {
+            e.preventDefault();
+            if (ready()) {
+                currentTab = "detail";
+                save($(this));
+            }
         }
     });
     $('#propertyTabs a[href="#typeAndFeatures"]').click(function(e) {
-        e.preventDefault();
-        if (ready()) {
-            currentTab = "typeAndFeatures";
-            save($(this));
+        if(currentTab != "typeAndFeatures") {
+            e.preventDefault();
+            if (ready()) {
+                currentTab = "typeAndFeatures";
+                save($(this));
+            }
         }
     });
     $('#propertyTabs a[href="#links"]').click(function(e) {
-        e.preventDefault();
-        if (ready()) {
-            currentTab = "links";
-            save($(this));
+        if(currentTab != "links") {
+            e.preventDefault();
+            if (ready()) {
+                currentTab = "links";
+                save($(this));
+            }
         }
     });
     $('#propertyTabs a[href="#keywords"]').click(function(e) {
-        keywordsRequirementCheck(true);
+        if(currentTab != "keywords") {
+            keywordsRequirementCheck(true);
+        }
     });
     $('.btn-save').click(function() {
         if (ready()) {
