@@ -89,7 +89,8 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="properties-tabs">
                 <li class="active"><a href="#properties-active" data-toggle="tab">Active</a></li>
-                <li><a href="#properties-archive" data-toggle="tab">Archive</a></li>
+                <li><a href="#properties-archive" data-toggle="tab">Archived</a></li>
+                <li><a href="#properties-edit" data-toggle="tab">Edit</a></li>
             </ul>
 
             <div class="tab-content">
@@ -139,6 +140,50 @@
                 <div id="properties-archive" class="table-responsive tab-pane">
                     <table cellpadding="0" cellspacing="0" border="0" class="display table table-striped"
                            id="propertiesArchive">
+                        <thead>
+                        <tr>
+                            <th width="10%">Actions</th>
+                            <th width="18%">Property</th>
+                            <!--                            <th width="10%">Status</th>-->
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/craiglist.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Craigslist"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/ebay.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Ebay Classified"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/backpage.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Backpage"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/youtube.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Youtube"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Slideshare"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/twitter.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Twitter"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/facebook.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Facebook"></th>
+                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/googleplus.png'; ?>"
+                                                class="center-block helper" data-container="body" data-toggle="popover"
+                                                data-placement="top" data-content="Google+"></th>
+                            <th width="6%">LinkedIn</th>
+                            <th width="6%">Blog</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6" class="dataTables_empty">Loading data from server</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                </div>
+                <div id="properties-edit" class="table-responsive tab-pane">
+                    <table cellpadding="0" cellspacing="0" border="0" class="display table table-striped"
+                           id="propertiesEdit">
                         <thead>
                         <tr>
                             <th width="10%">Actions</th>
@@ -373,6 +418,134 @@
                                     <li><a href="' + base_url + 'property/getPropertyExcelReport/' + data + '/ALL"><i class="fa fa-file-text"></i> ALL</a></li>\n\
                                     <li><a href="' + base_url + 'property/getPropertyExcelReport/' + data + '/7DAYS"><i class="fa fa-file-text"></i> Last 7 Days</a></li>\n\
                                     <li><a href="' + base_url + 'property/getPropertyExcelReport/' + data + '/30DAYS"><i class="fa fa-file-text"></i> Last 30 Days</a></li>\n\
+                                </ul>\n\
+                            </div>';
+                }
+                },
+                { 'data' : 'propertyName' },
+                //{ 'data' : 'status' },
+                { 'data' : 'craiglistRegular',
+                    'render' : function(data, type, row) {
+                        var regBg = "#d9534f";
+                        if (row.craiglistRegularHours >= 48) {
+                            regBg = "#5cb85c";
+                        } else if (row.craiglistRegularHours >= 12) {
+                            regBg = "#f0ad4e";
+                        }
+                        var vidBg = "#d9534f";
+                        if (row.craiglistVideoHours >= 48) {
+                            vidBg = "#5cb85c";
+                        } else if (row.craiglistVideoHours >= 12) {
+                            vidBg = "#f0ad4e";
+                        }
+                        return "<p class='helper p-counter' style='background-color: " + regBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Regular: <b>" + row.craiglistRegular + "</b> post(s)'>R: " + row.craiglistRegular + "</p>\n\
+                            <p class='helper p-counter' style='background-color: " + vidBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Video: <b>" + row.craiglistVideo + "</b> post(s)'>V: " + row.craiglistVideo + "</p>";
+                    }
+                    <?php echo !in_array("Craiglist", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'ebayRegular',
+                    'render' : function(data, type, row) {
+                        var regBg = "#d9534f";
+                        if (row.ebayRegularHours >= 48) {
+                            regBg = "#5cb85c";
+                        } else if (row.ebayRegularHours >= 12) {
+                            regBg = "#f0ad4e";
+                        }
+                        var vidBg = "#d9534f";
+                        if (row.ebayVideoHours >= 48) {
+                            vidBg = "#5cb85c";
+                        } else if (row.ebayVideoHours >= 12) {
+                            vidBg = "#f0ad4e";
+                        }
+                        return "<p class='helper p-counter' style='background-color: " + regBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Regular: <b>" + row.ebayRegular + "</b> post(s)'>R: " + row.ebayRegular + "</p>\n\
+                            <p class='helper p-counter' style='background-color: " + vidBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Video: <b>" + row.ebayVideo + "</b> post(s)'>V: " + row.ebayVideo + "</p>";
+                    }
+                    <?php echo !in_array("Ebay", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'backpageRegular',
+                    'render' : function(data, type, row) {
+                        var regBg = "#d9534f";
+                        if (row.backpageRegularHours >= 48) {
+                            regBg = "#5cb85c";
+                        } else if (row.backpageRegularHours >= 12) {
+                            regBg = "#f0ad4e";
+                        }
+                        var vidBg = "#d9534f";
+                        if (row.backpageVideoHours >= 48) {
+                            vidBg = "#5cb85c";
+                        } else if (row.backpageVideoHours >= 12) {
+                            vidBg = "#f0ad4e";
+                        }
+                        return "<p class='helper p-counter' style='background-color: " + regBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Regular: <b>" + row.backpageRegular + "</b> post(s)'>R: " + row.backpageRegular + "</p>\n\
+                            <p class='helper p-counter' style='background-color: " + vidBg + "' data-container='body' data-toggle='popover' data-placement='top' data-html='true' data-content='Video: <b>" + row.backpageVideo + "</b> post(s)'>V: " + row.backpageVideo + "</p>";
+                    }
+                    <?php echo !in_array("Backpage", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'youtube',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Youtube", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'slideshare',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Slideshare", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'twitter',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Twitter", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'facebook',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Facebook", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'googlePlus',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Google+", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'linkedIn',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("LinkedIn", $available_modules) ? ",visible: false" : ""; ?>
+                },
+                { 'data' : 'blog',
+                    'render' : function(data, type, row) {
+                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+                    }
+                    <?php echo !in_array("Blog", $available_modules) ? ",visible: false" : ""; ?>
+                }
+            ]
+        }).promise().done(function() {
+            setTimeout(function() {
+                activatePopovers();
+            }, 2000);
+        });
+
+        $("#propertiesEdit").dataTable({
+            "bJQueryUI": true,
+            "bProcessing": true,
+            "bFilter": false,
+            "bInfo": false,
+            "ajax": base_url + "property/getPropertyOverviewDetails/Edit",
+            "columns": [
+                { 'data' : 'poId', 'render': function(data, type, row) {
+                    return '\
+                    <div class="btn-group btn-block btn-group-vertical">\n\
+                                <button type="button" class="btn btn-primary btn-xs btn-block dropdown-toggle" style="padding: 0px 10px !important;" data-toggle="dropdown">\n\
+                                    Actions <span class="caret"></span>\n\
+                                </button>\n\
+                                <ul class="dropdown-menu" role="menu">\n\
+                                    <li><a href="#" onclick="setup(\'edit\',  ' + data + ');"><i class="fa fa-edit"></i> Edit Property</a></li>\n\
+                                    <li><a href="#" onclick="deleteProperty(' + data + ');"><i class="fa fa-trash-o"></i> Trash</a></li>\n\
                                 </ul>\n\
                             </div>';
                 }
