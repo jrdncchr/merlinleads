@@ -33,7 +33,7 @@ function proccess(opt) {
             toastr.error("Something went wrong.");
         }
         buttonLoadEnd(opt.btn, opt.btnText);
-        opt.btn.hide();
+        //opt.btn.hide();
     }, "json");
 }
 
