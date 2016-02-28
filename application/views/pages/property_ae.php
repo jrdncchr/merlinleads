@@ -9,7 +9,7 @@
         <ul class="nav nav-tabs" id="main-tabs">
             <li <?php echo $redirect == "" ? 'class="active"' : ''; ?>><a href="#property-tab">Property Details</a></li>
             <li <?php echo $redirect == "classified" ? 'class="active"': ''; ?>><a href="#classified-tab">Classified Module Details</a></li>
-            <li <?php echo $redirect == "images" ? 'class="active"': ''; ?>><a href="#images-tab">Images</a></li>
+            <li <?php  echo $redirect == "images" ? 'class="active"': ''; ?>><a href="#images-tab">Images</a></li>
         </ul>
 
         <div class="tab-content">
@@ -1061,7 +1061,7 @@
                     <h4>Property Name: <strong><?php echo $po->name; ?></strong> <a target="_blank" class="pull-right" style="font-size: 20px; margin-right: 10px;" href="http://support.merlinleads.com/property-images/"><i class="fa fa-question-circle"></i> Help</a></h4>
                 <?php } ?>
                 <div class="alert alert-info" id="images-tab-message">
-                    <p><i class="fa fa-info"></i> Click on the image placeholder to upload/add images on the selected field.</p>
+                    <p><i class="fa fa-info"></i> Click on the <i class='fa fa-camera'></i> to upload/add images on the selected field.</p>
                     <p><i class="fa fa-info"></i> Make sure to upload an owner and logo image in your selected Profile.</p>
                 </div>
                 <h4>Property Images</h4>
@@ -1677,4 +1677,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Cropper Modal -->
+        <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Crop Image</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="imgcropper-container">
+                            <img id="cropperImage" style="max-width: 100%; max-height: 400px;" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success btn-sm" id="cropperDone">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 

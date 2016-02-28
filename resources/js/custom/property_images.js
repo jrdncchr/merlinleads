@@ -76,14 +76,8 @@ function activateImageUpload() {
                 if (goUpload) {
                     img = new Image();
                     img.onload = function() {
-                        if(this.height != 500 || this.width != 850) {
-                            alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Image dimension should be 800x600.");
-                            goUpload = false;
-                            displayAlertModal();
-                        }
-                        if(goUpload) {
-                            data.submit();
-                        }
+                        goUpload = false;
+                        showCropper(data, this);
                     };
                     img.onerror = function() {
                         alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Invalid image file.");
@@ -121,8 +115,7 @@ function activateImageUpload() {
                 updateImageSaved(info, obj.parents('.image-list').attr('id'), obj);
             });
         }
-    }
-    );
+    });
 }
 
 function updateImageSaved(info, field, obj) {
@@ -141,4 +134,47 @@ function updateImageSaved(info, field, obj) {
             alert(error);
         }
     });
+}
+
+function showCropper(data, image) {
+    'use strict';
+    var $image = $("#cropperImage");
+    $image.attr('src', image.src);
+    $("#cropperModal").on("shown.bs.modal", function() {
+        $image.cropper({
+            aspectRatio: 16 / 9,
+            strict: true,
+            guides: true,
+            rotatable: false,
+            viewMode: 1,
+            cropBoxResizable: false,
+            built: function() {
+                $image.cropper('setData', {
+                    width: 880,
+                    height: 495
+                });
+                var cropData = $image.cropper('getData');
+            }
+        });
+
+        $("#cropperDone").off("click").click(function() {
+            var croppedCanvas = $image.cropper('getCroppedCanvas');
+            croppedCanvas.toBlob(function(blob) {
+                data.files[0] = blob;
+                $("#cropperModal").modal('hide');
+                data.submit();
+            });
+        });
+    });
+
+    $("#cropperModal").on("hidden.bs.modal", function() {
+        $image.cropper('destroy');
+    });
+
+    $("#cropperModal").modal({
+        show: true,
+        backdrop: "static",
+        keyboard: false
+    });
+
 }

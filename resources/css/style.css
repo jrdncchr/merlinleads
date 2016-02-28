@@ -370,3 +370,10 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,div.DTFC_RightWrapper table.dataT
 li.disabled {
     background-color: #808080;
 }
+
+.imgcropper-container {
+    background-color: #f7f7f7;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px
+}

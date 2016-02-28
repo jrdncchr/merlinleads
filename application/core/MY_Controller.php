@@ -13,6 +13,10 @@ class MY_Controller extends CI_Controller
     // Page resources
     protected $js = array();
     protected $css = array();
+    protected $bower_components = array(
+        'js' => array(),
+        'css' => array()
+    );
     protected $fonts = array();
     // Page Info
     protected $title = "Merlin Leads";
@@ -77,6 +81,7 @@ class MY_Controller extends CI_Controller
         $data = $this->data;
         $data['css'] = $this->css;
         $data['js'] = $this->js;
+        $data['bower_components'] = $this->bower_components;
 
         $data['title'] = $this->title;
         $data['description'] = $this->description;
@@ -107,6 +112,7 @@ class MY_Controller extends CI_Controller
         $data = $this->data;
         $data['css'] = $this->css;
         $data['js'] = $this->js;
+        $data['bower_components'] = $this->bower_components;
 
         $data['title'] = $this->title;
         $data['description'] = $this->description;
@@ -135,6 +141,7 @@ class MY_Controller extends CI_Controller
         $data = $this->data;
         $data['css'] = $this->css;
         $data['js'] = $this->js;
+        $data['bower_components'] = $this->bower_components;
 
         $data['title'] = $this->title;
         $data['description'] = $this->description;

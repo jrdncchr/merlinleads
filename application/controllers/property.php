@@ -303,6 +303,9 @@ class Property extends MY_Controller {
                 $this->data['h2'] = "Add New Property";
                 $this->data['user'] = $user;
                 $this->data['redirect'] = "";
+
+                $this->bower_components['js'][] = "cropper/dist/cropper.min.js";
+                $this->bower_components['css'][] = "cropper/dist/cropper.min.css";
                 $this->js[] = "custom/property_ae.js";
                 $this->_renderL('pages/property_ae');
             } else {
@@ -375,6 +378,9 @@ class Property extends MY_Controller {
                     $this->data['images'] = $images;
                 }
                 $this->data['redirect'] = $redirect;
+
+                $this->bower_components['js'][] = "cropper/dist/cropper.min.js";
+                $this->bower_components['css'][] = "cropper/dist/cropper.min.css";
                 $this->js[] = "custom/property_images.js";
                 $this->_renderL('pages/property_ae');
             } else {

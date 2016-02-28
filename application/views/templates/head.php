@@ -28,6 +28,10 @@
     <link rel="stylesheet" href="<?php echo base_url() . CSS . 'jquery-ui-bootstrap/jquery.ui.1.9.2.ie.css'; ?>">
 
 
+    <?php foreach ($bower_components['css'] as $bc): ?>
+        <link rel="stylesheet" href="<?php echo base_url() . "bower_components/" . $bc; ?>">
+    <?php endforeach; ?>
+
     <?php foreach ($css as $c): ?>
         <link rel="stylesheet" href="<?php echo base_url() . CSS . $c; ?>">
     <?php endforeach; ?>
@@ -48,6 +52,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+
 
     <script>
         var base_url = "<?php echo base_url(); ?>";

@@ -8,7 +8,12 @@
 <script src="<?php echo base_url() . JS . "jquery.iframe-transport.js"; ?>"></script>
 <script src="<?php echo base_url() . JS . "vendor/jquery.ui.widget.js"; ?>"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script src="<?php echo base_url() . JS . "vendor/canvasToBlob.js"; ?>"></script>
 <script src="<?php echo base_url() . JS . "ajaxfileupload.js"; ?>"></script>
+
+<?php foreach ($bower_components['js'] as $bc): ?>
+    <script src="<?php echo base_url() . "bower_components/" . $bc; ?>"></script>
+<?php endforeach; ?>
 
 <script src="<?php echo base_url() . JS . "all.js"; ?>"></script>
 <script src="<?php echo base_url() . JS . "validation.js"; ?>"></script>
