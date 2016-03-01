@@ -96,3 +96,25 @@
         </div>
     </div>
 </div>
+
+
+<!-- Cropper Modal -->
+<div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Crop Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="imgcropper-container">
+                    <img id="cropperImage" style="max-width: 100%; max-height: 400px;" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success btn-sm" id="cropperDone">Done</button>
+            </div>
+        </div>
+    </div>
+</div>

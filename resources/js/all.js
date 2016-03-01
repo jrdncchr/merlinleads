@@ -97,3 +97,55 @@ $.fn.serializeObject = function(){
 
     return obj;
 };
+
+
+function showCropper(data, image, w, h) {
+    'use strict';
+    var $image = $("#cropperImage");
+    $image.attr('src', image.src);
+    $("#cropperModal").on("shown.bs.modal", function() {
+        $image.cropper({
+            strict: true,
+            rotatable: false,
+            viewMode: 1,
+            dragMode: 'move',
+            cropBoxResizable: false,
+            built: function() {
+                var m;
+                for(var i = 1; i <= 5; i++) {
+                    var nWidth = i * parseInt(w);
+                    var nHeight = i * parseInt(h);
+                    m = i;
+                    if(nWidth > image.width || nHeight > image.height) {
+                        break;
+                    }
+                }
+                m = m == 1 ? 1 : m-1;
+                $image.cropper('setData', {
+                    width: w * m,
+                    height: h * m
+                });
+            }
+        });
+
+        $("#cropperDone").off("click").click(function() {
+            var croppedCanvas = $image.cropper('getCroppedCanvas', {width: w, height: h});
+            croppedCanvas.toBlob(function(blob) {
+                data.files[0] = blob;
+                $("#cropperModal").modal('hide');
+                data.submit();
+            });
+        });
+    });
+
+    $("#cropperModal").on("hidden.bs.modal", function() {
+        $image.cropper('destroy');
+    });
+
+    $("#cropperModal").modal({
+        show: true,
+        backdrop: "static",
+        keyboard: false
+    });
+
+}

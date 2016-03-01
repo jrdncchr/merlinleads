@@ -50,6 +50,8 @@ class Profiles extends MY_Controller
              */
             if ($profiles_count < $available_profiles || $user->type == "admins" || $available_profiles == "*") {
                 if ($type == "aab") {
+                    $this->bower_components['js'][] = "cropper/dist/cropper.min.js";
+                    $this->bower_components['css'][] = "cropper/dist/cropper.min.css";
                     $this->js[] = "custom/profiles_aab.js";
                     $this->_renderL('pages/profiles_aab');
                 } else if ($type == "cac") {
@@ -80,6 +82,8 @@ class Profiles extends MY_Controller
                 $this->title = "Merlin Leads &raquo; Edit Profile";
                 $this->data['h2'] = "Edit Profile";
                 if ($profile->type == "Agent and Broker") {
+                    $this->bower_components['js'][] = "cropper/dist/cropper.min.js";
+                    $this->bower_components['css'][] = "cropper/dist/cropper.min.css";
                     $this->js[] = "custom/profiles_aab.js";
                     $this->_renderL('pages/profiles_aab');
                 } else if ($profile->type == "Contact and Company") {
