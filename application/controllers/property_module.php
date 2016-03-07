@@ -627,12 +627,12 @@ class Property_Module extends MY_Controller {
     }
 
     public function generateSlidePhpPresentation() {
-        $_POST = array(
-            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
-            'slides' => 'front - image1',
-            'templateNo' => 1,
-            'types' => 'Homes'
-        );
+//        $_POST = array(
+//            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
+//            'slides' => 'front - image1',
+//            'templateNo' => 1,
+//            'types' => 'Homes'
+//        );
 
         $this->load->model('profile_model');
         $this->load->model('template_model');

@@ -99,7 +99,7 @@ function activateAdvanceEvents() {
                 loading('info', 'Generating slide, please wait...');
                 slides = slides.slice(0, -1);
                 $.ajax({
-                    url: base_url + "property_module/generateSlideshareSlide",
+                    url: base_url + "property_module/generateSlidePhpPresentation",
                     data: {type: "Homes", slides: slides, bg: $('#bg').val(), templateNo: $('#selectTemplate').val()},
                     type: 'POST',
                     dataType: 'json',
