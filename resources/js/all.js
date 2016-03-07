@@ -110,6 +110,7 @@ function showCropper(data, image, w, h) {
             viewMode: 1,
             dragMode: 'move',
             cropBoxResizable: false,
+            checkOrientation: false,
             built: function() {
                 var m;
                 for(var i = 1; i <= 5; i++) {

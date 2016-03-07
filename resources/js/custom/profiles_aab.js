@@ -259,68 +259,77 @@ function validate(tab) {
 
 
 function activateImageUpload() {
-    var alertModal = $("#globalAlertModal");
-    $('.upload').fileupload({
-        dataType: 'json',
-        add: function(e, data) {
-            alertModal.find('.modal-title').html("Upload Image");
+    $('#owner_image').find('.upload').each(function() {
+        addFileUploadFunction($(this), 185, 250);
+    });
+    $('#logo_image').find('.upload').each(function() {
+        addFileUploadFunction($(this), 140, 110);
+    });
+}
 
-            var goUpload = true;
-            var uploadFile = data.files[0];
-            if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
-                alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i> Invalid image file.");
-                goUpload = false;
-            }
-            if (uploadFile.size > 1000000) { // 1mb
-                alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Upload size cannot be greater than 1MB.");
-                goUpload = false;
-            }
+var alertModal = $("#globalAlertModal");
+function addFileUploadFunction(e, w, h) {
+        e.fileupload({
+            dataType: 'json',
+            add: function(e, data) {
+                alertModal.find('.modal-title').html("Upload Image");
 
-            var file, img;
-            if ((file = data.files[0])) {
-                if (goUpload) {
-                    img = new Image();
-                    img.onload = function() {
-                        goUpload = false;
-                        showCropper(data, this, 185, 225);
-                    };
-                    img.onerror = function() {
-                        alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Invalid image file.");
-                        goUpload = false;
+                var goUpload = true;
+                var uploadFile = data.files[0];
+                if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
+                    alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i> Invalid image file.");
+                    goUpload = false;
+                }
+                if (uploadFile.size > 1000000) { // 1mb
+                    alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Upload size cannot be greater than 1MB.");
+                    goUpload = false;
+                }
+
+                var file, img;
+                if ((file = data.files[0])) {
+                    if (goUpload) {
+                        img = new Image();
+                        img.onload = function() {
+                            goUpload = false;
+                            showCropper(data, this, w, h);
+                        };
+                        img.onerror = function() {
+                            alertModal.find('.modal-body').html("<i class='fa fa-info-circle'></i>  Invalid image file.");
+                            goUpload = false;
+                            displayAlertModal();
+                        };
+                        img.src = URL.createObjectURL(file);
+                    } else {
                         displayAlertModal();
-                    };
-                    img.src = URL.createObjectURL(file);
+                    }
                 } else {
                     displayAlertModal();
                 }
-            } else {
-                displayAlertModal();
+            },
+            progressall: function(e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $(this).parent().find('span').html("Uploading.. " + progress + '%');
+            },
+            done: function(e, data) {
+                var obj = $(this);
+                $.each(data.result.files, function(index, file) {
+                    var info = new Array();
+                    // get the old values
+                    info['image1'] = obj.parents('.image-list').find('.image1').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+                    info['image2'] = obj.parents('.image-list').find('.image2').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+                    info['image3'] = obj.parents('.image-list').find('.image3').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+                    info['text'] = obj.parents('.form-group').find('.image-text').val();
+                    // get the new value of the selected image
+                    var className = obj.parents('.fileUpload').find('.lgt-image').attr('class');
+                    var toUpdate = className.split(' ')[1];
+                    var path = base_url + "resources/others/uploads/php/files/";
+                    info['selected'] = toUpdate;
+                    info[toUpdate] = path + file.name;
+                    // ajax update
+                    updateImage(info, obj.parents('.image-list').attr('id'), obj);
+                });
             }
-        },
-        progressall: function(e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $(this).parent().find('span').html("Uploading.. " + progress + '%');
-        },
-        done: function(e, data) {
-            var obj = $(this);
-            $.each(data.result.files, function(index, file) {
-                var info = new Array();
-                // get the old values
-                info['image1'] = obj.parents('.image-list').find('.image1').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
-                info['image2'] = obj.parents('.image-list').find('.image2').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
-                info['image3'] = obj.parents('.image-list').find('.image3').css('background-image').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
-                info['text'] = obj.parents('.form-group').find('.image-text').val();
-                // get the new value of the selected image
-                var className = obj.parents('.fileUpload').find('.lgt-image').attr('class');
-                var toUpdate = className.split(' ')[1];
-                var path = base_url + "resources/others/uploads/php/files/";
-                info['selected'] = toUpdate;
-                info[toUpdate] = path + file.name;
-                // ajax update
-                updateImage(info, obj.parents('.image-list').attr('id'), obj);
-            });
         }
-    }
     );
 }
 

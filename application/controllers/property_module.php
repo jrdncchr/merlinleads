@@ -626,157 +626,156 @@ class Property_Module extends MY_Controller {
         return false;
     }
 
-    public function generateSlideshareSlide() {
-        try {
-            $this->load->model('profile_model');
-            $this->load->model('template_model');
+    public function generateSlidePhpPresentation() {
+        $_POST = array(
+            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
+            'slides' => 'front - image1',
+            'templateNo' => 1,
+            'types' => 'Homes'
+        );
 
-            $poID = $this->session->userdata('poID');
-            $po = $this->property_model->getOverview($poID);
-            $property = $this->property_model->getProperty($po->property_id);
-            $img = $this->property_module_model->getPropertyImage($po->property_id);
-            $profile = $this->profile_model->getProfile($property->profile_id);
-            $template = $_POST['slides'];
-            $bg = $_POST['bg'];
-            $templateNo = $_POST['templateNo'];
+        $this->load->model('profile_model');
+        $this->load->model('template_model');
 
-            /** Include path * */
-            set_include_path(get_include_path() . PATH_SEPARATOR . OTHERS . "Classes");
+        $poID = $this->session->userdata('poID');
+        $po = $this->property_model->getOverview($poID);
+        $property = $this->property_model->getProperty($po->property_id);
+        $img = $this->property_module_model->getPropertyImage($po->property_id);
+        $profile = $this->profile_model->getProfile($property->profile_id);
+        $template = $_POST['slides'];
+        $bg = $_POST['bg'];
+        $templateNo = $_POST['templateNo'];
 
-            /** PHPPowerPoint */
-            include 'PHPPowerPoint.php';
+        require_once getcwd() . '/lib/PhpOffice/PhpPresentation/Autoloader.php';
+        require_once getcwd() . '/lib/PhpOffice/Common/Autoloader.php';
+        \PhpOffice\PhpPresentation\Autoloader::register();
+        \PhpOffice\Common\Autoloader::register();
 
-            /** PHPPowerPoint_IOFactory */
-            include 'PHPPowerPoint/IOFactory.php';
-            $objPHPPowerPoint = new PHPPowerPoint();
-            // Set properties
-            $objPHPPowerPoint->getProperties()->setCreator("Merlin Leads");
-            $objPHPPowerPoint->getProperties()->setLastModifiedBy("Merlin Leads");
-            $objPHPPowerPoint->getProperties()->setTitle($po->name);
-            $objPHPPowerPoint->getProperties()->setSubject($po->name);
-            $objPHPPowerPoint->getProperties()->setDescription($property->mls_description);
-            $objPHPPowerPoint->getProperties()->setKeywords(explode('|', $property->keywords)[0]);
-            $objPHPPowerPoint->getProperties()->setCategory($property->property_type);
-            // Removed first slide
-            $objPHPPowerPoint->removeSlideByIndex(0);
+        $objPHPPowerPoint = new PhpOffice\PhpPresentation\PhpPresentation();
 
-            $slides = explode(',', $template);
+        @$objPHPPowerPoint->getLayout()->setDocumentLayout(\PhpOffice\PhpPresentation\DocumentLayout::LAYOUT_CUSTOM, true)
+            ->setCX(1280,  \PhpOffice\PhpPresentation\DocumentLayout::UNIT_PIXEL)
+            ->setCY(720,  \PhpOffice\PhpPresentation\DocumentLayout::UNIT_PIXEL);
 
-            for ($i = 0; $i < sizeof($slides); $i++) {
-                // Create templated slide
-                $currentSlide = $this->createTemplatedSlide($objPHPPowerPoint, $img, $slides[$i], $bg, $profile);
-                // Create a shape (text)
-                $shape = $currentSlide->createRichTextShape();
-                $shape->setHeight(100);
-                $shape->setWidth(900);
-                $shape->setOffsetX(10);
-                $shape->setOffsetY(10);
-                $shape->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT);
-                // Title of Slide
-                $textRun = $shape->createTextRun("$po->name, $property->city $property->state_abbr $property->zipcode");
-                $textRun->getFont()->setBold(true);
-                $textRun->getFont()->setSize(35);
-                $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+        $slides = explode(',', $template);
 
-                // Create a shape (text)
-                $shape = $currentSlide->createRichTextShape();
-                $shape->setHeight(100);
-                $shape->setWidth(200);
-                $shape->setOffsetX(720);
-                $shape->setOffsetY(420 - 10 - 40);
-                $shape->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT);
-                // Contact Information below owner image
-                $textRun = $shape->createTextRun("$profile->firstname $profile->lastname");
-                $textRun->getFont()->setSize(20);
-                $textRun->getFont()->setBold(true);
-                $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-                $shape->createBreak();
-                $textRun = $shape->createTextRun("$profile->company");
-                $textRun->getFont()->setSize(18);
-                $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-                $shape->createBreak();
-                $shape->createBreak();
-                $shape->createBreak();
-                $textRun = $shape->createTextRun("$profile->phone");
-                $textRun->getFont()->setSize(18);
-                $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-                // Create a shape (text)
-                $shape = $currentSlide->createRichTextShape();
-                $shape->setHeight(100);
-                $shape->setWidth(200);
-                $shape->setOffsetX(380);
-                $shape->setOffsetY(680);
+        for ($i = 0; $i < sizeof($slides); $i++) {
+            // Create templated slide
+            $currentSlide = $this->createTemplatedSlide($objPHPPowerPoint, $img, $slides[$i], $bg, $profile);
 
-                $textRun = $shape->createTextRun("$profile->email");
-                $textRun->getFont()->setSize(16);
-                $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-            }
-            // add ending slide
-            $currentSlide = $objPHPPowerPoint->createSlide();
-
-            // Add Background Image
-            $shape = $currentSlide->createDrawingShape();
-            $shape->setName('Background');
-            $shape->setDescription('Background');
-            $shape->setPath(getcwd() . "/resources/images/ppt/bg/" . $bg);
-            $shape->setWidth(950);
-            $shape->setHeight(720);
-            $shape->setOffsetX(0);
-            $shape->setOffsetY(0);
-
-            // Create a shape (text)
-            $shape = $currentSlide->createRichTextShape();
-            $shape->setHeight(100);
-            $shape->setWidth(900);
-            $shape->setOffsetX(80);
-            $shape->setOffsetY(80);
-            $shape->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT);
             // Title of Slide
-            $textRun = $shape->createTextRun("Contact $profile->firstname TODAY...");
-            $textRun->getFont()->setBold(true);
-            $textRun->getFont()->setSize(45);
-            $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-
-            // Create a shape (text)
             $shape = $currentSlide->createRichTextShape();
-            $shape->setHeight(100);
-            $shape->setWidth(900);
-            $shape->setOffsetX(80);
-            $shape->setOffsetY(220);
-            $shape->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT);
+            $shape->setHeight(100)
+                  ->setWidth(1240)
+                  ->setOffsetX(20)
+                  ->setOffsetY(10)
+                  ->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
+            $textRun = $shape->createTextRun("$po->name, $property->city $property->state_abbr $property->zipcode");
+            $textRun->getFont()
+                ->setBold(true)
+                ->setSize(30)
+                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+
+            // Contact Information below owner image
+            $shape = $currentSlide->createRichTextShape();
+            $shape->setHeight(100)
+                  ->setWidth(300)
+                  ->setOffsetX(960)
+                  ->setOffsetY(390)
+                  ->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
+            $textRun = $shape->createTextRun("$profile->firstname $profile->lastname");
+            $textRun->getFont()
+                ->setSize(20)
+                ->setBold(true)
+                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+            $shape->createBreak();
+
+            $textRun = $shape->createTextRun("$profile->company");
+            $textRun->getFont()
+                ->setSize(18)
+                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+            $shape->createBreak();
+            $shape->createBreak();
 
             $textRun = $shape->createTextRun("$profile->phone");
-            $textRun->getFont()->setSize(50);
-            $textRun->getFont()->setBold(true);
-            $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+            $textRun->getFont()
+                ->setSize(18)
+                ->setBold(true)
+                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
             $shape->createBreak();
-            $shape->createBreak();
-            $shape->createBreak();
-            $textRun = $shape->createTextRun("$profile->email");
-            $textRun->getFont()->setSize(40);
-            $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
 
-            // Save PowerPoint 2007 file
-            $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
-//        $objWriter->save(str_replace('.php', '.pptx', __FILE__));
-            $file = $this->_getRandomString() . ".pptx";
-            $savePath = $this->_getLocalDirPath(base_url() . OTHERS) . "Classes/files/ppt/$file";
-            $objWriter->save($savePath);
-            //update property_slideshare_post
-            $this->load->model('property_module_model');
-            $this->property_module_model->updateSlidesharePost(array('ppt' => $file), $templateNo, $property->id);
-            $result = array(
-                'result' => "OK",
-                'download_url' => base_url() . OTHERS . "Classes/files/ppt/$file",
-                'title' => $this->getSlideshareRandomTitle()
-            );
-            echo json_encode($result);
-        } catch (Exception $e) {
-            echo $e->getMessage();
+            $textRun = $shape->createTextRun("$profile->email");
+            $textRun->getFont()
+                ->setSize(16)
+                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
         }
+        // add ending slide
+        $currentSlide = $objPHPPowerPoint->createSlide();
+
+        // Add Background Image
+        $shape = $currentSlide->createDrawingShape();
+        $shape->setName('Background');
+        $shape->setDescription('Background');
+        $shape->setPath(getcwd() . "/resources/images/ppt/bg/" . $bg);
+        $shape->setWidth(1280);
+        $shape->setHeight(720);
+        $shape->setOffsetX(0);
+        $shape->setOffsetY(0);
+
+        // Contact
+        $shape = $currentSlide->createRichTextShape();
+        $shape->setHeight(100);
+        $shape->setWidth(900);
+        $shape->setOffsetX(80);
+        $shape->setOffsetY(80);
+        $shape->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
+
+        $textRun = $shape->createTextRun("Contact $profile->firstname TODAY...");
+        $textRun->getFont()->setBold(true);
+        $textRun->getFont()->setSize(45);
+        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+        $shape->createBreak();
+        $shape->createBreak();
+        $textRun = $shape->createTextRun("$profile->phone");
+        $textRun->getFont()->setSize(50);
+        $textRun->getFont()->setBold(true);
+        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+        $shape->createBreak();
+        $shape->createBreak();
+        $shape->createBreak();
+        $textRun = $shape->createTextRun("$profile->email");
+        $textRun->getFont()->setSize(40);
+        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+
+        // Set properties
+        $oProperties = $objPHPPowerPoint->getProperties();
+        $oProperties->setCreator('Merlin Leads')
+            ->setLastModifiedBy('Merlin Leads')
+            ->setTitle($po->name)
+            ->setSubject($po->name)
+            ->setDescription($property->mls_description)
+            ->setKeywords(explode('|', $property->keywords)[0])
+            ->setCategory($property->property_type);
+
+        // Removed first slide
+        $objPHPPowerPoint->removeSlideByIndex(0);
+
+        $oWriterPPTX = PhpOffice\PhpPresentation\IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
+        $file = $this->user->id . "_" . $this->_getRandomString() . ".pptx";
+        $savePath = $this->_getLocalDirPath(base_url() . OTHERS) . "slideshare/$file";
+        $oWriterPPTX->save($savePath);
+
+        $this->load->model('property_module_model');
+        $this->property_module_model->updateSlidesharePost(array('ppt' => $file), $templateNo, $property->id);
+        $result = array(
+            'result' => "OK",
+            'download_url' => base_url() . OTHERS . "slideshare/$file",
+            'title' => $this->getSlideshareRandomTitle()
+        );
+        echo json_encode($result);
     }
 
-    function createTemplatedSlide(PHPPowerPoint $objPHPPowerPoint, $img, $data, $bg, $profile) {
+    function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPowerPoint, $img, $data, $bg, $profile) {
         $logo = json_decode($profile->logo_image);
         $owner = json_decode($profile->owner_image);
 
@@ -785,57 +784,59 @@ class Property_Module extends MY_Controller {
 
         // Add Background Image
         $shape = $slide->createDrawingShape();
-        $shape->setName('Background');
-        $shape->setDescription('Background');
-        $shape->setPath(getcwd() . "/resources/images/ppt/bg/" . $bg);
-        $shape->setWidth(950);
-        $shape->setHeight(720);
-        $shape->setOffsetX(0);
-        $shape->setOffsetY(0);
+        $shape->setPath(getcwd() . "/resources/images/ppt/bg/" . $bg)
+              ->setWidth(1280)
+              ->setHeight(720)
+              ->setOffsetX(0)
+              ->setOffsetY(0);
 
-        // Add Owner Image
+        // Owner Image
         $shape = $slide->createDrawingShape();
-        $shape->setName($owner->text);
-        $shape->setDescription($owner->text);
-        $shape->setPath($this->_getLocalDirPath($owner->image1));
-        $shape->setWidth(200);
-        $shape->setHeight(270);
-        $shape->setOffsetX(725);
-        $shape->setOffsetY(150 - 10 - 40);
+        $shape->setPath($this->_getLocalDirPath($owner->image1))
+              ->setName($owner->text)
+              ->setDescription($owner->text)
+              ->setWidth(200)
+              ->setHeight(270)
+              ->setOffsetX(1000)
+              ->setOffsetY(100);
 
-        // Add Logo Image
+        // Logo Image
         $shape = $slide->createDrawingShape();
-        $shape->setName($owner->text);
-        $shape->setDescription($owner->text);
-        $shape->setPath($this->_getLocalDirPath($logo->image1));
-        $shape->setHeight(100);
-        $shape->setWidth(150);
-        $shape->setOffsetX(750);
-        $shape->setOffsetY(650 - 10 - 40);
+        $shape->setPath($this->_getLocalDirPath($logo->image1))
+            ->setName($owner->text)
+            ->setDescription($owner->text)
+            ->setOffsetX(1050)
+            ->setOffsetY(585);
 
         // Add Property Image
+        $shape = $slide->createRichTextShape();
+        $shape->getFill()->setFillType(\PhpOffice\PhpPresentation\Style\Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new \PhpOffice\PhpPresentation\Style\Color( 'F0F1F2' ))->setEndColor(new \PhpOffice\PhpPresentation\Style\Color( 'FFFFFF' ));
+        $shape->setWidth(910)
+              ->setHeight(570)
+              ->setOffsetX(20)
+              ->setOffsetY(100);
+
         $data = explode(' - ', $data);
         $slideImg = json_decode($img->$data[0]);
         $shape = $slide->createDrawingShape();
         $shape->setName($slideImg->text);
         $shape->setDescription($slideImg->text);
         $shape->setPath($this->_getLocalDirPath($slideImg->$data[1]));
-        $shape->setHeight(470);
-        $shape->setWidth(650);
-        $shape->setOffsetX(30);
-        $shape->setOffsetY(100);
+        $shape->setWidth(830);
+        $shape->setOffsetX(60);
+        $shape->setOffsetY(150);
 
         $shape = $slide->createRichTextShape();
         $shape->setHeight(100);
         $shape->setWidth(200);
-        $shape->setOffsetX(30);
+        $shape->setOffsetX(90);
         $shape->setOffsetY(580);
-        $shape->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT);
+        $shape->getActiveParagraph()->getAlignment()->setHorizontal(\PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_LEFT);
 
         $textRun = $shape->createTextRun("$slideImg->text");
         $textRun->getFont()->setSize(24);
         $textRun->getFont()->setBold(true);
-        $textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
 
         //Return slide
         return $slide;
