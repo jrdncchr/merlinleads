@@ -627,12 +627,12 @@ class Property_Module extends MY_Controller {
     }
 
     public function generateSlidePhpPresentation() {
-//        $_POST = array(
-//            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
-//            'slides' => 'front - image1',
-//            'templateNo' => 1,
-//            'types' => 'Homes'
-//        );
+        $_POST = array(
+            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
+            'slides' => 'front - image1',
+            'templateNo' => 1,
+            'types' => 'Homes'
+        );
 
         $this->load->model('profile_model');
         $this->load->model('template_model');
@@ -778,6 +778,7 @@ class Property_Module extends MY_Controller {
     function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPowerPoint, $img, $data, $bg, $profile) {
         $logo = json_decode($profile->logo_image);
         $owner = json_decode($profile->owner_image);
+        $broker = json_decode($profile->broker_image);
 
         // Create slide
         $slide = $objPHPPowerPoint->createSlide();
@@ -805,15 +806,15 @@ class Property_Module extends MY_Controller {
         $shape->setPath($this->_getLocalDirPath($logo->image1))
             ->setName($owner->text)
             ->setDescription($owner->text)
-            ->setOffsetX(1050)
-            ->setOffsetY(585);
+            ->setOffsetX(1040)
+            ->setOffsetY(555);
 
         // Add Property Image
         $shape = $slide->createRichTextShape();
         $shape->getFill()->setFillType(\PhpOffice\PhpPresentation\Style\Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new \PhpOffice\PhpPresentation\Style\Color( 'F0F1F2' ))->setEndColor(new \PhpOffice\PhpPresentation\Style\Color( 'FFFFFF' ));
         $shape->setWidth(910)
-              ->setHeight(570)
-              ->setOffsetX(20)
+              ->setHeight(520)
+              ->setOffsetX(40)
               ->setOffsetY(100);
 
         $data = explode(' - ', $data);
@@ -822,10 +823,26 @@ class Property_Module extends MY_Controller {
         $shape->setName($slideImg->text);
         $shape->setDescription($slideImg->text);
         $shape->setPath($this->_getLocalDirPath($slideImg->$data[1]));
-        $shape->setWidth(830);
-        $shape->setOffsetX(60);
-        $shape->setOffsetY(150);
+        $shape->setWidth(850);
+        $shape->setOffsetX(70);
+        $shape->setOffsetY(120);
 
+        $offsetX = 40;
+        for($i = 0; $i < 3; $i++) {
+            $prop = "image$i";
+            if(isset($broker->$prop)) {
+                $shape = $slide->createDrawingShape();
+                $shape->setPath($this->_getLocalDirPath($broker->$prop))
+                    ->setName($broker->text)
+                    ->setDescription($broker->text)
+                    ->setWidth(70)
+                    ->setHeight(70)
+                    ->setOffsetX($offsetX)
+                    ->setOffsetY(640);
+                $offsetX += 85;
+            }
+        }
+/*
         $shape = $slide->createRichTextShape();
         $shape->setHeight(100);
         $shape->setWidth(200);
@@ -837,6 +854,7 @@ class Property_Module extends MY_Controller {
         $textRun->getFont()->setSize(24);
         $textRun->getFont()->setBold(true);
         $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+*/
 
         //Return slide
         return $slide;

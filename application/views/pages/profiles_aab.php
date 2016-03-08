@@ -508,12 +508,76 @@
                     </div>
                 </div>
             </div>
-            <hr/>
-            <div class="col-xs-12">
-                <button type="button" class="btn btn-primary save-image-btn pull-right btn-sm">Save</button>
-            </div>
-            <br/>
         </div>
+
+        <div class="form-group">
+            <?php
+            if (isset($profile)) {
+                $broker_image = json_decode($profile->broker_image);
+            }
+            ?>
+            <div class="row">
+                <label for="name" class="col-xs-3 control-label">Broker Logo Image
+                    <i class="fa fa-question-circle text-info helper" data-container="body"
+                       data-toggle="popover" data-placement="top" data-content="Logo about the company or property"></i>
+                </label>
+
+                <div class="col-xs-7">
+                    <input type="text" class="form-control input-sm image-text" value="<?php
+                    echo(isset($broker_image->text) ? $broker_image->text : "");
+                    ?>"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <div id="broker_image" class="image-list">
+                        <div class="show-image">
+                            <div class="fileUpload">
+                                <div class="lgt-image image1" style="background-image: url('<?php
+                                echo(isset($broker_image->image1) ? $broker_image->image1 : base_url() . IMG . "img-placeholder.png");
+                                ?>')"></div>
+                                <button type="button" class="btn upload-image-btn"><i class="fa fa-upload fa-2x"></i>
+                                </button>
+                                <span></span>
+                                <input class="upload" type="file" name="files[]"
+                                       data-url="<?php echo base_url() . OTHERS . "uploads/php/"; ?>">
+                            </div>
+                        </div>
+                        <div class="show-image">
+                            <div class="fileUpload ">
+                                <div class="lgt-image image2" style="background-image: url('<?php
+                                echo(isset($broker_image->image2) ? $broker_image->image2 : base_url() . IMG . "img-placeholder.png");
+                                ?>')"></div>
+                                <button type="button" class="btn upload-image-btn"><i class="fa fa-upload fa-2x"></i>
+                                </button>
+                                <span></span>
+                                <input class="upload" type="file" name="files[]"
+                                       data-url="<?php echo base_url() . OTHERS . "uploads/php/"; ?>">
+                            </div>
+                        </div>
+                        <div class="show-image">
+                            <div class="fileUpload">
+                                <div class="lgt-image image3" style="background-image: url('<?php
+                                echo(isset($broker_image->image3) ? $broker_image->image3 : base_url() . IMG . "img-placeholder.png");
+                                ?>')"></div>
+                                <button type="button" class="btn upload-image-btn"><i class="fa fa-upload fa-2x"></i>
+                                </button>
+                                <span></span>
+                                <input class="upload" type="file" name="files[]"
+                                       data-url="<?php echo base_url() . OTHERS . "uploads/php/"; ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr/>
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-primary save-image-btn pull-right btn-sm">Save</button>
+        </div>
+        <br/>
 
     </form>
 

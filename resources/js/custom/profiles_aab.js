@@ -265,6 +265,9 @@ function activateImageUpload() {
     $('#logo_image').find('.upload').each(function() {
         addFileUploadFunction($(this), 140, 110);
     });
+    $('#broker_image').find('.upload').each(function() {
+        addFileUploadFunction($(this), 80, 80);
+    });
 }
 
 var alertModal = $("#globalAlertModal");
