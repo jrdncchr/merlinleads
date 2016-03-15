@@ -29,6 +29,9 @@ class MY_Controller extends CI_Controller
     function __construct($logged = false)
     {
         parent::__construct();
+        $this->load->model('api_model');
+        $this->api_model->load();
+
         $this->user = $this->session->userdata("user");
         if ($logged) {
             $this->checkAuth();

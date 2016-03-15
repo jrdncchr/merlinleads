@@ -98,9 +98,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
                             class="fa fa-user"></i> <?php echo "$user->firstname $user->lastname"; ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo base_url() . 'property' ?>"><i class="fa fa-home"></i> Properties</a>
-                        </li>
                         <li><a href="<?php echo base_url() . 'main/myaccount' ?>"><i class="fa fa-user"></i> My Account</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="<?php echo base_url() . 'property' ?>"><i class="fa fa-home"></i> Properties</a>
                         </li>
                         <li><a href="<?php echo base_url() . 'profiles' ?>"><i class="fa fa-users"></i> Profiles</a></li>
                         <li class="divider"></li>

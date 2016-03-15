@@ -10,7 +10,7 @@
         <li <?php echo !$redirect ? "class='active'" : '' ?>><a href="#subscription" data-toggle="tab">Subscription</a></li>
         <li><a href="#basic" data-toggle="tab">Basic</a></li>
         <li><a href="#passwordDiv" data-toggle="tab">Password</a></li>
-        <li <?php echo $redirect == 'facebook' || $redirect == 'linkedin' ? "class='active'" : '' ?>><a href="#advance" data-toggle="tab">Integrations</a></li>
+        <li <?php echo $redirect != '' ? "class='active'" : '' ?>><a href="#advance" data-toggle="tab">Integrations</a></li>
         <li><a href="#card" data-toggle="tab">Card</a></li>
     </ul>
     <!-- Tab panes -->
@@ -297,95 +297,29 @@
             <div class="tab-pane <?php echo $redirect ? 'active' : '' ?>" id="advance">
                 <div class="tabbable tabs-left" style="margin-top: 20px; text-overflow: ellipsis">
                     <ul class="nav nav-tabs">
-                        <li><a href="#integration-twitter" data-toggle="tab">Twitter</a></li>
+                        <li <?php echo ($redirect == "twitter" || $redirect == "") ? ' class="active"' : '' ?>><a href="#integration-twitter" data-toggle="tab">Twitter</a></li>
                         <li <?php echo $redirect == 'facebook' ? "class='active'" : '' ?>><a href="#integration-facebook" data-toggle="tab">Facebook</a></li>
                         <li <?php echo $redirect == 'linkedin' ? "class='active'" : '' ?>><a href="#integration-linkedin" data-toggle="tab">Linked In</a>
                     </ul>
 
                     <div class="tab-content">
                         <!-- Twitter -->
-                        <div class="tab-pane <?php echo !$redirect ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
-
-                            <?php $twitter = json_decode($user->advance_twitter); ?>
-                            <br/>
-                            <h5>
-                                <span style="font-weight: bold;">Twitter</span>
-                                <a target="_blank" class="pull-right"
-                                   href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/">
-                                    How to get this information?
-                                </a>
-                            </h5>
-
-                            <div id="advanceMessage" class="alert alert-danger" style="display: none;"></div>
-                            <div class="form-horizontal col-xs-11" style="margin-top: 10px;">
-                                <div class="form-group">
-                                    <label for="text" class="col-xs-4 control-label">Consumer Key
-                                        <i class="fa fa-question-circle text-info helper" data-container="body"
-                                           data-toggle="popover" data-placement="top"
-                                           data-content="Enter your twitter app consumer key."></i>
-                                    </label>
-
-                                    <div class="input-group input-group-sm col-xs-8">
-                                        <input type="text" class="form-control" id="consumerKey"
-                                               placeholder="Consumer Key"
-                                               value="<?php echo $twitter->consumer_key; ?>"/>
-                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="text" class="col-xs-4 control-label">Consumer Secret
-                                        <i class="fa fa-question-circle text-info helper" data-container="body"
-                                           data-toggle="popover" data-placement="top"
-                                           data-content="Enter your twitter app consumer secret."></i>
-                                    </label>
-
-                                    <div class="input-group input-group-sm col-xs-8">
-                                        <input type="text" class="form-control" id="consumerSecret"
-                                               placeholder="Consumer Secret"
-                                               value="<?php echo $twitter->consumer_secret; ?>"/>
-                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="text" class="col-xs-4 control-label">Access Token
-                                        <i class="fa fa-question-circle text-info helper" data-container="body"
-                                           data-toggle="popover" data-placement="top"
-                                           data-content="Enter your twitter app access token."></i>
-                                    </label>
-
-                                    <div class="input-group input-group-sm col-xs-8">
-                                        <input type="text" class="form-control" id="accessToken"
-                                               placeholder="Access Token"
-                                               value="<?php echo $twitter->access_token; ?>"/>
-                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="text" class="col-xs-4 control-label">Access Token Secret
-                                        <i class="fa fa-question-circle text-info helper" data-container="body"
-                                           data-toggle="popover" data-placement="top"
-                                           data-content="Enter your twitter app access token secret."></i>
-                                    </label>
-
-                                    <div class="input-group input-group-sm col-xs-8">
-                                        <input type="text" class="form-control" id="accessTokenSecret"
-                                               placeholder="Access Token Secret"
-                                               value="<?php echo $twitter->access_token_secret; ?>"/>
-                                        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="text" class="col-xs-4 control-label"></label>
-
-                                    <div class="input-group input-group-sm col-xs-8">
-                                        <button type="button" id="updateAdvanceBtn"
-                                                class="btn btn-sm btn-primary pull-right"><i
-                                                class="fa fa-save"></i> Save
-                                        </button>
-                                    </div>
-                                </div>
-                                <hr/>
-                            </div>
+                        <div class="tab-pane <?php echo ($redirect == "twitter" || $redirect == "") ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
+                            <?php
+                            if(isset($main_f->twitter_feed_posting)) { ?>
+                                <?php if($twitter['has_access_key']) { ?>
+                                    <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Twitter integration into your account! </p>
+                                    <img class="img img-thumbnail" src="<?php echo $twitter['user_info']->profile_image_url ?>" />
+                                    <?php echo $twitter['user_info']->description; ?>
+                                    <br /><br />
+                                <?php } ?>
+                                <p><i>Authorize your Twitter</i></p>
+                                <a class="btn btn-sm btn-primary" href="<?php echo $twitter['auth_url']; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
+                            <?php } else { ?>
+                                <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
+                                <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i
+                                        class="fa fa-shopping-cart"></i> Upgrade Subscription</a></h4>
+                            <?php } ?>
                         </div>
 
                         <!-- Facebook -->
@@ -397,7 +331,7 @@
                                     <p>Expiry Date: <b><?php echo $fb['expires_at']; ?></b></p>
                                     <img class="img img-thumbnail" src="//graph.facebook.com/<?php echo $fb['user']['id']?>/picture" />
                                     <?php echo $fb['user']['name']; ?>
-                                    <br />
+                                    <br /><br />
                                     <p><i>Authorize your Facebook integration again before it expires.</i></p>
                                     <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
                                 <?php } else { ?>
@@ -426,7 +360,7 @@
                                         <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
                                         <img class="img img-thumbnail" src="<?php echo $linkedIn['user']->pictureUrl; ?>" />
                                         <?php echo $linkedIn['user']->formattedName; ?>
-                                        <br />
+                                        <br /><br />
                                         <p><i>Authorize your LinkedIn integration again before it expires.</i></p>
                                     <?php } else { ?>
                                         <p class="text-warning">Your LinkedIn access token had already expired, please authorize your LinkedIn again.</p>

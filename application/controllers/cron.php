@@ -61,6 +61,9 @@ class Cron extends CI_Controller {
     }
 
     public function scheduled_posting($time) {
+        $this->load->model('api_model');
+        $this->api_model->load();
+
         $posts = array();
 
         $this->load->model('scheduler_model');

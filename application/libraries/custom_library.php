@@ -54,7 +54,7 @@ class Custom_Library {
      *  Shorten a URL using google api url shortener
      */
     function shorten_url($longUrl) {
-        $apiKey = 'AIzaSyAKEAfsu-SEmh_Db0ptAU__BhGfV50m6d8';
+        $apiKey = 'AIzaSyAcgRrn7EoCeh3Ab1hRLf5GvZV5yhJajag';
 
         $postData = array('longUrl' => $longUrl, 'key' => $apiKey);
         $jsonData = json_encode($postData);
@@ -71,8 +71,8 @@ class Custom_Library {
 
         $response = curl_exec($curlObj);
         $json = json_decode($response);
-
         curl_close($curlObj);
+
         return $json->id;
     }
     

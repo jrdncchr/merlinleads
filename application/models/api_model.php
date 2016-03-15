@@ -6,9 +6,20 @@ if (!defined('BASEPATH'))
 class Api_Model extends CI_Model {
 
     /*
-     * Verifies the user fb access token if it's set, and expired.
-     * This function always return a login Url, which is for authenticating the tool again.
+     * GET ALL SECRET CONSTANTS
      */
+    public function load() {
+        $this->load->database();
+        $secrets = $this->db->get('ml_secrets');
+        foreach($secrets->result() as $s) {
+            define($s->name, $s->value);
+        }
+    }
+
+    /*
+     * FACEBOOK
+     */
+
     public function facebook_verify_access_key($user) {
         $result = array();
         $fb = new \Facebook\Facebook([
@@ -67,6 +78,10 @@ class Api_Model extends CI_Model {
         $user = $response->getGraphUser();
         return $user;
     }
+
+    /*
+     * LINKED IN
+     */
 
     public function linkedin_verify_access_key($user) {
         if($user->li_access_token) {
@@ -127,6 +142,105 @@ class Api_Model extends CI_Model {
 
     }
 
+    /*
+     * TWITTER
+     */
+
+    public function twitter_verify_access_key($user) {
+        $result['has_access_key'] = false;
+        if($user->twitter_access_token) {
+            $result['has_access_key'] = true;
+            $access_token = json_decode($user->twitter_access_token);
+            $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
+            $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
+            $result['user_info'] = $content;
+        }
+        $result['auth_url'] = $this->get_twitter_auth_url();
+        return $result;
+    }
+
+    public function get_twitter_auth_url() {
+        $oauth_token = $this->generate_twitter_oauth_token();
+        return "https://api.twitter.com/oauth/authorize?oauth_token=$oauth_token";
+    }
+
+    public function generate_twitter_oauth_token() {
+        function buildBaseString($baseURI, $params){
+            $r = array();
+            ksort($params);
+            foreach($params as $key=>$value){
+                $r[] = "$key=" . rawurlencode($value);
+            }
+            return "POST&" . rawurlencode($baseURI) . '&' . rawurlencode(implode('&', $r));
+        }
+
+        function getCompositeKey($consumerSecret, $requestToken){
+            return rawurlencode($consumerSecret) . '&' . rawurlencode($requestToken);
+        }
+
+        function buildAuthorizationHeader($oauth){
+            $r = 'Authorization: OAuth ';
+            $values = array();
+            foreach($oauth as $key=>$value)
+                $values[] = "$key=\"" . rawurlencode($value) . "\""; //encode key=value string
+
+            $r .= implode(', ', $values);
+            return $r;
+        }
+
+        function sendRequest($oauth, $baseURI){
+            $header = array( buildAuthorizationHeader($oauth), 'Expect:');
+
+            $options = array(CURLOPT_HTTPHEADER => $header,
+                CURLOPT_HEADER => false,
+                CURLOPT_URL => $baseURI,
+                CURLOPT_POST => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_SSL_VERIFYPEER => false);
+
+            $ch = curl_init();
+            curl_setopt_array($ch, $options);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            return $response;
+        }
+
+        $baseURI = 'https://api.twitter.com/oauth/request_token';
+
+        $nonce = time();
+        $timestamp = time();
+        $oauth = array('oauth_callback' => 'http://localhost/merlinleads/twitter/callback',
+            'oauth_consumer_key' => TWITTER_KEY,
+            'oauth_nonce' => $nonce,
+            'oauth_signature_method' => 'HMAC-SHA1',
+            'oauth_timestamp' => $timestamp,
+            'oauth_version' => '1.0');
+        $consumerSecret = TWITTER_SECRET_KEY;
+        $baseString = buildBaseString($baseURI, $oauth);
+        $compositeKey = getCompositeKey($consumerSecret, null);
+        $oauth_signature = base64_encode(hash_hmac('sha1', $baseString, $compositeKey, true));
+        $oauth['oauth_signature'] = $oauth_signature;
+
+        $response = sendRequest($oauth, $baseURI);
+
+        $responseArray = array();
+        $parts = explode('&', $response);
+        foreach($parts as $p){
+            $p = explode('=', $p);
+            $responseArray[$p[0]] = $p[1];
+        }
+
+        $oauth_token = $responseArray['oauth_token'];
+
+        $this->session->set_userdata('twitter_oauth_token', $oauth_token);
+        return $oauth_token;
+    }
+
+
+    /*
+     * SCHEDULER POST
+     */
     public function insertPosts($post) {
         $this->db->insert('scheduler_posts', $post);
     }
@@ -169,7 +283,32 @@ class Api_Model extends CI_Model {
                 $result = $this->post_facebook($linkData, $scheduler->fb_access_token);
                 break;
 
+            case 'Twitter' :
+                $message = $scheduler->headline .  "\n\n" . $scheduler->content . "\n\n" . $scheduler->keywords;
+                if($scheduler->url) {
+                    $this->load->library('Googl');
+                    $short_url = $this->googl->shorten($scheduler->url);
+                    $message .= "\n\n" . $short_url;
+                }
+                $result = $this->post_twitter($scheduler->twitter_access_token, $message);
             default:
+        }
+        return $result;
+    }
+
+    public function post_twitter($twitter_access_token, $status) {
+        $result = array('success' => false);
+        try {
+            $access_token = json_decode($twitter_access_token);
+            $connection = new \Abraham\TwitterOAuth\TwitterOAuth(
+                TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
+            $content = $connection->post("statuses/update", ["status" => $status]);
+            if(isset($content->id_str)) {
+                $result['success'] = true;
+                $result['link'] = "https://twitter.com/" . $content->user->screen_name . "/status/" . $content->id;
+            }
+        }catch (Exception $e) {
+            $result['message'] = $e->getMessage();
         }
         return $result;
     }

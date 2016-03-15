@@ -627,13 +627,6 @@ class Property_Module extends MY_Controller {
     }
 
     public function generateSlidePhpPresentation() {
-        $_POST = array(
-            'bg' => '4d8d0e7eeff661ab31f56aac5b4770b9.png',
-            'slides' => 'front - image1',
-            'templateNo' => 1,
-            'types' => 'Homes'
-        );
-
         $this->load->model('profile_model');
         $this->load->model('template_model');
 
@@ -659,22 +652,27 @@ class Property_Module extends MY_Controller {
 
         $slides = explode(',', $template);
 
-        for ($i = 0; $i < sizeof($slides); $i++) {
+        $size = sizeof($slides)+1;
+        for ($i = 0; $i < $size; $i++) {
             // Create templated slide
-            $currentSlide = $this->createTemplatedSlide($objPHPPowerPoint, $img, $slides[$i], $bg, $profile);
+            if($i == $size-1) {
+                $currentSlide = $this->createTemplatedSlide($objPHPPowerPoint, $img, null, $bg, $profile, true);
+            } else {
+                $currentSlide = $this->createTemplatedSlide($objPHPPowerPoint, $img, $slides[$i], $bg, $profile);
 
-            // Title of Slide
-            $shape = $currentSlide->createRichTextShape();
-            $shape->setHeight(100)
-                  ->setWidth(1240)
-                  ->setOffsetX(20)
-                  ->setOffsetY(10)
-                  ->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
-            $textRun = $shape->createTextRun("$po->name, $property->city $property->state_abbr $property->zipcode");
-            $textRun->getFont()
-                ->setBold(true)
-                ->setSize(30)
-                ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+                // Title of Slide
+                $shape = $currentSlide->createRichTextShape();
+                $shape->setHeight(100)
+                    ->setWidth(1240)
+                    ->setOffsetX(20)
+                    ->setOffsetY(10)
+                    ->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
+                $textRun = $shape->createTextRun("$po->name, $property->city $property->state_abbr $property->zipcode");
+                $textRun->getFont()
+                    ->setBold(true)
+                    ->setSize(30)
+                    ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+            }
 
             // Contact Information below owner image
             $shape = $currentSlide->createRichTextShape();
@@ -709,43 +707,6 @@ class Property_Module extends MY_Controller {
                 ->setSize(16)
                 ->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
         }
-        // add ending slide
-        $currentSlide = $objPHPPowerPoint->createSlide();
-
-        // Add Background Image
-        $shape = $currentSlide->createDrawingShape();
-        $shape->setName('Background');
-        $shape->setDescription('Background');
-        $shape->setPath(getcwd() . "/resources/images/ppt/bg/" . $bg);
-        $shape->setWidth(1280);
-        $shape->setHeight(720);
-        $shape->setOffsetX(0);
-        $shape->setOffsetY(0);
-
-        // Contact
-        $shape = $currentSlide->createRichTextShape();
-        $shape->setHeight(100);
-        $shape->setWidth(900);
-        $shape->setOffsetX(80);
-        $shape->setOffsetY(80);
-        $shape->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
-
-        $textRun = $shape->createTextRun("Contact $profile->firstname TODAY...");
-        $textRun->getFont()->setBold(true);
-        $textRun->getFont()->setSize(45);
-        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
-        $shape->createBreak();
-        $shape->createBreak();
-        $textRun = $shape->createTextRun("$profile->phone");
-        $textRun->getFont()->setSize(50);
-        $textRun->getFont()->setBold(true);
-        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
-        $shape->createBreak();
-        $shape->createBreak();
-        $shape->createBreak();
-        $textRun = $shape->createTextRun("$profile->email");
-        $textRun->getFont()->setSize(40);
-        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
 
         // Set properties
         $oProperties = $objPHPPowerPoint->getProperties();
@@ -775,7 +736,7 @@ class Property_Module extends MY_Controller {
         echo json_encode($result);
     }
 
-    function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPowerPoint, $img, $data, $bg, $profile) {
+    function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPowerPoint, $img, $data, $bg, $profile, $lastSlide = false) {
         $logo = json_decode($profile->logo_image);
         $owner = json_decode($profile->owner_image);
         $broker = json_decode($profile->broker_image);
@@ -809,23 +770,63 @@ class Property_Module extends MY_Controller {
             ->setOffsetX(1040)
             ->setOffsetY(555);
 
-        // Add Property Image
-        $shape = $slide->createRichTextShape();
-        $shape->getFill()->setFillType(\PhpOffice\PhpPresentation\Style\Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new \PhpOffice\PhpPresentation\Style\Color( 'F0F1F2' ))->setEndColor(new \PhpOffice\PhpPresentation\Style\Color( 'FFFFFF' ));
-        $shape->setWidth(910)
-              ->setHeight(520)
-              ->setOffsetX(40)
-              ->setOffsetY(100);
 
-        $data = explode(' - ', $data);
-        $slideImg = json_decode($img->$data[0]);
-        $shape = $slide->createDrawingShape();
-        $shape->setName($slideImg->text);
-        $shape->setDescription($slideImg->text);
-        $shape->setPath($this->_getLocalDirPath($slideImg->$data[1]));
-        $shape->setWidth(850);
-        $shape->setOffsetX(70);
-        $shape->setOffsetY(120);
+        if($lastSlide) {
+            // Contact
+            $shape = $slide->createRichTextShape();
+            $shape->setHeight(100);
+            $shape->setWidth(850);
+            $shape->setOffsetX(80);
+            $shape->setOffsetY(200);
+            $shape->getActiveParagraph()->getAlignment()->setHorizontal( \PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER );
+
+            $textRun = $shape->createTextRun("Contact $profile->firstname TODAY...");
+            $textRun->getFont()->setBold(true);
+            $textRun->getFont()->setSize(45);
+            $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+            $shape->createBreak();
+            $shape->createBreak();
+            $textRun = $shape->createTextRun("$profile->phone");
+            $textRun->getFont()->setSize(50);
+            $textRun->getFont()->setBold(true);
+            $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+            $shape->createBreak();
+            $shape->createBreak();
+            $shape->createBreak();
+            $textRun = $shape->createTextRun("$profile->email");
+            $textRun->getFont()->setSize(40);
+            $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+        } else {
+            // Add Property Image
+            $shape = $slide->createRichTextShape();
+            $shape->getFill()->setFillType(\PhpOffice\PhpPresentation\Style\Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new \PhpOffice\PhpPresentation\Style\Color( 'F0F1F2' ))->setEndColor(new \PhpOffice\PhpPresentation\Style\Color( 'FFFFFF' ));
+            $shape->setWidth(910)
+                ->setHeight(520)
+                ->setOffsetX(40)
+                ->setOffsetY(100);
+
+            $data = explode(' - ', $data);
+            $slideImg = json_decode($img->$data[0]);
+            $shape = $slide->createDrawingShape();
+            $shape->setName($slideImg->text);
+            $shape->setDescription($slideImg->text);
+            $shape->setPath($this->_getLocalDirPath($slideImg->$data[1]));
+            $shape->setWidth(850);
+            $shape->setOffsetX(70);
+            $shape->setOffsetY(120);
+
+            // Slide Text
+            $shape = $slide->createRichTextShape();
+            $shape->setHeight(50);
+            $shape->setWidth(910);
+            $shape->setOffsetX(40);
+            $shape->setOffsetY(620);
+            $shape->getActiveParagraph()->getAlignment()->setHorizontal(\PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_CENTER);
+
+            $textRun = $shape->createTextRun("$slideImg->text");
+            $textRun->getFont()->setSize(16);
+            $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
+        }
 
         $offsetX = 40;
         for($i = 0; $i < 3; $i++) {
@@ -835,26 +836,14 @@ class Property_Module extends MY_Controller {
                 $shape->setPath($this->_getLocalDirPath($broker->$prop))
                     ->setName($broker->text)
                     ->setDescription($broker->text)
-                    ->setWidth(70)
-                    ->setHeight(70)
+                    ->setWidth(40)
+                    ->setHeight(40)
                     ->setOffsetX($offsetX)
-                    ->setOffsetY(640);
-                $offsetX += 85;
+                    ->setOffsetY(670);
+                $offsetX += 45;
             }
         }
-/*
-        $shape = $slide->createRichTextShape();
-        $shape->setHeight(100);
-        $shape->setWidth(200);
-        $shape->setOffsetX(90);
-        $shape->setOffsetY(580);
-        $shape->getActiveParagraph()->getAlignment()->setHorizontal(\PhpOffice\PhpPresentation\Style\Alignment::HORIZONTAL_LEFT);
 
-        $textRun = $shape->createTextRun("$slideImg->text");
-        $textRun->getFont()->setSize(24);
-        $textRun->getFont()->setBold(true);
-        $textRun->getFont()->setColor(new \PhpOffice\PhpPresentation\Style\Color('FFFFFFFF'));
-*/
 
         //Return slide
         return $slide;

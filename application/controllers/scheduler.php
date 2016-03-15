@@ -32,6 +32,10 @@ class scheduler extends MY_Controller {
                 if($this->user->li_access_token != "") {
                     $available_modules[] = $m;
                 }
+            } else if($m->module_name == "Twitter") {
+                if($this->user->twitter_access_token != "") {
+                    $available_modules[] = $m;
+                }
             }
         }
 
