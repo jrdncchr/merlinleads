@@ -13,8 +13,8 @@
 
 <!-- Begin page content -->
 <div class="col-xs-12" style="margin-bottom: 50px;">
-    <h4 style="text-align: center; font-weight: bold; margin-bottom: 30px;">Properties Overview</h4>
-    <!--    <hr style="margin: 10px 300px;"/>-->
+    <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Properties Overview</h4>
+        <hr style="margin: 25px 15px;" />
     <div class="row">
         <div class="col-xs-3">
             <button class="btn btn-success btn-sm btn-block" id="addPropertyBtn"><i class="fa fa-plus"></i> Add Property

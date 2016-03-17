@@ -11,7 +11,7 @@
 <body>
 	<div class="wrap">
 		<?php echo $nav ?>
-		<div style="margin-top: 60px;">
+		<div class="container" style="margin-top: 60px;">
 			<?php echo $content ?>
 			<div class="push"></div>
 		</div>

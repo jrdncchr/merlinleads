@@ -16,48 +16,38 @@
 
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#basic" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
-                                <li role="presentation"><a href="#autopost" aria-controls="profile" role="tab" data-toggle="tab">Auto Post</a></li>
+                                <li role="presentation" style="display: none;"><a href="#autopost" aria-controls="profile" role="tab" data-toggle="tab">Auto Post</a></li>
                             </ul>
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="basic">
-                                    <div class="col-xs-8 col-xs-offset-2">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <form class="form-horizontal" role="form">
-                                                    <div class="form-group">
-                                                        <div class="col-xs-12">
-                                                            <div id="basicMessage"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="type" class="col-xs-3 control-label">Templates</label>
-                                                        <div class="col-xs-5">
-                                                            <select id="templateNo" class="form-control">
-
-                                                                <?php
-                                                                if(isset($template_count)) {
-                                                                    for($i = 1; $i <= $template_count; $i++) {?>
-                                                                    <option value="<?php echo $i; ?>"><?php echo $i == 1 ? "Main" : $i; ?></option>
-                                                                <?php }
-                                                                } ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-2">
-                                                            <button class="btn btn-primary" type="button" id="generateBtn">Generate</button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="type" class="col-xs-3 control-label">Tweet</label>
-                                                        <div class="col-xs-5">
-                                                            <div class="input-group input-group-sm">
-                                                                <textarea class="form-control input-sm" id="tweet" style="min-height: 80px;"></textarea>
-                                                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-6">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <div id="basicMessage"></div>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="templateNo">Templates</label>
+                                                <select id="templateNo" class="form-control">
+                                                    <?php
+                                                    if(isset($template_count)) {
+                                                        for($i = 1; $i <= $template_count; $i++) {?>
+                                                            <option value="<?php echo $i; ?>"><?php echo $i == 1 ? "Main" : $i; ?></option>
+                                                        <?php }
+                                                    } ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tweet">Tweet</label>
+                                                <div class="input-group input-group-sm">
+                                                    <textarea class="form-control input-sm" id="tweet" style="min-height: 80px;"></textarea>
+                                                    <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="button" id="generateBtn">Generate</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="autopost">

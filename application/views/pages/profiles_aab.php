@@ -1,5 +1,5 @@
-<div class='row'>
-<div class='col-xs-8 col-xs-offset-2'>
+<div class="container">
+
 <a href="<?php echo base_url() . 'profiles' ?>">&Leftarrow; Return to Profiles Overview</a>
 <h4 style="text-align: center; font-weight: bold;">
     <i class="fa fa-user"></i> <?php echo $h2; ?>
@@ -187,7 +187,7 @@
             <hr/>
             <div class="form-group">
                 <div class="input-group input-group-sm col-xs-12">
-                    <button type="button" class="btn btn-info pull-right x-save">Save</button>
+                    <button type="button" class="btn btn-primary pull-right x-save">Save</button>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@
             <hr/>
             <div class="form-group">
                 <div class="input-group input-group-sm col-xs-12">
-                    <button type="button" class="btn btn-info pull-right x-save">Save</button>
+                    <button type="button" class="btn btn-primary pull-right x-save">Save</button>
                 </div>
             </div>
         </div>
@@ -301,7 +301,7 @@
             <hr/>
             <div class="form-group">
                 <div class="input-group input-group-sm col-xs-12">
-                    <button type="button" class="btn btn-info pull-right x-save">Save</button>
+                    <button type="button" class="btn btn-primary pull-right x-save">Save</button>
                 </div>
             </div>
         </div>
@@ -374,7 +374,7 @@
             <hr/>
             <div class="form-group">
                 <div class="input-group input-group-sm col-xs-12">
-                    <button type="button" class="btn btn-info pull-right x-save">Save</button>
+                    <button type="button" class="btn btn-primary pull-right x-save">Save</button>
                 </div>
             </div>
         </div>
@@ -630,10 +630,7 @@
 
 </div>
 
-</div>
-<div class="col-xs-4">
 
-</div>
 </div>
 
 <script>

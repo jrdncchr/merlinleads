@@ -210,7 +210,7 @@ class Api_Model extends CI_Model {
 
         $nonce = time();
         $timestamp = time();
-        $oauth = array('oauth_callback' => 'http://localhost/merlinleads/twitter/callback',
+        $oauth = array('oauth_callback' => 'http://merlinleads.net/demo/twitter/callback',
             'oauth_consumer_key' => TWITTER_KEY,
             'oauth_nonce' => $nonce,
             'oauth_signature_method' => 'HMAC-SHA1',

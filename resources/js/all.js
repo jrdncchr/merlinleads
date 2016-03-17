@@ -2,6 +2,9 @@
 //var base_url = window.location.protocol + "//" + window.location.host + "/leadgeneratortool/";
 
 $(document).ready(function() {
+    setColumnSize();
+    $(window).resize(function () { setColumnSize(); });
+
     //fix iframe z-index
     $('iframe').each(function() {
         var url = $(this).attr("src");
@@ -23,6 +26,10 @@ $(document).ready(function() {
         "positionClass": "toast-bottom-right"
     };
 });
+
+function setColumnSize() {
+    $('.wrap').css('min-height', $( window ).height() - 100);
+}
 
 var toast;
 function startLoader(msg) {

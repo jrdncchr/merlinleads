@@ -11,20 +11,13 @@
 <body>
     <div class="wrap">
         <?php echo $nav ?>
-        <div id="content" style="margin-top: 60px;">
-            <div class="row">
-                <div class="col-xs-10 col-xs-offset-1">
-                    <div class='container'>
-                        <?php echo $global; ?>
-
-                    </div>
-                    <?php echo $content; ?>
-                </div>
-            </div>
+        <div class="container" id="content" style="margin-top: 60px;">
+            <?php echo $global; ?>
+            <?php echo $content; ?>
         </div>
         <div class="push"></div>
     </div>
-<?php //echo $footer ?>
+<?php echo $footer ?>
 <?php echo $scripts ?>
 </body>
 </html>

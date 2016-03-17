@@ -26,9 +26,10 @@
                             <?php if(sizeof($module) == 0) { ?>
                                 <div class="alert alert-warning"><i class="fa fa-exclamation"></i>
                                     You don't have any integrations to any social media yet.
-                                    <a href="<?php echo base_url() . "main/myaccount/facebook"; ?>">Integrate now.</a>
+                                    <a href="<?php echo base_url() . "main/myaccount/integrations"; ?>">Integrate now.</a>
                                 </div>
                             <?php } ?>
+                            <div class="alert alert-info"><i class="fa fa-question-circle"></i> A module will only be available if you've integrated your social account. <a href="<?php echo base_url() . "main/myaccount/integrations"; ?>">Integrate now.</a></div>
                         </div>
                     </div>
 

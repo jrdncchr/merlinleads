@@ -1,29 +1,35 @@
-<div class="row">
-    <div class="col-xs-12">
-        <h2>Scheduler</h2>
-        <a href="<?php echo base_url() . "scheduler/form"; ?>" class="btn btn-success btn-sm pull-right">
+<p><a href="<?php echo base_url() . 'property' ?>">&Leftarrow; Return to Properties</a></p>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler</h4>
+<hr style="margin: 15px;" />
+
+<div class="row" style="margin-bottom: 20px;">
+    <div class="col-xs-3">
+        <a href="<?php echo base_url() . "scheduler/form"; ?>" class="btn btn-success btn-sm btn-block">
             <i class="fa fa-plus-circle"></i> Create
         </a>
-
     </div>
 </div>
 
+
 <div class="row" style="margin-top: 10px;">
     <div class="col-xs-12">
-        <table id="schedulerDt" class="table-bordered" style="width: 100%;">
-            <thead>
-            <tr>
-                <th>Module</th>
-                <th>Status</th>
-                <th>Interval</th>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Content Type</th>
-                <th>Date Created</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="table-responsive">
+            <table id="schedulerDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+                <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Status</th>
+                    <th>Interval</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Content Type</th>
+                    <th>Date Created</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 
@@ -38,7 +44,7 @@
     function initSchedulerDataTable() {
         dt = $("#schedulerDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [],
+            "aaSorting": [6],
             "bDestroy": true,
             "filter": false,
             "ajax": {

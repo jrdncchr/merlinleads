@@ -1,16 +1,18 @@
-<div class="row">
-        <div class="col-xs-12">
-            <h2>IDX - SEO Builder</h2>
-            <a href="<?php echo base_url() . "seo_builder/manage"; ?>" class="btn btn-success btn-sm pull-right">
-                <i class="fa fa-plus-circle"></i> Create
-            </a>
+<p><a href="<?php echo base_url() . 'property' ?>">&Leftarrow; Return to Properties</a></p>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">IDX - SEO Builder</h4>
+<hr style="margin: 15px;" />
 
-        </div>
+<div class="row" style="margin-bottom: 20px;">
+    <div class="col-xs-3">
+        <a href="<?php echo base_url() . "seo_builder/manage"; ?>" class="btn btn-block btn-success btn-sm">
+            <i class="fa fa-plus-circle"></i> Create
+        </a>
     </div>
+</div>
 
     <div class="row" style="margin-top: 10px;">
         <div class="col-xs-12">
-            <table id="seoBuilderDt" class="table-bordered" style="width: 100%;">
+            <table id="seoBuilderDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
                 <thead>
                 <tr>
                     <th>SEO Builder Name</th>
