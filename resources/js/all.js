@@ -29,6 +29,7 @@ $(document).ready(function() {
 
 function setColumnSize() {
     $('.wrap').css('min-height', $( window ).height() - 100);
+    $('.footer').show();
 }
 
 var toast;
