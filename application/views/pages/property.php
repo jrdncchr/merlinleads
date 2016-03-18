@@ -7,7 +7,6 @@
     table.dataTable tbody tr.selected {
         background-color: white !important;
         border: none;
-        /*background-color: #99e6e6;*/
     }
 </style>
 
@@ -17,7 +16,7 @@
         <hr style="margin: 25px 15px;" />
     <div class="row">
         <div class="col-xs-3">
-            <button class="btn btn-success btn-sm btn-block" id="addPropertyBtn"><i class="fa fa-plus"></i> Add Property
+            <button class="btn btn-success btn-sm btn-block" id="addPropertyBtn"><i class="fa fa-plus-circle"></i> Add Property
             </button>
             <button id="genericPost" class="btn btn-primary btn-sm btn-block" style="display: none;">Generic Post</button>
         </div>

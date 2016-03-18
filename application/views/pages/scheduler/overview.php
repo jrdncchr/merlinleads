@@ -5,7 +5,7 @@
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-xs-3">
         <a href="<?php echo base_url() . "scheduler/form"; ?>" class="btn btn-success btn-sm btn-block">
-            <i class="fa fa-plus-circle"></i> Create
+            <i class="fa fa-plus-circle"></i> Add Scheduler
         </a>
     </div>
 </div>

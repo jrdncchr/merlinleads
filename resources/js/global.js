@@ -97,7 +97,10 @@ $(function() {
 
     /* DataTables Global Events */
     $(".dataTable").on('click', 'tr', function () {
-        $(this).toggleClass('selected');
+        var $button = $(this).find('button');
+        if($button.length == 0) {
+            $(this).toggleClass('selected');
+        }
     });
 
 

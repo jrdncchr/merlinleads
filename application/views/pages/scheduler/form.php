@@ -53,12 +53,12 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="status" class="control-label">* Status</label>
-                                    <select id="status" class="form-control required">
-                                        <option value="Inactive" <?php echo isset($scheduler) ?
-                                            ($scheduler->status == "Inactive" ? "selected" : "") : "" ?>>Inactive</option>
-                                        <option value="Active" <?php echo isset($scheduler) ?
-                                            ($scheduler->status == "Active" ? "selected" : "") : "" ?>>Active</option>
-                                    </select>
+                                    <div>
+                                        <input id="status" type='checkbox' data-on-text="Active" data-off-text="Inactive"
+                                            <?php echo isset($scheduler) ?
+                                            ($scheduler->status == "Inactive" ? "" : "checked") : "" ?> />
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -193,13 +193,15 @@
     var schedulerId = "<?php echo isset($scheduler) ? $scheduler->scheduler_id : "" ?>";
     var contentId = "<?php echo isset($scheduler) ? $scheduler->content_id : "" ?>";
     var actionUrl = "<?php echo base_url(); ?>scheduler/action";
-    var dt;
+    var dt, statusSwitch;
 
     $(function() {
         $('#schedulerTabs a').click(function (e) {
             e.preventDefault();
             $(this).tab('show')
         });
+
+        statusSwitch = $("input[type='checkbox']").bootstrapSwitch();
 
         $('#interval').on('change', function() {
             if($(this).val() == "E") {
@@ -215,6 +217,7 @@
         });
 
         $('#saveBtn').on('click', function() {
+
             if(validateScheduler()) {
                 var validUrl = true;
                 if($('#url').val()) {
@@ -230,7 +233,7 @@
                         action : 'save',
                         scheduler : {
                             module_id       : $('#module').val(),
-                            status          : $('#status').val(),
+                            status          : statusSwitch.bootstrapSwitch('state') ? 1 : 0,
                             interval_code   : $('#interval').val(),
                             time_id         : $('#time').val(),
                             day             : $('#day').val()
