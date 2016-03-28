@@ -128,28 +128,46 @@
                                     <label for="type" class="control-label">* Type</label>
                                     <select class="form-control" id="type">
                                         <option value="Custom" <?php echo isset($scheduler) ? ($scheduler->type == "Custom" ? "selected" : "") : "" ?>>Custom</option>
+                                        <option value="Library" <?php echo isset($scheduler) ? ($scheduler->type == "Library" ? "selected" : "") : "" ?>>Library</option>
                                     </select>
                                 </div>
 
-                                <div id="contentCustom">
+                                <div id="contentCustom" class="scheduler-content">
+                                    <div class="alert alert-info"><i class="fa fa-question-circle"></i> Custom type will only use this template for every post.</div>
                                     <div class="form-group">
                                         <label for="headline" class="control-label">* Headline</label>
-                                        <input type="text" class="form-control required" id="headline"
+                                        <input type="text" class="form-control" id="customHeadline"
                                             value="<?php echo isset($scheduler) ? $scheduler->headline : "" ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="body" class="control-label">* Body</label>
-                                        <textarea rows="3" class="form-control required" style="height: 90px;" id="body"><?php echo isset($scheduler) ? $scheduler->content : "" ?></textarea>
+                                        <textarea rows="3" class="form-control" style="height: 90px;" id="customBody"><?php echo isset($scheduler) ? $scheduler->content : "" ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="keywords" class="control-label">* Keywords</label>
-                                        <textarea rows="2" class="form-control required" style="height: 60px;" id="keywords"><?php echo isset($scheduler) ? $scheduler->keywords : "" ?></textarea>
+                                        <textarea rows="2" class="form-control" style="height: 60px;" id="customKeywords"><?php echo isset($scheduler) ? $scheduler->keywords : "" ?></textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="url" class="control-label">URL</label>
-                                        <input type="url" class="form-control" id="url" placeholder="ex. http://www.merlinleads.com"
+                                        <input type="url" class="form-control" id="customUrl" placeholder="ex. http://www.merlinleads.com"
                                                value="<?php echo isset($scheduler) ? $scheduler->url : "" ?>" />
+                                    </div>
+                                </div>
+
+                                <div id="contentLibrary" class="scheduler-content" style="display: none;">
+                                    <div class="alert alert-info"><i class="fa fa-question-circle"></i>
+                                        Library type will post templates from your library. It will post in ascending order by create date.
+                                        If you don't have any library yet, please <a href="<?php echo base_url() . 'scheduler/library' ;?>">create a library first and add your templates.</a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="library" class="control-label">* Library</label>
+                                        <select class="form-control" id="library">
+                                            <option value="">Select Library</option>
+                                            <?php foreach($library as $l): ?>
+                                                <option value="<?php echo $l->id; ?>"><?php echo $l->name . " [ " . $l->template_count . " Templates ]"  ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -203,6 +221,16 @@
 
         statusSwitch = $("input[type='checkbox']").bootstrapSwitch();
 
+        $("#type").on("change", function() {
+            $(".scheduler-content").hide();
+            var type = $(this).val();
+            if(type == "Custom") {
+                $("#contentCustom").show();
+            } else if(type == "Library") {
+                $("#contentLibrary").show();
+            }
+        });
+
         $('#interval').on('change', function() {
             if($(this).val() == "E") {
                 $('#day').parents('.form-group').hide();
@@ -233,7 +261,7 @@
                         action : 'save',
                         scheduler : {
                             module_id       : $('#module').val(),
-                            status          : statusSwitch.bootstrapSwitch('state') ? 1 : 0,
+                            status          : statusSwitch.bootstrapSwitch('state') ? "Active" : "Inactive",
                             interval_code   : $('#interval').val(),
                             time_id         : $('#time').val(),
                             day             : $('#day').val()
@@ -252,10 +280,10 @@
                     }
 
                     if($('#type').val() == 'Custom') {
-                        data.content.headline = $('#headline').val();
-                        data.content.content = $('#body').val();
-                        data.content.keywords = $('#keywords').val();
-                        data.content.url = $('#url').val();
+                        data.content.headline = $('#customHeadline').val();
+                        data.content.content = $('#customBody').val();
+                        data.content.keywords = $('#customKeywords').val();
+                        data.content.url = $('#customUrl').val();
                     }
 
                     if(schedulerId != "") {
@@ -316,6 +344,34 @@
                 $(this).removeClass('input-error');
             }
         });
+        var type = $("#type").val();
+        if(type == "Custom") {
+            if($("#customHeadline").val() == "") {
+                $("#customHeadline").addClass('input-error');
+                valid = false;
+            } else {
+                $("#customHeadline").removeClass('input-error');
+            }
+            if($("#customBody").val() == "") {
+                $("#customBody").addClass('input-error');
+                valid = false;
+            } else {
+                $("#customBody").removeClass('input-error');
+            }
+            if($("#customKeywords").val() == "") {
+                $("#customKeywords").addClass('input-error');
+                valid = false;
+            } else {
+                $("#customKeywords").removeClass('input-error');
+            }
+        } else if(type == "Library") {
+            if($("#library").val() == "") {
+                $("#library").addClass('input-error');
+                valid = false;
+            } else {
+                $("#library").removeClass('input-error');
+            }
+        }
         if (!valid) {
             loading("danger", "A required field is empty.");
         }

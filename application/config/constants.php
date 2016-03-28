@@ -14,8 +14,8 @@ define('DB_USERNAME', 'merlinle_admin');
 define('DB_PASSWORD', 'ml143');
 define('DB_HOST', 'localhost');
 
-//$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_test.txt", FILE_IGNORE_NEW_LINES);
-$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_live.txt", FILE_IGNORE_NEW_LINES);
+$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_test.txt", FILE_IGNORE_NEW_LINES);
+//$stripe_keys = file(FCPATH . OTHERS . "stripe/ml_live.txt", FILE_IGNORE_NEW_LINES);
 define('STRIPE_PUBLISHABLE_KEY', $stripe_keys[0]);
 define('STRIPE_SECRET_KEY', $stripe_keys[1]);
 

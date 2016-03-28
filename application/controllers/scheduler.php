@@ -57,6 +57,7 @@ class scheduler extends MY_Controller {
             }
         }
         $this->data['module'] = $available_modules;
+        $this->data['library'] = $this->scheduler_model->scheduler_library_get($this->user->id);
         $this->_renderL('pages/scheduler/form');
     }
 
@@ -95,5 +96,87 @@ class scheduler extends MY_Controller {
                 ));
 
         }
+    }
+
+    public function library($sub = false, $id = 0) {
+        $action = $this->input->post('action');
+
+        /* Library */
+        if(!$sub) {
+            if($action) {
+                switch($action) {
+                    case 'list' :
+                        $list = $this->scheduler_model->scheduler_library_get($this->user->id);
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $data['user_id'] = $this->user->id;
+                        $result = $this->scheduler_model->scheduler_library_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $library_id = $this->input->post("library_id");
+                        $result = $this->scheduler_model->scheduler_library_delete($library_id);
+                        echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+                }
+            } else {
+                $this->_renderL('pages/scheduler/library');
+            }
+
+        /* Form */
+        } else if($sub == 'form') {
+            if($id > 0) {
+                $this->data['library'] = $this->scheduler_model->scheduler_library_get($this->user->id, $id);
+            }
+            $this->_renderL('pages/scheduler/library_form');
+
+        /* Templates */
+        } else if($sub == 'template') {
+            if($action) {
+                switch($action) {
+
+                    case 'list' :
+                        $library_id = $this->input->post('library_id');
+                        $list = $this->scheduler_model->scheduler_user_templates_get($library_id);
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $data['user_id'] = $this->user->id;
+                        $result = $this->scheduler_model->scheduler_user_templates_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $ids = $this->input->post('ids');
+                        $result = $this->scheduler_model->scheduler_user_templates_delete($ids);
+                        echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+
+                }
+
+            }
+        }
+
+
     }
 } 

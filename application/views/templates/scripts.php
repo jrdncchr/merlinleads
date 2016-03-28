@@ -17,6 +17,7 @@
 
 <script src="<?php echo base_url() . JS . "all.js"; ?>"></script>
 <script src="<?php echo base_url() . JS . "validation.js"; ?>"></script>
+<script src="<?php echo base_url() . JS . "danero-validator.js"; ?>"></script>
 <script src="<?php echo base_url() . JS . "global.js"; ?>"></script>
 
 <?php foreach ($js as $j): ?>
