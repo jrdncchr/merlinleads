@@ -72,12 +72,24 @@ class Cron extends CI_Controller {
         $this->load->model('api_model');
         foreach($schedulers as $s) {
             $result = [];
+
+            if($s->type == "Custom") {
+                $custom_content = $this->scheduler_model->scheduler_custom_content_get($s->content_id);
+                $s->headline = $custom_content->headline;
+                $s->content = $custom_content->content;
+                $s->keywords = $custom_content->keywords;
+                $s->url = $custom_content->url;
+            } else if($s->type == "Library") {
+
+            }
+
             switch($s->interval_code) {
                 case "E":
                     $result = $this->api_model->post($s);
                     break;
 
                 case "W":
+                    // check if already a week has passed
                     break;
 
                 case "S":

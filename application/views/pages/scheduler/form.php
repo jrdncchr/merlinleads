@@ -24,12 +24,12 @@
                         <div class="col-xs-12">
                             <div class="alert-danger"></div>
                             <?php if(sizeof($module) == 0) { ?>
-                                <div class="alert alert-warning"><i class="fa fa-exclamation"></i>
+                                <div class="alert alert-danger"><i class="fa fa-exclamation"></i>
                                     You don't have any integrations to any social media yet.
                                     <a href="<?php echo base_url() . "main/myaccount/integrations"; ?>">Integrate now.</a>
                                 </div>
                             <?php } ?>
-                            <div class="alert alert-info"><i class="fa fa-question-circle"></i> A module will only be available if you've integrated your social account. <a href="<?php echo base_url() . "main/myaccount/integrations"; ?>">Integrate now.</a></div>
+                            <div class="alert alert-warning"><i class="fa fa-question-circle"></i> A module will only be available if you've integrated your social account. <a href="<?php echo base_url() . "main/myaccount/integrations"; ?>">Integrate now.</a></div>
                         </div>
                     </div>
 
@@ -77,14 +77,14 @@
                                         <?php foreach($interval as $i): ?>
                                             <option value="<?php echo $i->code; ?>"
                                                 <?php echo isset($scheduler) ?
-                                                    ($scheduler->interval_code == $i->code ? "selected" : "") : "" ?>
-                                                ><?php echo $i->scheduler_interval; ?></option>
+                                                    ($scheduler->interval_code == $i->code ? "selected" : "") : "" ?>>
+                                                <?php echo $i->scheduler_interval; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="form-group" <?php echo isset($scheduler) ? ($scheduler->interval_code != "S" ? "" :'style="display: none;"'): '' ?>>
                                     <label for="day" class="control-label">* Day</label>
                                     <select id="day" class="form-control required">
                                         <option value="Sunday" <?php echo isset($scheduler) ? ($scheduler->day == "Sunday" ? "selected" : "") : "" ?>>Sunday</option>
@@ -95,9 +95,9 @@
                                         <option value="Friday" <?php echo isset($scheduler) ? ($scheduler->day == "Saturday" ? "selected" : "") : "" ?>>Friday</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="display: none;">
+                                <div class="form-group" <?php echo isset($scheduler) ? ($scheduler->interval_code == "S" ? "" :'style="display: none;"'): 'style="display: none;"' ?>>
                                     <label for="date" class="control-label">* Date</label>
-                                    <input type="date" class="form-control" id="date" />
+                                    <input type="date" class="form-control" id="date" value="<?php echo isset($scheduler) ? $scheduler->date : ''; ?>"/>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -126,37 +126,38 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for="type" class="control-label">* Type</label>
-                                    <select class="form-control" id="type">
+                                    <select class="form-control required" id="type">
+                                        <option value="">Select Type</option>
                                         <option value="Custom" <?php echo isset($scheduler) ? ($scheduler->type == "Custom" ? "selected" : "") : "" ?>>Custom</option>
                                         <option value="Library" <?php echo isset($scheduler) ? ($scheduler->type == "Library" ? "selected" : "") : "" ?>>Library</option>
                                     </select>
                                 </div>
 
-                                <div id="contentCustom" class="scheduler-content">
-                                    <div class="alert alert-info"><i class="fa fa-question-circle"></i> Custom type will only use this template for every post.</div>
+                                <div id="contentCustom" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->content_id > 0 ? "" : "style='display:none;'"; } ?>>
+                                    <div class="alert alert-warning"><i class="fa fa-question-circle"></i> Custom type will only use this template for every post.</div>
                                     <div class="form-group">
                                         <label for="headline" class="control-label">* Headline</label>
                                         <input type="text" class="form-control" id="customHeadline"
-                                            value="<?php echo isset($scheduler) ? $scheduler->headline : "" ?>">
+                                            value="<?php echo isset($scheduler->content) ? $scheduler->content->headline : "" ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="body" class="control-label">* Body</label>
-                                        <textarea rows="3" class="form-control" style="height: 90px;" id="customBody"><?php echo isset($scheduler) ? $scheduler->content : "" ?></textarea>
+                                        <textarea rows="3" class="form-control" style="height: 90px;" id="customBody"><?php echo isset($scheduler->content) ? $scheduler->content->content : "" ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="keywords" class="control-label">* Keywords</label>
-                                        <textarea rows="2" class="form-control" style="height: 60px;" id="customKeywords"><?php echo isset($scheduler) ? $scheduler->keywords : "" ?></textarea>
+                                        <textarea rows="2" class="form-control" style="height: 60px;" id="customKeywords"><?php echo isset($scheduler->content) ? $scheduler->content->keywords : "" ?></textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="url" class="control-label">URL</label>
                                         <input type="url" class="form-control" id="customUrl" placeholder="ex. http://www.merlinleads.com"
-                                               value="<?php echo isset($scheduler) ? $scheduler->url : "" ?>" />
+                                               value="<?php echo isset($scheduler->content) ? $scheduler->content->url : "" ?>" />
                                     </div>
                                 </div>
 
-                                <div id="contentLibrary" class="scheduler-content" style="display: none;">
-                                    <div class="alert alert-info"><i class="fa fa-question-circle"></i>
+                                <div id="contentLibrary" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->library_id > 0 ? "" : "style='display:none;'"; } ?>>
+                                    <div class="alert alert-warning"><i class="fa fa-question-circle"></i>
                                         Library type will post templates from your library. It will post in ascending order by create date.
                                         If you don't have any library yet, please <a href="<?php echo base_url() . 'scheduler/library' ;?>">create a library first and add your templates.</a>
                                     </div>
@@ -165,7 +166,7 @@
                                         <select class="form-control" id="library">
                                             <option value="">Select Library</option>
                                             <?php foreach($library as $l): ?>
-                                                <option value="<?php echo $l->id; ?>"><?php echo $l->name . " [ " . $l->template_count . " Templates ]"  ?></option>
+                                                <option value="<?php echo $l->id; ?>" <?php echo isset($scheduler) ? ($scheduler->library_id == $l->id ? "selected" : "") : "" ?>><?php echo $l->name . " [ " . $l->template_count . " Templates ]"  ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -208,7 +209,7 @@
 </div>
 
 <script>
-    var schedulerId = "<?php echo isset($scheduler) ? $scheduler->scheduler_id : "" ?>";
+    var schedulerId = "<?php echo isset($scheduler) ? $scheduler->id : "" ?>";
     var contentId = "<?php echo isset($scheduler) ? $scheduler->content_id : "" ?>";
     var actionUrl = "<?php echo base_url(); ?>scheduler/action";
     var dt, statusSwitch;
@@ -264,11 +265,10 @@
                             status          : statusSwitch.bootstrapSwitch('state') ? "Active" : "Inactive",
                             interval_code   : $('#interval').val(),
                             time_id         : $('#time').val(),
-                            day             : $('#day').val()
+                            day             : $('#day').val(),
+                            type            : $('#type').val()
                         },
-                        content : {
-                            type        : $('#type').val()
-                        }
+                        content : {}
                     };
 
                     if($('#interval').val() == 'E') {
@@ -284,13 +284,15 @@
                         data.content.content = $('#customBody').val();
                         data.content.keywords = $('#customKeywords').val();
                         data.content.url = $('#customUrl').val();
+                        if(contentId != "") {
+                            data.content.id = contentId;
+                        }
+                    } else if($("#type").val() == 'Library') {
+                        data.scheduler.library_id = $("#library").val();
                     }
 
                     if(schedulerId != "") {
                         data.scheduler.id = schedulerId;
-                    }
-                    if(contentId != "") {
-                        data.content.id = contentId;
                     }
 
 

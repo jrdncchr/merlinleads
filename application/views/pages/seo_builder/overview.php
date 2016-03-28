@@ -5,7 +5,7 @@
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-xs-3">
         <a href="<?php echo base_url() . "seo_builder/manage"; ?>" class="btn btn-block btn-success btn-sm">
-            <i class="fa fa-plus-circle"></i> Create
+            <i class="fa fa-plus-circle"></i> Create SEO Builder
         </a>
     </div>
 </div>

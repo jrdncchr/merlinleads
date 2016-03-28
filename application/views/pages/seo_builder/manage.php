@@ -4,7 +4,7 @@
             <a href="<?php echo base_url() . "seo_builder" ?>">&leftarrow; Back to SEO Builder Overview</a>
             <h3><?php echo isset($sb) ? "Update" : "Create"; ?>  SEO Builder
                 <?php if(isset($seo)) { ?>
-                    <button type="button" id="delete_btn" class="btn btn-sm btn-danger pull-right">
+                    <button type="button" id="delete_btn" class="btn btn-sm btn-default pull-right">
                         <i class="fa fa-trash-o"></i> Delete SEO Builder</button>
                 <?php } ?>
             </h3>

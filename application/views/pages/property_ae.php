@@ -572,6 +572,9 @@ PROPERTY
 CLASSIFIEDS
 -->
 <div class="tab-pane fade in <?php echo $redirect == "classified" ? 'active': ''; ?>" id="classified-tab">
+<?php if (isset($po)) { ?>
+    <h4>Property Name: <strong><?php echo $po->name; ?></strong> <a target="_blank" class="pull-right" style="font-size: 20px; margin-right: 10px;" href="http://support.merlinleads.com/property-images/"><i class="fa fa-question-circle"></i> Help</a></h4>
+<?php } ?>
 <div class="alert alert-info" id="message">
     Changing tabs will auto save. Please fill up all required <i class="fa fa-asterisk"></i> fields.
 </div>

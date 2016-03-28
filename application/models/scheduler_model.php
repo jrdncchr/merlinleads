@@ -20,12 +20,17 @@ class scheduler_model extends CI_Model {
     public function get($user_id, $scheduler_id = 0) {
         if($scheduler_id == 0) {
             $query = $this->db->query("call spGetSchedulerListByUser($user_id)");
-            $result = $query->result();
+            $scheduler = $query->result();
         } else {
-            $query = $this->db->query("call spGetSchedulerById($scheduler_id, $user_id)");
-            $result = $query->row();
+            $query = $this->db->get_where($this->scheduler_table, array('id' => $scheduler_id, 'user_id' => $user_id));
+            $scheduler = $query->row();
+            if($scheduler->type == "Custom") {
+                $query = $this->db->get_where($this->scheduler_content_table, array('id' => $scheduler->content_id));
+                $content = $query->row();
+                $scheduler->content = $content;
+            }
         }
-        return $result;
+        return $scheduler;
     }
 
     public function get_post($scheduler_id, $post_id = 0) {
@@ -37,6 +42,7 @@ class scheduler_model extends CI_Model {
         return $result->result();
     }
 
+
     public function save($data) {
         $result = array('success' => false, 'message' => 'Something went wrong!');
 
@@ -44,20 +50,41 @@ class scheduler_model extends CI_Model {
 
         if(isset($data['scheduler']['id'])) {
             $this->db->where('id', $data['scheduler']['id']);
-            unset($data['scheduler']['id']);
             if($this->db->update($this->scheduler_table, $data['scheduler'])) {
-                $this->db->where('id', $data['content']['id']);
-                $this->db->update($this->scheduler_content_table, $data['content']);
-            }
-        } else {
-            if($this->db->insert($this->scheduler_content_table, $data['content'])) {
-                $content_id = $this->db->insert_id();
-                $data['scheduler']['content_id'] = $content_id;
-                if($this->db->insert($this->scheduler_table, $data['scheduler'])) {
-                    $result['content_id'] = $content_id;
-                    $result['scheduler_id'] = $this->db->insert_id();
+                if($data['scheduler']['type'] == "Custom") {
+                    if(isset($data['content']['id'])) {
+                        $this->db->where('id', $data['content']['id']);
+                        $this->db->update($this->scheduler_content_table, $data['content']);
+                    } else {
+                        if($this->db->insert($this->scheduler_content_table, $data['content'])) {
+                            $content_id = $this->db->insert_id();
+                            $data['scheduler']['content_id'] = $content_id;
+                            $this->db->where('id', $data['scheduler']['id']);
+                            if($this->db->update($this->scheduler_table, $data['scheduler'])) {
+                                $result['content_id'] = $content_id;
+                                $result['scheduler_id'] = $this->db->insert_id();
+                            }
+                        }
+                    }
+
+                } else if($data['scheduler']['type'] == "Library") {
+                    $data['scheduler']['content_id'] = "";
+                    $this->db->where('id', $data['scheduler']['id']);
+                    $this->db->update($this->scheduler_table, $data['scheduler']);
                 }
             }
+        } else {
+            if($data['scheduler']['type'] == "Custom") {
+                if($this->db->insert($this->scheduler_content_table, $data['content'])) {
+                    $content_id = $this->db->insert_id();
+                    $data['scheduler']['content_id'] = $content_id;
+                    if($this->db->insert($this->scheduler_table, $data['scheduler'])) {
+                        $result['content_id'] = $content_id;
+                        $result['scheduler_id'] = $this->db->insert_id();
+                    }
+                }
+            }
+
         }
 
         if($this->db->trans_status() === FALSE) {
@@ -95,6 +122,14 @@ class scheduler_model extends CI_Model {
     public function getListByTimeForScheduledPosting($time) {
         $query = $this->db->query("call spGetSchedulerListByTime('$time')");
         return $query->result();
+    }
+
+    /*
+     * Scheduler Custom Content
+     */
+    public function scheduler_custom_content_get($id) {
+        $query = $this->db->get_where($this->scheduler_content_table, array('id' => $id));
+        return $query->row();
     }
 
     /*
