@@ -19,7 +19,6 @@ class Api_Model extends CI_Model {
     /*
      * FACEBOOK
      */
-
     public function facebook_verify_access_key($user) {
         $result = array();
         $fb = new \Facebook\Facebook([
@@ -303,6 +302,7 @@ class Api_Model extends CI_Model {
             $connection = new \Abraham\TwitterOAuth\TwitterOAuth(
                 TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
             $content = $connection->post("statuses/update", ["status" => $status]);
+
             if(isset($content->id_str)) {
                 $result['success'] = true;
                 $result['link'] = "https://twitter.com/" . $content->user->screen_name . "/status/" . $content->id;

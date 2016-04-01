@@ -9,6 +9,7 @@ class scheduler_model extends CI_Model {
     private $scheduler_content_table = 'scheduler_content';
     private $scheduler_library_table = 'scheduler_library';
     private $scheduler_user_templates_table = 'scheduler_user_templates';
+    private $scheduler_post_table = 'scheduler_posts';
 
     function __construct() {
         $this->load->database();
@@ -128,9 +129,11 @@ class scheduler_model extends CI_Model {
      * Scheduler Custom Content
      */
     public function scheduler_custom_content_get($id) {
+        $this->db->reconnect();
         $query = $this->db->get_where($this->scheduler_content_table, array('id' => $id));
         return $query->row();
     }
+
 
     /*
      * Scheduler Library
@@ -183,6 +186,32 @@ class scheduler_model extends CI_Model {
         }
         $this->db->trans_complete();
         return $result;
+    }
+
+    public function scheduler_library_get_template($scheduler) {
+        $this->db->reconnect();
+        $result = $this->db->get_where($this->scheduler_library_table, array('id' => $scheduler->library_id));
+        $library = $result->row();
+
+        $this->db->order_by('date_created', 'asc');
+        $result = $this->db->get_where($this->scheduler_user_templates_table, array('library_id' => $library->id));
+        $templates = $result->result();
+
+        $this->db->order_by('date_posted', 'desc');
+        $result = $this->db->get_where($this->scheduler_post_table, array('scheduler_id' => $scheduler->scheduler_id));
+        if($result->num_rows() > 0) {
+            $posts = $result->result();
+            if($posts[0]->template_id == $templates[sizeof($templates)-1]->id) {
+                return $templates[0];
+            } else {
+                for($i = 0; $i < sizeof($templates); $i++) {
+                    if($posts[0]->template_id == $templates[$i]->id) {
+                        return $templates[$i+1];
+                    }
+                }
+            }
+        }
+        return $templates[0];
     }
 
     /*

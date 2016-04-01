@@ -133,7 +133,7 @@
                                     </select>
                                 </div>
 
-                                <div id="contentCustom" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->content_id > 0 ? "" : "style='display:none;'"; } ?>>
+                                <div id="contentCustom" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->type == "Custom" ? "" : "style='display:none;'"; } ?>>
                                     <div class="alert alert-warning"><i class="fa fa-question-circle"></i> Custom type will only use this template for every post.</div>
                                     <div class="form-group">
                                         <label for="headline" class="control-label">* Headline</label>
@@ -156,7 +156,7 @@
                                     </div>
                                 </div>
 
-                                <div id="contentLibrary" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->library_id > 0 ? "" : "style='display:none;'"; } ?>>
+                                <div id="contentLibrary" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->type == "Library" ? "" : "style='display:none;'"; } ?>>
                                     <div class="alert alert-warning"><i class="fa fa-question-circle"></i>
                                         Library type will post templates from your library. It will post in ascending order by create date.
                                         If you don't have any library yet, please <a href="<?php echo base_url() . 'scheduler/library' ;?>">create a library first and add your templates.</a>

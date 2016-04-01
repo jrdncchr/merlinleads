@@ -88,6 +88,10 @@
         <label for="templateKeywords" class="control-label">* Keywords</label>
         <input type="text" class="form-control required" id="templateKeywords" />
     </div>
+    <div class="form-group">
+        <label for="templateUrl" class="control-label"> Url</label>
+        <input type="text" class="form-control" id="templateUrl" placeholder="ex. http://www.merlinleads.com" />
+    </div>
 </div>
 
 <script>
@@ -104,7 +108,8 @@
                 var data = {
                     action: "save",
                     name: $("#libraryName").val(),
-                    description: $("#libraryDescription").val()
+                    description: $("#libraryDescription").val(),
+                    url: $("#templateUrl").val()
                 };
                 if(libraryId > 0) {
                     data['id'] = libraryId;
@@ -160,28 +165,42 @@
 
         $("#globalSaveBtn").on("click", function() {
             if(validateGlobalFormModal()) {
-                var data = {
-                    action: "save",
-                    headline: $("#templateHeadline").val(),
-                    content: $("#templateBody").val(),
-                    keywords: $("#templateKeywords").val(),
-                    library_id: libraryId
-                };
-
-                if(templateId > 0) {
-                    data['id'] = templateId;
-                }
-
-                loading("info", "Saving, please wait...");
-                $.post(actionUrl + "/template", data, function(data) {
-                    if(data.success == true) {
-                        loading("success", "Saving template successful!");
-                        $("#globalFormModal").modal("hide");
-                        dt.fnReloadAjax();
+                var validUrl = true;
+                if($('#templateUrl').val()) {
+                    var regex = /\b(?:(?:https?|ftp):\/\/www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i;
+                    if(!regex.test($('#templateUrl').val())) {
+                        validUrl = false;
+                        validator.displayInputError($("#templateUrl"), true);
+                        loading('danger', "Invalid URL, make sure to add www.");
                     } else {
-                        loading("error", "Something went wrong!");
+                        validator.displayInputError($("#templateUrl"), false);
                     }
-                }, 'json');
+                }
+                if(validUrl) {
+                    var data = {
+                        action: "save",
+                        headline: $("#templateHeadline").val(),
+                        content: $("#templateBody").val(),
+                        keywords: $("#templateKeywords").val(),
+                        url: $("#templateUrl").val(),
+                        library_id: libraryId
+                    };
+
+                    if(templateId > 0) {
+                        data['id'] = templateId;
+                    }
+
+                    loading("info", "Saving, please wait...");
+                    $.post(actionUrl + "/template", data, function(data) {
+                        if(data.success == true) {
+                            loading("success", "Saving template successful!");
+                            $("#globalFormModal").modal("hide");
+                            dt.fnReloadAjax();
+                        } else {
+                            loading("error", "Something went wrong!");
+                        }
+                    }, 'json');
+                }
             }
         });
 
@@ -240,6 +259,7 @@
                 {data: "content", width: "40%"},
                 {data: "keywords", width: "20%"},
                 {data: "date_created", width: "20%"},
+                {data: "url", visible: false},
                 {data: "id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
@@ -261,5 +281,6 @@
         $("#templateHeadline").val(data.headline);
         $("#templateBody").val(data.content);
         $("#templateKeywords").val(data.keywords);
+        $("#templateUrl").val(data.url);
     }
 </script>

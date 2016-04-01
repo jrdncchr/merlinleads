@@ -80,7 +80,12 @@ class Cron extends CI_Controller {
                 $s->keywords = $custom_content->keywords;
                 $s->url = $custom_content->url;
             } else if($s->type == "Library") {
-
+                $template = $this->scheduler_model->scheduler_library_get_template($s);
+                $s->headline = $template->headline;
+                $s->content = $template->content;
+                $s->keywords = $template->keywords;
+                $s->url = $template->url;
+                $s->template_id = $template->id;
             }
 
             switch($s->interval_code) {
@@ -97,12 +102,17 @@ class Cron extends CI_Controller {
 
                 default;
             }
+
             if($result['success']) {
-                $posts[] = array(
+                $post = array(
                     'scheduler_id' => $s->scheduler_id,
                     'link' => $result['link'],
                     'module' => $s->module
                 );
+                if($s->type == "Library") {
+                    $post['template_id'] = $s->template_id;
+                }
+                $posts[] = $post;
             }
         }
 
