@@ -25,11 +25,10 @@ class scheduler_model extends CI_Model {
         } else {
             $query = $this->db->get_where($this->scheduler_table, array('id' => $scheduler_id, 'user_id' => $user_id));
             $scheduler = $query->row();
-            if($scheduler->type == "Custom") {
-                $query = $this->db->get_where($this->scheduler_content_table, array('id' => $scheduler->content_id));
-                $content = $query->row();
-                $scheduler->content = $content;
-            }
+
+            $query = $this->db->get_where($this->scheduler_content_table, array('id' => $scheduler->content_id));
+            $content = $query->row();
+            $scheduler->content = $content;
         }
         return $scheduler;
     }
@@ -69,7 +68,7 @@ class scheduler_model extends CI_Model {
                     }
 
                 } else if($data['scheduler']['type'] == "Library") {
-                    $data['scheduler']['content_id'] = "";
+//                    $data['scheduler']['content_id'] = "";
                     $this->db->where('id', $data['scheduler']['id']);
                     $this->db->update($this->scheduler_table, $data['scheduler']);
                 }
