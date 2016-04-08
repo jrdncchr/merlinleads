@@ -86,6 +86,14 @@ class Cron extends CI_Controller {
                 $s->keywords = $template->keywords;
                 $s->url = $template->url;
                 $s->template_id = $template->id;
+            } else if($s->type == "Merlin Library") {
+                $this->load->model('merlin_library_model');
+                $template = $this->merlin_library_model->library_get_template($s);
+                $s->headline = $template->headline;
+                $s->content = $template->content;
+                $s->keywords = $template->keywords;
+                $s->url = $template->url;
+                $s->template_id = $template->id;
             }
 
             switch($s->interval_code) {
@@ -109,7 +117,7 @@ class Cron extends CI_Controller {
                     'link' => $result['link'],
                     'module' => $s->module
                 );
-                if($s->type == "Library") {
+                if($s->type == "Library" || $s->type == "Merlin Library") {
                     $post['template_id'] = $s->template_id;
                 }
                 $posts[] = $post;

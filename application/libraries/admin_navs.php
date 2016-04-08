@@ -67,6 +67,14 @@ class Admin_Navs {
                 );
                 break;
 
+            case "Scheduler":
+                $nav = array(
+                    "nav" => array(
+                        array("title" => "Merlin Libraries", "url" => "admin/scheduler", "id" => "schedulerLibrariesTopLink")
+                    )
+                );
+                break;
+
             default:
                 $nav = array();
 

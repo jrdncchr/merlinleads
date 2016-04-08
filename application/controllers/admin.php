@@ -128,6 +128,84 @@ class Admin extends MY_Controller
         $this->_renderA("pages/admin/admin_store", "Packages");
     }
 
+    public function scheduler($sub = false, $id = 0)
+    {
+        $action = $this->input->post('action');
+        $this->load->model('merlin_library_model');
+        /* Library */
+        if (!$sub) {
+            if ($action) {
+                switch ($action) {
+                    case 'list' :
+                        $list = $this->merlin_library_model->library_get();
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $result = $this->merlin_library_model->library_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $library_id = $this->input->post("library_id");
+                        $result = $this->merlin_library_model->library_delete($library_id);
+                        echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+                }
+            } else {
+                $this->_renderA('pages/admin/scheduler_libraries', 'Scheduler');
+            }
+
+            /* Form */
+        } else if ($sub == 'form') {
+            if ($id > 0) {
+                $this->data['library'] = $this->merlin_library_model->library_get($id);
+            }
+            $this->_renderA('pages/admin/scheduler_library_form', 'Scheduler');
+
+            /* Templates */
+        } else if ($sub == 'template') {
+            if ($action) {
+
+                switch ($action) {
+
+                    case 'list' :
+                        $library_id = $this->input->post('library_id');
+                        $list = $this->merlin_library_model->templates_get($library_id);
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $result = $this->merlin_library_model->templates_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $ids = $this->input->post('ids');
+                        $result = $this->merlin_library_model->templates_delete($ids);
+                        echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+                }
+            }
+        }
+    }
+
     /*
      * Features
      */

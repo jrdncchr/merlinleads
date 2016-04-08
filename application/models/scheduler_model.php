@@ -68,7 +68,6 @@ class scheduler_model extends CI_Model {
                     }
 
                 } else if($data['scheduler']['type'] == "Library") {
-//                    $data['scheduler']['content_id'] = "";
                     $this->db->where('id', $data['scheduler']['id']);
                     $this->db->update($this->scheduler_table, $data['scheduler']);
                 }
@@ -83,8 +82,10 @@ class scheduler_model extends CI_Model {
                         $result['scheduler_id'] = $this->db->insert_id();
                     }
                 }
+            } else {
+                $this->db->insert($this->scheduler_table, $data['scheduler']);
+                $result['scheduler_id'] = $this->db->insert_id();
             }
-
         }
 
         if($this->db->trans_status() === FALSE) {

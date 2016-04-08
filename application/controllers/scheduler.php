@@ -58,6 +58,9 @@ class scheduler extends MY_Controller {
         }
         $this->data['module'] = $available_modules;
         $this->data['library'] = $this->scheduler_model->scheduler_library_get($this->user->id);
+
+        $this->load->model('merlin_library_model');
+        $this->data['merlin_library'] = $this->merlin_library_model->library_get();
         $this->_renderL('pages/scheduler/form');
     }
 

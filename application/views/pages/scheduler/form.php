@@ -124,49 +124,66 @@
                         </div>
                         <div class="panel-body">
                             <div class="col-sm-12">
+
                                 <div class="form-group">
                                     <label for="type" class="control-label">* Type</label>
                                     <select class="form-control required" id="type">
                                         <option value="">Select Type</option>
-                                        <option value="Custom" <?php echo isset($scheduler) ? ($scheduler->type == "Custom" ? "selected" : "") : "" ?>>Custom</option>
-                                        <option value="Library" <?php echo isset($scheduler) ? ($scheduler->type == "Library" ? "selected" : "") : "" ?>>Library</option>
+                                        <option value="Merlin Library" <?php echo isset($scheduler) ? ($scheduler->type == "Merlin Library" ? "selected" : "") : "" ?>>Merlin Library</option>
+                                        <option value="Library" <?php echo isset($scheduler) ? ($scheduler->type == "Library" ? "selected" : "") : "" ?>>User Library</option>
+                                        <option value="Custom" <?php echo isset($scheduler) ? ($scheduler->type == "Custom" ? "selected" : "") : "" ?>>One Time Only</option>
                                     </select>
                                 </div>
 
-                                <div id="contentCustom" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->type == "Custom" ? "" : "style='display:none;'"; } ?>>
+                                <div id="contentCustom" class="scheduler-content" <?php echo isset($scheduler) ? ($scheduler->type == "Custom" ? "" : "style='display:none;'") : "style='display:none;'"; ?>>
                                     <div class="alert alert-warning"><i class="fa fa-question-circle"></i> Custom type will only use this template for every post.</div>
                                     <div class="form-group">
                                         <label for="headline" class="control-label">* Headline</label>
                                         <input type="text" class="form-control" id="customHeadline"
-                                            value="<?php echo isset($scheduler->content) ? $scheduler->content->headline : "" ?>">
+                                            value="<?php echo isset($scheduler->content) ? ($scheduler->content ? $scheduler->content->headline : "") : "" ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="body" class="control-label">* Body</label>
-                                        <textarea rows="3" class="form-control" style="height: 90px;" id="customBody"><?php echo isset($scheduler->content) ? $scheduler->content->content : "" ?></textarea>
+                                        <textarea rows="3" class="form-control" style="height: 90px;" id="customBody"><?php echo isset($scheduler->content) ? ($scheduler->content ? $scheduler->content->content : "") : "" ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="keywords" class="control-label">* Keywords</label>
-                                        <textarea rows="2" class="form-control" style="height: 60px;" id="customKeywords"><?php echo isset($scheduler->content) ? $scheduler->content->keywords : "" ?></textarea>
+                                        <textarea rows="2" class="form-control" style="height: 60px;" id="customKeywords"><?php echo isset($scheduler->content) ? ($scheduler->content ? $scheduler->content->keywords : "") : "" ?></textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="url" class="control-label">URL</label>
                                         <input type="url" class="form-control" id="customUrl" placeholder="ex. http://www.merlinleads.com"
-                                               value="<?php echo isset($scheduler->content) ? $scheduler->content->url : "" ?>" />
+                                               value="<?php echo isset($scheduler->content) ? ($scheduler->content ? $scheduler->content->url : "") : "" ?>" />
                                     </div>
                                 </div>
 
-                                <div id="contentLibrary" class="scheduler-content" <?php if(isset($scheduler)) { echo $scheduler->type == "Library" ? "" : "style='display:none;'"; } ?>>
+                                <div id="contentLibrary" class="scheduler-content" <?php echo isset($scheduler) ? ($scheduler->type == "Library" ? "" : "style='display:none;'") : "style='display:none;'" ?>>
                                     <div class="alert alert-warning"><i class="fa fa-question-circle"></i>
-                                        Library type will post templates from your library. It will post in ascending order by create date.
+                                        User Library type will post templates from your library. It will post in ascending order by create date.
                                         If you don't have any library yet, please <a href="<?php echo base_url() . 'scheduler/library' ;?>">create a library first and add your templates.</a>
                                     </div>
                                     <div class="form-group">
-                                        <label for="library" class="control-label">* Library</label>
+                                        <label for="library" class="control-label">* User Library</label>
                                         <select class="form-control" id="library">
                                             <option value="">Select Library</option>
                                             <?php foreach($library as $l): ?>
                                                 <option value="<?php echo $l->id; ?>" <?php echo isset($scheduler) ? ($scheduler->library_id == $l->id ? "selected" : "") : "" ?>><?php echo $l->name . " [ " . $l->template_count . " Templates ]"  ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="contentMerlinLibrary" class="scheduler-content" <?php echo isset($scheduler) ? ($scheduler->type == "Merlin Library" ? "" : "style='display:none;'") : "style='display:none;'" ?>>
+                                    <div class="alert alert-warning"><i class="fa fa-question-circle"></i>
+                                        Merlin Library type will post templates from our library. It will post in ascending order by create date.
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="merlin-library" class="control-label">* Merlin Library</label>
+                                        <select class="form-control" id="merlin-library">
+                                            <option value="">Select Library</option>
+                                            <?php foreach($merlin_library as $ml): ?>
+                                                <option value="<?php echo $ml->id; ?>" <?php echo isset($scheduler) ? ($scheduler->library_id == $ml->id ? "selected" : "") : "" ?>><?php echo $ml->name . " [ " . $ml->template_count . " Templates ]"  ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -223,12 +240,15 @@
         statusSwitch = $("input[type='checkbox']").bootstrapSwitch();
 
         $("#type").on("change", function() {
+
             $(".scheduler-content").hide();
             var type = $(this).val();
             if(type == "Custom") {
                 $("#contentCustom").show();
             } else if(type == "Library") {
                 $("#contentLibrary").show();
+            } else if(type == "Merlin Library") {
+                $("#contentMerlinLibrary").show();
             }
         });
 
@@ -289,6 +309,8 @@
                         }
                     } else if($("#type").val() == 'Library') {
                         data.scheduler.library_id = $("#library").val();
+                    } else if($("#type").val() == 'Merlin Library') {
+                        data.scheduler.library_id = $("#merlin-library").val();
                     }
 
                     if(schedulerId != "") {

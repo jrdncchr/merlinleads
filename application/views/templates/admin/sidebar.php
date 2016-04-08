@@ -21,6 +21,9 @@
 <li>
     <a id="modulesSideLink" href="<?php echo base_url() . 'admin/modules'; ?>">Modules</a>
 </li>
+<li>
+    <a id="schedulerSideLink" href="<?php echo base_url() . 'admin/scheduler'; ?>">Scheduler</a>
+</li>
 <hr />
 <li>
     <a href="<?php echo base_url() . 'property'; ?>">Return to Properties</a>
