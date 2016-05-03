@@ -9,6 +9,15 @@ class Property_Model extends CI_Model {
         $this->load->database();
     }
 
+    public function getPropertiesForMerlinLibrary($user_id) {
+        $this->db->select('properties_overview.property_id, properties_overview.name, properties_overview.status');
+        $this->db->from('properties_overview');
+        $this->db->where(array('properties_overview.user_id' => $user_id, 'properties_overview.status' => 'Active'));
+        $this->db->order_by('date_created', 'desc');
+        $result = $this->db->get();
+        return $result->result();
+    }
+
     // Propert Overview
     public function getOverviews($userId) {
         $result = $this->db->get_where('properties_overview', array('user_id' => $userId));

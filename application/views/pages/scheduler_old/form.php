@@ -178,14 +178,57 @@
                                     <div class="alert alert-warning"><i class="fa fa-question-circle"></i>
                                         Merlin Library type will post templates from our library. It will post in ascending order by create date.
                                     </div>
-                                    <div class="form-group">
-                                        <label for="merlin-library" class="control-label">* Merlin Library</label>
-                                        <select class="form-control" id="merlin-library">
-                                            <option value="">Select Library</option>
-                                            <?php foreach($merlin_library as $ml): ?>
-                                                <option value="<?php echo $ml->id; ?>" <?php echo isset($scheduler) ? ($scheduler->library_id == $ml->id ? "selected" : "") : "" ?>><?php echo $ml->name . " [ " . $ml->template_count . " Templates ]"  ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="merlin-library" class="control-label">* Merlin Library</label>
+                                                <select class="form-control" id="merlin-library">
+                                                    <option value="">Select Library</option>
+                                                    <?php foreach($merlin_library as $ml): ?>
+                                                        <option value="<?php echo $ml->id; ?>" <?php echo isset($scheduler) ? ($scheduler->library_id == $ml->id ? "selected" : "") : "" ?>><?php echo $ml->name; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="merlin-library-category" class="control-label">* Category</label>
+                                                <select class="form-control" id="merlin-library-category">
+                                                    <option value="">Select Category</option>
+                                                    <?php foreach($merlin_category as $mc): ?>
+                                                        <option value="<?php echo $mc->category_id; ?>" <?php echo isset($scheduler) ? ($scheduler->category_id == $mc->category_id ? "selected" : "") : "" ?>><?php echo $mc->category_name; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="merlin-library-property" class="control-label">* Property</label>
+                                                <select class="form-control" id="merlin-library-property">
+                                                    <option value="">Select Property</option>
+                                                    <?php foreach($property as $p): ?>
+                                                        <option value="<?php echo $p->property_id; ?>" <?php echo isset($scheduler) ? ($scheduler->property_id == $p->property_id ? "selected" : "") : "" ?>><?php echo $p->name; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="control-label">* Post Content</label>
+                                                <button class="btn btn-primary btn-block" id="merlin-library-generate-btn">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="merlin-library-property" class="control-label">* Post URL</label>
+                                                <input type="text" class="form-control" id="merlin-library-property" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -252,6 +295,13 @@
             }
         });
 
+        $('#merlin-library').on('change', function() {
+            var libraryId = $(this).val();
+            $.post(actionUrl, {action: 'merlin_category_option', library_id: libraryId}, function(html) {
+                $('#merlin-library-category').append(html);
+            });
+        });
+
         $('#interval').on('change', function() {
             if($(this).val() == "E") {
                 $('#day').parents('.form-group').hide();
@@ -311,6 +361,7 @@
                         data.scheduler.library_id = $("#library").val();
                     } else if($("#type").val() == 'Merlin Library') {
                         data.scheduler.library_id = $("#merlin-library").val();
+                        data.scheduler.category_id = $("#merlin-library-category").val();
                     }
 
                     if(schedulerId != "") {

@@ -93,6 +93,19 @@ $(function() {
                     $(this).val('');
                 });
     });
+    $(".modal")
+    .on("hidden.bs.modal", function() {
+        var modal = $('.modal');
+            modal.find('notice').hide().removeClass('alert alert-danger');
+            modal.find('input, textarea, select')
+            .not('input[type=hidden],input[type=button],input[type=submit],input[type=reset],input[type=image],button')
+            .filter(':enabled')
+            .each(function() {
+                $(this).parent().removeClass('has-error');
+                $(this).val('');
+            });
+            modal.find('.notice').removeClass('alert alert-danger').html('');
+    });
 
 
     /* DataTables Global Events */

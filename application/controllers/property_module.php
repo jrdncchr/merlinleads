@@ -270,6 +270,7 @@ class Property_Module extends MY_Controller {
                     'housing_type' => $this->template_model->generatePropertyCraiglistData($template->housing_type, $property, $profile, $module),
                     'laundry' => $this->template_model->generatePropertyCraiglistData($template->laundry, $property, $profile, $module),
                     'parking' => $this->template_model->generatePropertyCraiglistData($template->parking, $property, $profile, $module),
+                    'license' => $this->template_model->generatePropertyCraiglistData($template->license, $property, $profile, $module),
                     'wheelchair_accessible' => $this->template_model->generatePropertyCraiglistData($template->wheelchair_accessible, $property, $profile, $module),
                     'no_smoking' => $this->template_model->generatePropertyCraiglistData($template->no_smoking, $property, $profile, $module),
                     'furnished' => $this->template_model->generatePropertyCraiglistData($template->furnished, $property, $profile, $module),

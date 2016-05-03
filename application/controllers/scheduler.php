@@ -7,179 +7,103 @@ class scheduler extends MY_Controller {
         $this->load->library('session');
         $user = $this->session->userdata('user');
         if (null == $user) {
-            redirect(base_url() . "property");
+            redirect(base_url());
         }
         $this->load->model('scheduler_model');
     }
 
     public function index() {
-        $this->_renderL('pages/scheduler/overview');
+        $this->data['available_times'] = $this->_getAvailableTimes();
+        $this->data['scheduler'] = $this->scheduler_model->get_scheduler(
+            array('user_id' => $this->user->id));
+        $this->_renderL('pages/scheduler/index');
     }
 
-    public function form($id = 0) {
-        $this->load->model('input_model');
-
-        /* Get only the available modules that the user has access token set */
-        $this->db->reconnect();
-        $module = $this->input_model->getSchedulerSelectOptions('module');
-        $available_modules = array();
-        foreach($module as $m) {
-            if($m->module_name == "Facebook") {
-                if($this->user->fb_access_token != "") {
-                    $available_modules[] = $m;
-                }
-            } else if($m->module_name == "LinkedIn") {
-                if($this->user->li_access_token != "") {
-                    $available_modules[] = $m;
-                }
-            } else if($m->module_name == "Twitter") {
-                if($this->user->twitter_access_token != "") {
-                    $available_modules[] = $m;
-                }
-            }
-        }
-
-        $this->data['interval'] = $this->input_model->getSchedulerSelectOptions('interval');
-        $this->data['time'] = $this->input_model->getSchedulerSelectOptions('time');
-
-        if($id > 0) {
-            /* Make sure that the parameter scheduler ID is owned by the logged in user. */
-            $allow = false;
-            $scheduler = $this->scheduler_model->get($this->user->id, $id);
-            if($scheduler) {
-                if($this->user->id == $scheduler->user_id) {
-                    $allow = true;
-                    $this->data['scheduler'] = $scheduler;
-                }
-            }
-            if(!$allow) {
-                header("Location: " . base_url() . "scheduler");
-            }
-        }
-        $this->data['module'] = $available_modules;
-        $this->data['library'] = $this->scheduler_model->scheduler_library_get($this->user->id);
-
-        $this->load->model('merlin_library_model');
-        $this->data['merlin_library'] = $this->merlin_library_model->library_get();
-        $this->_renderL('pages/scheduler/form');
+    public function library() {
+        $this->_renderL('pages/scheduler/library');
     }
 
-    public function action() {
+    public function library_action() {
         $action = $this->input->post('action');
-
         switch($action) {
-
             case 'list' :
-                $list = $this->scheduler_model->get($this->user->id);
+                $list = $this->scheduler_model->get_scheduler_library(
+                    array('library_user_id' => $this->user->id));
                 echo json_encode(array('data' => $list));
                 break;
 
             case 'save' :
-                $data = $this->input->post();
-                $data['scheduler']['user_id'] = $this->user->id;
-                $result = $this->scheduler_model->save($data);
+                $library = $this->input->post('library');
+                if(isset($library['library_id'])) {
+                    $result = $this->scheduler_model->update_scheduler_library($library['library_id'], $library);
+                } else {
+                    $library['library_user_id'] = $this->user->id;
+                    $result = $this->scheduler_model->add_scheduler_library($library);
+                }
                 echo json_encode($result);
                 break;
 
             case 'delete' :
-                $result = $this->scheduler_model->delete(
-                    $this->input->post('scheduler_id'), $this->input->post('content_id'));
+                $library_id = $this->input->post("library_id");
+                $result = $this->scheduler_model->delete_scheduler_library($library_id);
                 echo json_encode($result);
-                break;
-
-            case 'posts_list' :
-                $list = $this->scheduler_model->get_post($this->input->post('scheduler_id'));
-                echo json_encode(array('data' => $list ));
                 break;
 
             default:
                 echo json_encode(array(
                     'success' => false,
-                    'message' => "Invalid Action."
+                    'message' => "Action not found."
+                ));
+        }
+    }
+
+    public function content() {
+        $library = $this->scheduler_model->get_scheduler_library(
+            array('library_user_id' => $this->user->id));
+        $this->data['library'] = $library;
+        $this->_renderL('pages/scheduler/content');
+    }
+
+    public function content_action() {
+        $action = $this->input->post('action');
+        switch($action) {
+
+            case 'list' :
+                $list = $this->scheduler_model->get_scheduler_content(
+                    array('content_user_id' => $this->user->id));
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'save' :
+                $content = $this->input->post('content');
+                if(isset($content['content_id'])) {
+                    $result = $this->scheduler_model->update_scheduler_content($content['content_id'], $content);
+                } else {
+                    $content['content_user_id'] = $this->user->id;
+                    $result = $this->scheduler_model->add_scheduler_content($content);
+                }
+                echo json_encode($result);
+                break;
+
+            case 'delete' :
+                $content_id = $this->input->post("content_id");
+                $result = $this->scheduler_model->delete_scheduler_content($content_id);
+                echo json_encode($result);
+                break;
+
+            default:
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => "Action not found."
                 ));
 
         }
     }
 
-    public function library($sub = false, $id = 0) {
-        $action = $this->input->post('action');
-
-        /* Library */
-        if(!$sub) {
-            if($action) {
-                switch($action) {
-                    case 'list' :
-                        $list = $this->scheduler_model->scheduler_library_get($this->user->id);
-                        echo json_encode(array('data' => $list));
-                        break;
-
-                    case 'save' :
-                        $data = $this->input->post();
-                        unset($data['action']);
-                        $data['user_id'] = $this->user->id;
-                        $result = $this->scheduler_model->scheduler_library_save($data);
-                        echo json_encode($result);
-                        break;
-
-                    case 'delete' :
-                        $library_id = $this->input->post("library_id");
-                        $result = $this->scheduler_model->scheduler_library_delete($library_id);
-                        echo json_encode($result);
-                        break;
-
-                    default:
-                        echo json_encode(array(
-                            'success' => false,
-                            'message' => "Action not found."
-                        ));
-                }
-            } else {
-                $this->_renderL('pages/scheduler/library');
-            }
-
-        /* Form */
-        } else if($sub == 'form') {
-            if($id > 0) {
-                $this->data['library'] = $this->scheduler_model->scheduler_library_get($this->user->id, $id);
-            }
-            $this->_renderL('pages/scheduler/library_form');
-
-        /* Templates */
-        } else if($sub == 'template') {
-            if($action) {
-                switch($action) {
-
-                    case 'list' :
-                        $library_id = $this->input->post('library_id');
-                        $list = $this->scheduler_model->scheduler_user_templates_get($library_id);
-                        echo json_encode(array('data' => $list));
-                        break;
-
-                    case 'save' :
-                        $data = $this->input->post();
-                        unset($data['action']);
-                        $data['user_id'] = $this->user->id;
-                        $result = $this->scheduler_model->scheduler_user_templates_save($data);
-                        echo json_encode($result);
-                        break;
-
-                    case 'delete' :
-                        $ids = $this->input->post('ids');
-                        $result = $this->scheduler_model->scheduler_user_templates_delete($ids);
-                        echo json_encode($result);
-                        break;
-
-                    default:
-                        echo json_encode(array(
-                            'success' => false,
-                            'message' => "Action not found."
-                        ));
-
-                }
-
-            }
-        }
-
-
+    public function _getAvailableTimes() {
+        return array(
+        '12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM',
+        '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM');
     }
+
 } 

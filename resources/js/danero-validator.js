@@ -23,6 +23,14 @@ var Validator = function() {
                         _this.removeInputError(e, 'email');
                     }
                 }
+                // validate url
+                if(e.hasClass('url')) {
+                    if(!_this.validateUrl(e.val())) {
+                        _this.inputErrors.url.push(e);
+                    } else {
+                        _this.removeInputError(e, 'url');
+                    }
+                }
             }
             _this.displayInputError(e, false);
         });
@@ -48,6 +56,12 @@ var Validator = function() {
             for(i = 0; i < _this.inputErrors.email.length; i++) {
                 _this.displayInputError(_this.inputErrors.email[i], true);
             }
+        }  else if(_this.inputErrors.url.length > 0) {
+            result.success = false;
+            result.message = "Invalid url format.";
+            for(i = 0; i < _this.inputErrors.url.length; i++) {
+                _this.displayInputError(_this.inputErrors.url[i], true);
+            }
         }
         _this.displayAlertError(form, !result.success, result.message);
         return result;
@@ -72,9 +86,9 @@ var Validator = function() {
 
     this.displayAlertError = function(form, show, message) {
         if(show) {
-            form.find('.notice').addClass('alert alert-danger').html("<i class='fa fa-exclamation-circle'></i> " + message);
+            form.find('.notice').addClass('alert alert-danger').html("<i class='fa fa-exclamation-circle'></i> " + message).show();
         } else {
-            form.find('.notice').removeClass('alert alert-danger').html("");
+            form.find('.notice').removeClass('alert alert-danger').html("").hide();
         }
     };
 
@@ -83,8 +97,23 @@ var Validator = function() {
         return re.test(email);
     };
 
+    this.validateUrl = function(url) {
+        var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+        if(!regex .test(url)) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    this.clearForm = function(form) {
+        form.find('input, select, textarea').each(function() {
+            $(this).val("");
+        });
+    };
+
     this.refreshInputErrors = function() {
-        this.inputErrors = { required : [], email : [] }
+        this.inputErrors = { required : [], email : [], url : [] }
     }
 
 };

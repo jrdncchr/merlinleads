@@ -38,6 +38,7 @@ function activateEvents() {
                     $('#housingType').val(data.housing_type);
                     $('#laundry').val(data.laundry);
                     $('#parking').val(data.parking);
+                    $('#licensureInfo').val(data.license);
                     $('#street').val(data.street);
                     $('#crossStreet').val(data.cross_street);
                     $('#city').val(data.city);

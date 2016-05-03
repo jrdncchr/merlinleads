@@ -183,6 +183,12 @@ class Admin extends MY_Controller
                         echo json_encode(array('data' => $list));
                         break;
 
+                    case 'category_option' :
+                        $library_id = $this->input->post('library_id');
+                        $html = $this->merlin_library_model->category_get_for_option($library_id);
+                        echo $html;
+                        break;
+
                     case 'save' :
                         $data = $this->input->post();
                         unset($data['action']);
@@ -194,6 +200,74 @@ class Admin extends MY_Controller
                         $ids = $this->input->post('ids');
                         $result = $this->merlin_library_model->templates_delete($ids);
                         echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+                }
+            }
+        }  else if ($sub == 'category') {
+            if ($action) {
+
+                switch ($action) {
+
+                    case 'list' :
+                        $library_id = $this->input->post('library_id');
+                        $list = $this->merlin_library_model->category_get($library_id);
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $result = $this->merlin_library_model->category_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $ids = $this->input->post('ids');
+                        $result = $this->merlin_library_model->category_delete($ids);
+                        echo json_encode($result);
+                        break;
+
+                    default:
+                        echo json_encode(array(
+                            'success' => false,
+                            'message' => "Action not found."
+                        ));
+                }
+            }
+        } else if ($sub == 'snippet') {
+            if ($action) {
+
+                switch ($action) {
+
+                    case 'list' :
+                        $library_id = $this->input->post('library_id');
+                        $list = $this->merlin_library_model->snippet_get($library_id);
+                        echo json_encode(array('data' => $list));
+                        break;
+
+                    case 'save' :
+                        $data = $this->input->post();
+                        unset($data['action']);
+                        $result = $this->merlin_library_model->snippet_save($data);
+                        echo json_encode($result);
+                        break;
+
+                    case 'delete' :
+                        $ids = $this->input->post('ids');
+                        $result = $this->merlin_library_model->snippet_delete($ids);
+                        echo json_encode($result);
+                        break;
+
+                    case 'category_option' :
+                        $library_id = $this->input->post('library_id');
+                        $html = $this->merlin_library_model->category_get_for_option($library_id);
+                        echo $html;
                         break;
 
                     default:

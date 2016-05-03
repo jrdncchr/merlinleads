@@ -77,7 +77,8 @@ class Templates_Lib_Properties {
             case "[Broker Name]": return $profile->broker_name;
             case "[Broker Address]": return $profile->broker_address;
             case "[Broker Phone]": return $profile->broker_phone;
-            case "[Broker License #]": return $profile->broker_license;
+            case "[Broker License #]":
+            case "[Broker License]": return $profile->broker_license;
             case "[Company Link]": return $profile->company_website;
             case "[Company Name]": return $profile->company;
             case "[Profile Listing Book Url]": return $profile->listing_book_url;

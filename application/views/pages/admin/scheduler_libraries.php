@@ -13,7 +13,8 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Template Count</th>
+                <th>Templates</th>
+                <th>Snippets</th>
                 <th>Date Created</th>
             </tr>
             </thead>
@@ -32,7 +33,7 @@
 
         dt = $("#libraryDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [3],
+            "aaSorting": [4],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -43,7 +44,8 @@
             columns: [
                 {data: "name", width: "20%"},
                 {data: "description", width: "40%"},
-                {data: "template_count", width: "20%"},
+                {data: "template_count", width: "10%"},
+                {data: "snippet_count", width: "10%"},
                 {data: "date_created", width: "20%"},
                 {data: "id", visible: false}
             ],
