@@ -128,7 +128,7 @@
     function initDt() {
         dt = $("#schedulerLibraryDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [3],
+            "aaSorting": [4],
             "bDestroy": true,
             "filter": true,
             "ajax": {

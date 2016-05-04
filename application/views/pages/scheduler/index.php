@@ -19,6 +19,10 @@
     .scheduler_block {
         text-align: center;
         margin-bottom: 7px !important;
+        cursor: pointer;
+    }
+    .scheduler_block:hover {
+        background-color: lightyellow;
     }
 
     .scheduler_block p.modules {
@@ -29,7 +33,7 @@
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-calendar"></i> Scheduler</h4>
 <div class="row">
     <div class="col-sm-12">
-        <button class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
+        <button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
         <a href="<?php echo base_url() . 'scheduler/content'; ?>" class="btn btn-default btn-sm pull-right">Contents</a>
         <a href="<?php echo base_url() . 'scheduler/library'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Libraries</a>
         <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
@@ -99,3 +103,65 @@
         </table>
     </div>
 </div>
+
+<div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="form-modal-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="form-modal-label">Add Timeslot</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0;">
+                <div class="notice"></div>
+                <div class="form-group">
+                    <label for="time">* Time</label>
+                    <select id="time" class="form-control required">
+                        <?php foreach($available_times as $t): ?>
+                            <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="library">* Library</label>
+                    <select id="library" class="form-control required">
+                        <option value="CWoP">Content without post</option>
+                        <option value="CWoP">Content with post</option>
+                        <option value="CWoP">Cross Promotional</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>* Accounts</label>
+                    <div>
+                        <i class="fa fa-facebook-square fa-2x"></i>
+                        <i class="fa fa-twitter-square fa-2x"></i>
+                        <i class="fa fa-linkedin-square fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success btn-sm" id="save-btn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function() {
+        $('#add-timeslot-btn').on('click', function() {
+            $('#form-modal').modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            })
+        });
+        $('.scheduler_block').on('click', function() {
+            $('#form-modal').modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            })
+        });
+    });
+</script>

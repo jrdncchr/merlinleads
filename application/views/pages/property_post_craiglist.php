@@ -191,8 +191,11 @@
                                             </div>
                                             <div class="col-xs-8">
                                                 <div class="form-group">
-                                                    <label class="sr-only" for="licensureInfo">Licensure Info</label>
-                                                    <input type="text" class="form-control input-sm" id="licensureInfo" placeholder="Licensure Info">
+                                                    <div class="input-group input-group-sm">
+                                                        <label class="sr-only" for="licensureInfo">Licensure Info</label>
+                                                        <input type="text" class="form-control input-sm" id="licensureInfo" placeholder="Licensure Info">
+                                                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
