@@ -115,17 +115,17 @@
                             <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Slideshare"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/twitter.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Twitter"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/facebook.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Facebook"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/googleplus.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Google+"></th>
-                            <th width="6%">LinkedIn</th>
-                            <th width="6%">Blog</th>
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/twitter.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Twitter"></th>-->
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/facebook.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Facebook"></th>-->
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/googleplus.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Google+"></th>-->
+<!--                            <th width="6%">LinkedIn</th>-->
+<!--                            <th width="6%">Blog</th>-->
                         </tr>
                         </thead>
                         <tbody>
@@ -159,17 +159,17 @@
                             <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Slideshare"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/twitter.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Twitter"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/facebook.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Facebook"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/googleplus.png'; ?>"
-                                                class="center-block helper" data-container="body" data-toggle="popover"
-                                                data-placement="top" data-content="Google+"></th>
-                            <th width="6%">LinkedIn</th>
-                            <th width="6%">Blog</th>
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/twitter.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Twitter"></th>-->
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/facebook.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Facebook"></th>-->
+<!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/googleplus.png'; ?><!--"-->
+<!--                                                class="center-block helper" data-container="body" data-toggle="popover"-->
+<!--                                                data-placement="top" data-content="Google+"></th>-->
+<!--                            <th width="6%">LinkedIn</th>-->
+<!--                            <th width="6%">Blog</th>-->
                         </tr>
                         </thead>
                         <tbody>
@@ -326,36 +326,36 @@
                     }
                     <?php echo !in_array("Slideshare", $available_modules) ? ",visible: false" : ""; ?>
                 },
-                { 'data' : 'twitter',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Twitter", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'facebook',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Facebook", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'googlePlus',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Google+", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'linkedIn',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("LinkedIn", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'blog',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Blog", $available_modules) ? ",visible: false" : ""; ?>
-                }
+//                { 'data' : 'twitter',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Twitter", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'facebook',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Facebook", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'googlePlus',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Google+", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'linkedIn',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("LinkedIn", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'blog',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Blog", $available_modules) ? ",visible: false" : ""; ?>
+//                }
             ]
         }).promise().done(function() {
             setTimeout(function() {
@@ -465,36 +465,36 @@
                     }
                     <?php echo !in_array("Slideshare", $available_modules) ? ",visible: false" : ""; ?>
                 },
-                { 'data' : 'twitter',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Twitter", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'facebook',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Facebook", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'googlePlus',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Google+", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'linkedIn',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("LinkedIn", $available_modules) ? ",visible: false" : ""; ?>
-                },
-                { 'data' : 'blog',
-                    'render' : function(data, type, row) {
-                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
-                    }
-                    <?php echo !in_array("Blog", $available_modules) ? ",visible: false" : ""; ?>
-                }
+//                { 'data' : 'twitter',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Twitter", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'facebook',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Facebook", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'googlePlus',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Google+", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'linkedIn',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("LinkedIn", $available_modules) ? ",visible: false" : ""; ?>
+//                },
+//                { 'data' : 'blog',
+//                    'render' : function(data, type, row) {
+//                        return "<p class='helper p-counter' style='background-color: #5cb85c'>" + data + "</p>"
+//                    }
+//                    <?php //echo !in_array("Blog", $available_modules) ? ",visible: false" : ""; ?>
+//                }
             ]
         }).promise().done(function() {
             setTimeout(function() {
