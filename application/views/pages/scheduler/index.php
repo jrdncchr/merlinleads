@@ -28,6 +28,14 @@
     .scheduler_block p.modules {
         line-height: 5px;
     }
+    .social {
+        cursor: pointer;
+    }
+    .account-on {
+        color: #00438A;
+        border-bottom: 3px solid #00438A;
+        padding-bottom: 2px;
+    }
 </style>
 
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-calendar"></i> Scheduler</h4>
@@ -67,7 +75,6 @@
                                     <div class="scheduler_block panel panel-default">
                                     <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
                                     <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
-                                    <input type="hidden" class="s_otp" value="<?php echo $s->otp; ?>" />
                                     <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />
                                     <input type="hidden" class="s_time" value="<?php echo $s->time; ?>" />
                                     <input type="hidden" class="s_type" value="<?php echo $s->type; ?>" />
@@ -75,7 +82,7 @@
                                     <input type="hidden" class="s_property_id" value="<?php echo $s->property_id; ?>" />
                                     <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
                                     <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
-                                    <p><?php echo $s->library_name; ?></p>
+                                    <p><?php echo $s->library->library_name; ?></p>
                                     <p class="modules">
                                     <?php
                                     $modules = explode(',', $s->modules);
@@ -113,32 +120,71 @@
             </div>
             <div class="modal-body" style="padding-bottom: 0;">
                 <div class="notice"></div>
-                <div class="form-group">
-                    <label for="time">* Time</label>
-                    <select id="time" class="form-control required">
-                        <?php foreach($available_times as $t): ?>
-                            <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="day">* Day</label>
+                            <select id="day" class="form-control required">
+                                <option value="">Select Day</option>
+                                <?php foreach(array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') as $d): ?>
+                                    <option value="<?php echo $d; ?>"><?php echo $d; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="time">* Time</label>
+                            <select id="time" class="form-control required">
+                                <option value="">Select Time</option>
+                                <?php foreach($available_times as $t): ?>
+                                    <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="library">* Library</label>
-                    <select id="library" class="form-control required">
-                        <option value="CWoP">Content without post</option>
-                        <option value="CWoP">Content with post</option>
-                        <option value="CWoP">Cross Promotional</option>
-                    </select>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="type">* Type</label>
+                            <select id="type" class="form-control required">
+                                <option value="">Select Type</option>
+                                <option value="merlin">Merlin Library</option>
+                                <option value="user">User Library</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" id="library-section" style="display: none;">
+                        <div class="form-group">
+                            <label for="library-user">* Library</label>
+                            <select id="library-user" class="form-control" style="display: none;">
+                                <option value="">Select Library</option>
+                                <?php foreach($user_library as $l): ?>
+                                    <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <select id="library-merlin" class="form-control" style="display: none;">
+                                <option value="">Select Library</option>
+                                <?php foreach($merlin_library as $l): ?>
+                                    <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label>* Accounts</label>
-                    <div>
-                        <i class="fa fa-facebook-square fa-2x"></i>
-                        <i class="fa fa-twitter-square fa-2x"></i>
-                        <i class="fa fa-linkedin-square fa-2x"></i>
+                    <div id="accounts">
+                        <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
+                        <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
+                        <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm pull-left" id="delete-btn">Delete</button>
                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-success btn-sm" id="save-btn">Save</button>
             </div>
@@ -148,20 +194,145 @@
 
 
 <script>
+    var actionUrl = "<?php echo base_url() . 'scheduler/scheduler_action'; ?>";
+    var schedulerId = 0;
+
     $(function() {
         $('#add-timeslot-btn').on('click', function() {
-            $('#form-modal').modal({
+            schedulerId = 0;
+            $('#delete-btn').hide();
+            var modal = $('#form-modal');
+            modal.modal({
                 show: true,
                 backdrop: 'static',
                 keyboard: false
-            })
+            });
+            modal.find('.fa-facebook-square').removeClass('account-on');
+            modal.find('.fa-twitter-square').removeClass('account-on');
+            modal.find('.fa-linkedin-square').removeClass('account-on');
+            modal.find('.modal-title').html('Add Timeslot');
         });
+
         $('.scheduler_block').on('click', function() {
-            $('#form-modal').modal({
+            var selectedBlock = $(this);
+            schedulerId = selectedBlock.find('.s_scheduler_id').val();
+            var scheduler = {
+                library_id : selectedBlock.find('.s_library_id').val(),
+                time : selectedBlock.find('.s_time').val(),
+                day : selectedBlock.find('.s_day').val(),
+                type : selectedBlock.find('.s_type').val()
+            };
+            $('#delete-btn').show();
+            var modal = $('#form-modal');
+            modal.modal({
                 show: true,
                 backdrop: 'static',
                 keyboard: false
-            })
+            });
+            modal.find('.modal-title').html('Edit Timeslot');
+            $('#library').val(scheduler.library_id);
+            $('#time').val(scheduler.time);
+            $('#day').val(scheduler.day);
+            $('#type').val(scheduler.type);
+            $('#library-section').show();
+            if(scheduler.type == 'user') {
+                $('#library-merlin').hide();
+                $('#library-user').show().val(scheduler.library_id);
+            } else if(scheduler.type == 'merlin') {
+                $('#library-user').hide();
+                $('#library-merlin').show().val(scheduler.library_id);
+            }
+
+            if(selectedBlock.find('.fa-facebook').length > 0) {
+                modal.find('.fa-facebook-square').addClass('account-on');
+            } else {
+                modal.find('.fa-facebook-square').removeClass('account-on');
+            }
+            if(selectedBlock.find('.fa-twitter').length > 0) {
+                modal.find('.fa-twitter-square').addClass('account-on');
+            } else {
+                modal.find('.fa-twitter-square').removeClass('account-on');
+            }
+            if(selectedBlock.find('.fa-linkedin').length > 0) {
+                modal.find('.fa-linkedin-square').addClass('account-on');
+            } else {
+                modal.find('.fa-linkedin-square').removeClass('account-on');
+            }
         });
-    });
+
+        $('.social').on('click', function() {
+            var modal = $('#form-modal');
+            if(!$(this).hasClass('account-on')) {
+                $(this).addClass('account-on');
+            } else {
+                $(this).removeClass('account-on');
+            }
+        });
+
+        $('#type').on('change', function() {
+            var type = $(this).val();
+            if(type) {
+                $('#library-section').show();
+                if(type == 'merlin') {
+                    $('#library-merlin').addClass('required').show();
+                    $('#library-user').removeClass('required').hide();
+                } else if(type == 'user') {
+                    $('#library-user').addClass('required').show();
+                    $('#library-merlin').removeClass('required').hide();
+                }
+            } else {
+                $('#library-section').hide();
+            }
+        });
+
+        $('#form-modal').on("hidden.bs.modal", function() {
+            $('#library-section').hide();
+        });
+
+        $('#save-btn').on('click', function() {
+            if(validator.validateForm($('#form-modal'))) {
+                var type = $('#type').val();
+                var data = {
+                    action: 'save',
+                    scheduler : {
+                        day : $('#day').val(),
+                        time: $('#time').val(),
+                        type: type,
+                        library_id: type == 'user' ? $('#library-user').val() : $('#library-merlin').val()
+                    }
+                };
+                var modules = "";
+                $('#accounts').find('.social').each(function() {
+                    if($(this).hasClass('account-on')) {
+                        if($(this).hasClass('account-facebook')) {
+                            modules += "Facebook";
+                        } else if($(this).hasClass('account-twitter')) {
+                            modules += "Twitter";
+                        } else if($(this).hasClass('account-linkedin')) {
+                            modules += "LinkedIn";
+                        }
+                        modules += ",";
+                    }
+                });
+                modules = modules.substring(0, modules.length - 1);
+                if(modules == "") {
+                    validator.displayAlertError($('#form-modal'), true, "Select at least one account.");
+                    return false;
+                }
+                data.scheduler.modules = modules;
+                if(schedulerId > 0) {
+                    data.scheduler.scheduler_id = schedulerId;
+                }
+                loading('info', 'Saving scheduler...');
+                $.post(actionUrl, data, function(res) {
+                    if(res.success) {
+                        loading('success', 'Saving scheduler successful!');
+                        setTimeout(function() {
+                            location.reload(true);
+                        }, 500);
+                    }
+                }, 'json');
+            }
+        });
+    })
 </script>

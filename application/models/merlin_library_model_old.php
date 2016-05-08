@@ -42,24 +42,24 @@ class merlin_library_model extends CI_Model {
     /*
      * Scheduler Content
      */
-    public function get_content($where = array(), $list = true) {
+    public function get_scheduler_content($where = array(), $list = true) {
         $this->db->join($this->scheduler_library_table, 'merlin_library.library_id = merlin_content.library_id');
         $result = $this->db->get_where($this->scheduler_content_table, $where);
         return $list ? $result->result() : $result->row();
     }
 
-    public function add_content($content) {
+    public function add_scheduler_content($content) {
         $this->db->insert($this->scheduler_content_table, $content);
         return array('success' => true, 'inserted_id' => $this->db->insert_id());
     }
 
-    public function update_content($content_id, $content) {
+    public function update_scheduler_content($content_id, $content) {
         $this->db->where('content_id', $content_id);
         $this->db->update($this->scheduler_content_table, $content);
         return array('success' => true);
     }
 
-    public function delete_content($content_id) {
+    public function delete_scheduler_content($content_id) {
         $this->db->where('content_id', $content_id);
         $this->db->delete($this->scheduler_content_table);
         return array('success' => true);

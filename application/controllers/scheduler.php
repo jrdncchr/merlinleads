@@ -10,13 +10,45 @@ class scheduler extends MY_Controller {
             redirect(base_url());
         }
         $this->load->model('scheduler_model');
+        $this->load->model('merlin_library_model');
     }
 
     public function index() {
         $this->data['available_times'] = $this->_getAvailableTimes();
-        $this->data['scheduler'] = $this->scheduler_model->get_scheduler(
+        $this->data['scheduler'] = $this->scheduler_model->get_scheduler_details(
             array('user_id' => $this->user->id));
+        $this->data['user_library'] = $this->scheduler_model->get_scheduler_library(
+            array('library_user_id' => $this->user->id));
+        $this->data['merlin_library'] = $this->merlin_library_model->get_library(array('active' => 1));
         $this->_renderL('pages/scheduler/index');
+    }
+
+    public function scheduler_action() {
+        $action = $this->input->post('action');
+        switch($action) {
+            case 'save' :
+                $scheduler = $this->input->post('scheduler');
+                if(isset($scheduler['scheduler_id'])) {
+                    $result = $this->scheduler_model->update_scheduler($scheduler['scheduler_id'], $scheduler);
+                } else {
+                    $scheduler['user_id'] = $this->user->id;
+                    $result = $this->scheduler_model->add_scheduler($scheduler);
+                }
+                echo json_encode($result);
+                break;
+
+            case 'delete' :
+                $scheduler_id = $this->input->post("scheduler_id");
+                $result = $this->scheduler_model->delete_scheduler($scheduler_id);
+                echo json_encode($result);
+                break;
+
+            default:
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => "Action not found."
+                ));
+        }
     }
 
     public function library() {
