@@ -1,10 +1,10 @@
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Contents</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-book"></i> Categories</h4>
 
 <div class="row">
     <div class="col-sm-12">
-        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Content</button>
-        <button disabled class="btn btn-default btn-sm pull-right">Contents</button>
-        <a href="<?php echo base_url() . 'scheduler/library'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Libraries</a>
+        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
+        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Contents</a>
+        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</button>
         <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
@@ -13,12 +13,13 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
         <div class="table-responsive">
-            <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Library</th>
-                    <th>Content</th>
-                    <th>Url</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Post Count</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -34,25 +35,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Content</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Category</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="content-library">* Library</label>
-                    <select id="content-library" class="form-control required">
-                        <?php foreach($library as $l): ?>
-                            <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
-                        <?php endforeach; ?>
+                    <label for="category-type">* Category Type</label>
+                    <select id="category-type" class="form-control required">
+                        <option value="CWoP">Without post</option>
+                        <option value="CWP">With post</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="content-body">* Content</label>
-                    <textarea class="form-control required" id="content-body" rows="4"></textarea>
+                    <label for="category-name">* Category Name</label>
+                    <input type="text" class="form-control required" id="category-name" />
                 </div>
                 <div class="form-group">
-                    <label for="content-url">Url</label>
-                    <input type="text" class="form-control url" id="content-url" />
+                    <label for="category-description">* Category Description</label>
+                    <textarea class="form-control required" id="category-description" rows="4"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -65,8 +65,8 @@
 </div>
 
 <script>
-    var actionUrl = "<?php echo base_url() . "scheduler/content_action" ?>";
-    var dt, selected, selectedRows;
+    var actionUrl = "<?php echo base_url() . "scheduler/category_action" ?>";
+    var dt, selectedId, selectedRows;
 
     $(document).ready(function() {
         initDt();
@@ -75,7 +75,7 @@
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Content');
+            modal.find('.modal-title').html('Add Category');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -87,20 +87,20 @@
             if(validator.validateForm($('#form-modal'))) {
                 var data = {
                     action: 'save',
-                    content: {
-                        content_library_id: $('#content-library').val(),
-                        content_body: $('#content-body').val(),
-                        content_url: $('#content-url').val()
+                    category: {
+                        category_type: $('#category-type').val(),
+                        category_name: $('#category-name').val(),
+                        category_description: $('#category-description').val()
                     }
                 };
                 if(selectedId > 0) {
-                    data.content.content_id = selectedId;
+                    data.category.category_id = selectedId;
                 }
-                loading('info', 'Saving content...');
+                loading('info', 'Saving category...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving content successful!');
+                        loading('success', 'Saving category successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -109,13 +109,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this content?");
+            var ok = confirm("Are you sure to delete this category?");
             if(ok) {
-                loading('info', 'Deleting content...');
-                $.post(actionUrl, {action: 'delete', content_id: selectedId}, function(res) {
+                loading('info', 'Deleting category...');
+                $.post(actionUrl, {action: 'delete', category_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting content successful!');
+                        loading('success', 'Deleting category successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -125,9 +125,9 @@
     });
 
     function initDt() {
-        dt = $("#schedulerContentDt").dataTable({
+        dt = $("#schedulerLibraryDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [3],
+            "aaSorting": [4],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -136,16 +136,23 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "library_name", width: "20%"},
-                {data: "content_body", width: "40%"},
-                {data: "content_url", width: "20%"},
-                {data: "date_created", width: "20%"},
-                {data: "content_id", visible: false},
-                {data: "library_id", visible: false}
+                {data: "category_name", width: "15%"},
+                {data: "category_description", width: "30%"},
+                {data: "category_type", width: "20%", render: function(data) {
+                        if(data == "CWoP") {
+                            return "Without post";
+                        } else if(data == "CWP") {
+                            return "With post";
+                        }
+                    }
+                },
+                {data: "post_count", width: "15%"},
+                {data: "category_date_created", width: "20%"},
+                {data: "category_id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
-                var table = $("#schedulerContentDt").dataTable();
-                $('#schedulerContentDt tbody tr').on('dblclick', function () {
+                var table = $("#schedulerLibraryDt").dataTable();
+                $('#schedulerLibraryDt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -155,17 +162,17 @@
     }
 
     function showEdit(data) {
-        selectedId = data.content_id;
+        selectedId = data.category_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Content');
+        modal.find('.modal-title').html('Edit Category');
         $('#delete-btn').show();
-        $('#content-library').val(data.content_library_id);
-        $('#content-body').val(data.content_body);
-        $('#content-url').val(data.content_url);
+        $('#category-name').val(data.category_name);
+        $('#category-description').val(data.category_description);
+        $('#category-type').val(data.category_type);
     }
 </script>

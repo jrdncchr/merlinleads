@@ -1,12 +1,12 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
-        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Content</button>
+        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Post</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+            <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
                 <thead>
                 <tr>
-                    <th>Library</th>
-                    <th>Content</th>
+                    <th>category</th>
+                    <th>Post</th>
                     <th>Url</th>
                     <th>Date Created</th>
                 </tr>
@@ -23,25 +23,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Content</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Post</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="content-library">* Library</label>
-                    <select id="content-library" class="form-control required">
-                        <?php foreach($library as $l): ?>
-                            <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
+                    <label for="post-category">* Category</label>
+                    <select id="post-category" class="form-control required">
+                        <?php foreach($category as $c): ?>
+                            <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="content-body">* Content</label>
-                    <textarea class="form-control required" id="content-body" rows="4"></textarea>
+                    <label for="post-body">* Post</label>
+                    <textarea class="form-control required" id="post-body" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="content-url">Url</label>
-                    <input type="text" class="form-control url" id="content-url" />
+                    <label for="post-url">Url</label>
+                    <input type="text" class="form-control url" id="post-url" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -54,11 +54,11 @@
 </div>
 
 <script>
-    var actionUrl = "<?php echo base_url() . "admin/scheduler_content_action" ?>";
+    var actionUrl = "<?php echo base_url() . "admin/scheduler_post_action" ?>";
     var dt, selected, selectedRows;
 
     $(document).ready(function() {
-        $("#schedulerContentsTopLink").addClass("custom-nav-active");
+        $("#schedulerPostsTopLink").addClass("custom-nav-active");
         $("#schedulerSideLink").addClass("custom-nav-active");
 
         initDt();
@@ -67,7 +67,7 @@
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Content');
+            modal.find('.modal-title').html('Add Post');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -79,20 +79,20 @@
             if(validator.validateForm($('#form-modal'))) {
                 var data = {
                     action: 'save',
-                    content: {
-                        library_id: $('#content-library').val(),
-                        content_body: $('#content-body').val(),
-                        content_url: $('#content-url').val()
+                    post: {
+                        post_category_id: $('#post-category').val(),
+                        post_body: $('#post-body').val(),
+                        post_url: $('#post-url').val()
                     }
                 };
                 if(selectedId > 0) {
-                    data.content.content_id = selectedId;
+                    data.post.post_id = selectedId;
                 }
-                loading('info', 'Saving content...');
+                loading('info', 'Saving post...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving content successful!');
+                        loading('success', 'Saving post successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -101,13 +101,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this content?");
+            var ok = confirm("Are you sure to delete this post?");
             if(ok) {
-                loading('info', 'Deleting content...');
-                $.post(actionUrl, {action: 'delete', content_id: selectedId}, function(res) {
+                loading('info', 'Deleting post...');
+                $.post(actionUrl, {action: 'delete', post_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting content successful!');
+                        loading('success', 'Deleting post successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -117,7 +117,7 @@
     });
 
     function initDt() {
-        dt = $("#schedulerContentDt").dataTable({
+        dt = $("#scheduler-post-dt").dataTable({
             "bJQueryUI": true,
             "aaSorting": [3],
             "bDestroy": true,
@@ -128,16 +128,16 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "library_name", width: "20%"},
-                {data: "content_body", width: "40%"},
-                {data: "content_url", width: "20%"},
-                {data: "date_created", width: "20%"},
-                {data: "content_id", visible: false},
-                {data: "library_id", visible: false}
+                {data: "category_name", width: "20%"},
+                {data: "post_body", width: "40%"},
+                {data: "post_url", width: "20%"},
+                {data: "post_date_created", width: "20%"},
+                {data: "post_id", visible: false},
+                {data: "post_category_id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
-                var table = $("#schedulerContentDt").dataTable();
-                $('#schedulerContentDt tbody tr').on('dblclick', function () {
+                var table = $("#scheduler-post-dt").dataTable();
+                $('#scheduler-post-dt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -147,17 +147,17 @@
     }
 
     function showEdit(data) {
-        selectedId = data.content_id;
+        selectedId = data.post_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Content');
+        modal.find('.modal-title').html('Edit Post');
         $('#delete-btn').show();
-        $('#content-library').val(data.library_id);
-        $('#content-body').val(data.content_body);
-        $('#content-url').val(data.content_url);
+        $('#post-category').val(data.post_category_id);
+        $('#post-body').val(data.post_body);
+        $('#post-url').val(data.post_url);
     }
 </script>

@@ -42,8 +42,8 @@
 <div class="row">
     <div class="col-sm-12">
         <button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
-        <a href="<?php echo base_url() . 'scheduler/content'; ?>" class="btn btn-default btn-sm pull-right">Contents</a>
-        <a href="<?php echo base_url() . 'scheduler/library'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Libraries</a>
+        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
+        <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
         <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
         <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</button>
     </div>
@@ -77,12 +77,12 @@
                                     <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
                                     <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />
                                     <input type="hidden" class="s_time" value="<?php echo $s->time; ?>" />
-                                    <input type="hidden" class="s_type" value="<?php echo $s->type; ?>" />
-                                    <input type="hidden" class="s_library_id" value="<?php echo $s->library_id; ?>" />
+                                    <input type="hidden" class="s_library" value="<?php echo $s->library; ?>" />
+                                    <input type="hidden" class="s_category_id" value="<?php echo $s->category_id; ?>" />
                                     <input type="hidden" class="s_property_id" value="<?php echo $s->property_id; ?>" />
                                     <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
                                     <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
-                                    <p><?php echo $s->library->library_name; ?></p>
+                                    <p><?php echo $s->category->category_name; ?></p>
                                     <p class="modules">
                                     <?php
                                     $modules = explode(',', $s->modules);
@@ -147,27 +147,27 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="type">* Type</label>
-                            <select id="type" class="form-control required">
-                                <option value="">Select Type</option>
+                            <label for="library">* Library</label>
+                            <select id="library" class="form-control required">
+                                <option value="">Select Library</option>
                                 <option value="merlin">Merlin Library</option>
                                 <option value="user">User Library</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6" id="library-section" style="display: none;">
+                    <div class="col-sm-6" id="category-section" style="display: none;">
                         <div class="form-group">
-                            <label for="library-user">* Library</label>
-                            <select id="library-user" class="form-control" style="display: none;">
-                                <option value="">Select Library</option>
-                                <?php foreach($user_library as $l): ?>
-                                    <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
+                            <label for="category-user">* Category</label>
+                            <select id="category-user" class="form-control" style="display: none;">
+                                <option value="">Select Category</option>
+                                <?php foreach($user_category as $c): ?>
+                                    <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <select id="library-merlin" class="form-control" style="display: none;">
-                                <option value="">Select Library</option>
-                                <?php foreach($merlin_library as $l): ?>
-                                    <option value="<?php echo $l->library_id; ?>"><?php echo $l->library_name; ?></option>
+                            <select id="category-merlin" class="form-control" style="display: none;">
+                                <option value="">Select Category</option>
+                                <?php foreach($merlin_category as $c): ?>
+                                    <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -217,10 +217,10 @@
             var selectedBlock = $(this);
             schedulerId = selectedBlock.find('.s_scheduler_id').val();
             var scheduler = {
-                library_id : selectedBlock.find('.s_library_id').val(),
+                category_id : selectedBlock.find('.s_category_id').val(),
                 time : selectedBlock.find('.s_time').val(),
                 day : selectedBlock.find('.s_day').val(),
-                type : selectedBlock.find('.s_type').val()
+                library : selectedBlock.find('.s_library').val()
             };
             $('#delete-btn').show();
             var modal = $('#form-modal');
@@ -230,17 +230,16 @@
                 keyboard: false
             });
             modal.find('.modal-title').html('Edit Timeslot');
-            $('#library').val(scheduler.library_id);
             $('#time').val(scheduler.time);
             $('#day').val(scheduler.day);
-            $('#type').val(scheduler.type);
-            $('#library-section').show();
-            if(scheduler.type == 'user') {
-                $('#library-merlin').hide();
-                $('#library-user').show().val(scheduler.library_id);
-            } else if(scheduler.type == 'merlin') {
-                $('#library-user').hide();
-                $('#library-merlin').show().val(scheduler.library_id);
+            $('#library').val(scheduler.library);
+            $('#category-section').show();
+            if(scheduler.library == 'user') {
+                $('#category-merlin').hide();
+                $('#category-user').show().val(scheduler.category_id);
+            } else if(scheduler.library == 'merlin') {
+                $('#category-user').hide();
+                $('#category-merlin').show().val(scheduler.category_id);
             }
 
             if(selectedBlock.find('.fa-facebook').length > 0) {
@@ -269,36 +268,36 @@
             }
         });
 
-        $('#type').on('change', function() {
-            var type = $(this).val();
-            if(type) {
-                $('#library-section').show();
-                if(type == 'merlin') {
-                    $('#library-merlin').addClass('required').show();
-                    $('#library-user').removeClass('required').hide();
-                } else if(type == 'user') {
-                    $('#library-user').addClass('required').show();
-                    $('#library-merlin').removeClass('required').hide();
+        $('#library').on('change', function() {
+            var library = $(this).val();
+            if(library) {
+                $('#category-section').show();
+                if(library == 'merlin') {
+                    $('#category-merlin').addClass('required').show();
+                    $('#category-user').removeClass('required').hide();
+                } else if(library == 'user') {
+                    $('#category-user').addClass('required').show();
+                    $('#category-merlin').removeClass('required').hide();
                 }
             } else {
-                $('#library-section').hide();
+                $('#category-section').hide();
             }
         });
 
         $('#form-modal').on("hidden.bs.modal", function() {
-            $('#library-section').hide();
+            $('#category-section').hide();
         });
 
         $('#save-btn').on('click', function() {
             if(validator.validateForm($('#form-modal'))) {
-                var type = $('#type').val();
+                var library = $('#library').val();
                 var data = {
                     action: 'save',
                     scheduler : {
                         day : $('#day').val(),
                         time: $('#time').val(),
-                        type: type,
-                        library_id: type == 'user' ? $('#library-user').val() : $('#library-merlin').val()
+                        library: library,
+                        category_id: library == 'user' ? $('#category-user').val() : $('#category-merlin').val()
                     }
                 };
                 var modules = "";
@@ -334,5 +333,20 @@
                 }, 'json');
             }
         });
+
+        $('#delete-btn').on('click', function() {
+            var ok = confirm("Are you sure to delete this scheduler?");
+            if(ok) {
+                loading('info', 'Deleting scheduler...');
+                $.post(actionUrl, {action: 'delete', scheduler_id: schedulerId}, function(res) {
+                    if(res.success) {
+                        loading('success', 'Deleting scheduler successful!');
+                        setTimeout(function() {
+                            location.reload(true);
+                        }, 500);
+                    }
+                }, 'json');
+            }
+        })
     })
 </script>

@@ -70,8 +70,8 @@ class Admin_Navs {
             case "Scheduler":
                 $nav = array(
                     "nav" => array(
-                        array("title" => "Merlin Libraries", "url" => "admin/scheduler_merlin_library", "id" => "schedulerLibrariesTopLink"),
-                        array("title" => "Merlin Contents", "url" => "admin/scheduler_merlin_content", "id" => "schedulerContentsTopLink")
+                        array("title" => "Merlin Categories", "url" => "admin/scheduler_merlin_category", "id" => "schedulerCategoriesTopLink"),
+                        array("title" => "Merlin Posts", "url" => "admin/scheduler_merlin_post", "id" => "schedulerPostsTopLink")
                     )
                 );
                 break;

@@ -1,14 +1,14 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
-        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Library</button>
+        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Category</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+            <table id="scheduler-category-dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Category Name</th>
                     <th>Description</th>
                     <th>Type</th>
-                    <th>Content Count</th>
+                    <th>Post Count</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -24,25 +24,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Library</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Category</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="library-type">* Library Type</label>
-                    <select id="library-type" class="form-control required">
-                        <option value="CWoP">Content without post</option>
-                        <option value="CWoP">Content with post</option>
-                        <option value="CWoP">Cross Promotional</option>
+                    <label for="category-type">* Category Type</label>
+                    <select id="category-type" class="form-control required">
+                        <option value="WITHOUT_BLOG_POST">Without blog post</option>
+                        <option value="WITH_BLOG_POST">With blog post</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="library-name">* Library Name</label>
-                    <input type="text" class="form-control required" id="library-name" />
+                    <label for="category-name">* Category Name</label>
+                    <input type="text" class="form-control required" id="category-name" />
                 </div>
                 <div class="form-group">
-                    <label for="library-description">* Library Description</label>
-                    <textarea class="form-control required" id="library-description" rows="4"></textarea>
+                    <label for="category-description">* Category Description</label>
+                    <textarea class="form-control required" id="category-description" rows="4"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -57,11 +56,11 @@
 
 
 <script>
-    var actionUrl = "<?php echo base_url() . "admin/scheduler_library_action" ?>";
+    var actionUrl = "<?php echo base_url() . "admin/scheduler_category_action" ?>";
     var dt, selectedId, selectedRows;
 
     $(document).ready(function() {
-        $("#schedulerLibrariesTopLink").addClass("custom-nav-active");
+        $("#schedulerCategoriesTopLink").addClass("custom-nav-active");
         $("#schedulerSideLink").addClass("custom-nav-active");
         initDt();
 
@@ -69,7 +68,7 @@
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Library');
+            modal.find('.modal-title').html('Add Category');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -81,20 +80,20 @@
             if(validator.validateForm($('#form-modal'))) {
                 var data = {
                     action: 'save',
-                    library: {
-                        library_type: $('#library-type').val(),
-                        library_name: $('#library-name').val(),
-                        library_description: $('#library-description').val()
+                    category: {
+                        category_type: $('#category-type').val(),
+                        category_name: $('#category-name').val(),
+                        category_description: $('#category-description').val()
                     }
                 };
                 if(selectedId > 0) {
-                    data.library.library_id = selectedId;
+                    data.category.category_id = selectedId;
                 }
-                loading('info', 'Saving library...');
+                loading('info', 'Saving category...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving library successful!');
+                        loading('success', 'Saving category successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -103,13 +102,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this library?");
+            var ok = confirm("Are you sure to delete this category?");
             if(ok) {
-                loading('info', 'Deleting library...');
-                $.post(actionUrl, {action: 'delete', library_id: selectedId}, function(res) {
+                loading('info', 'Deleting category...');
+                $.post(actionUrl, {action: 'delete', category_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting library successful!');
+                        loading('success', 'Deleting category successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -119,7 +118,7 @@
     });
 
     function initDt() {
-        dt = $("#schedulerLibraryDt").dataTable({
+        dt = $("#scheduler-category-dt").dataTable({
             "bJQueryUI": true,
             "aaSorting": [4],
             "bDestroy": true,
@@ -130,25 +129,23 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "library_name", width: "15%"},
-                {data: "library_description", width: "30%"},
-                {data: "library_type", width: "20%", render: function(data) {
-                    if(data == "CWoP") {
-                        return "Content without post";
-                    } else if(data == "CWP") {
-                        return "Content with post";
-                    } else {
-                        return "Cross Promotional";
+                {data: "category_name", width: "15%"},
+                {data: "category_description", width: "30%"},
+                {data: "category_type", width: "20%", render: function(data) {
+                    if(data == "WITHOUT_BLOG_POST") {
+                        return "Without blog post";
+                    } else if(data == "WITH_BLOG_POST") {
+                        return "With blog post";
                     }
                 }
                 },
-                {data: "content_count", width: "15%"},
-                {data: "date_created", width: "20%"},
-                {data: "library_id", visible: false}
+                {data: "post_count", width: "15%"},
+                {data: "category_date_created", width: "20%"},
+                {data: "category_id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
-                var table = $("#schedulerLibraryDt").dataTable();
-                $('#schedulerLibraryDt tbody tr').on('dblclick', function () {
+                var table = $("#scheduler-category-dt").dataTable();
+                $('#scheduler-category-dt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -158,17 +155,17 @@
     }
 
     function showEdit(data) {
-        selectedId = data.library_id;
+        selectedId = data.category_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Library');
+        modal.find('.modal-title').html('Edit Category');
         $('#delete-btn').show();
-        $('#library-name').val(data.library_name);
-        $('#library-description').val(data.library_description);
-        $('#library-type').val(data.library_type);
+        $('#category-name').val(data.category_name);
+        $('#category-description').val(data.category_description);
+        $('#category-type').val(data.category_type);
     }
 </script>

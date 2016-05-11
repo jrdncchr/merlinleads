@@ -1,10 +1,10 @@
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-book"></i> Libraries</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Contents</h4>
 
 <div class="row">
     <div class="col-sm-12">
-        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Library</button>
-        <a href="<?php echo base_url() . 'scheduler/content'; ?>" class="btn btn-default btn-sm pull-right">Contents</a>
-        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Libraries</button>
+        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</button>
+        <button disabled class="btn btn-default btn-sm pull-right">Post</button>
+        <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
         <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
@@ -13,13 +13,12 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
         <div class="table-responsive">
-            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+            <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Content Count</th>
+                    <th>Category</th>
+                    <th>Post</th>
+                    <th>Url</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -35,25 +34,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Library</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Post</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="library-type">* Library Type</label>
-                    <select id="library-type" class="form-control required">
-                        <option value="CWoP">Content without post</option>
-                        <option value="CWoP">Content with post</option>
-                        <option value="CWoP">Cross Promotional</option>
+                    <label for="post-category">* Category</label>
+                    <select id="post-category" class="form-control required">
+                        <?php foreach($category as $c): ?>
+                            <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="library-name">* Library Name</label>
-                    <input type="text" class="form-control required" id="library-name" />
+                    <label for="post-body">* Post</label>
+                    <textarea class="form-control required" id="post-body" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="library-description">* Library Description</label>
-                    <textarea class="form-control required" id="library-description" rows="4"></textarea>
+                    <label for="post-url">Url</label>
+                    <input type="text" class="form-control url" id="post-url" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -66,8 +65,8 @@
 </div>
 
 <script>
-    var actionUrl = "<?php echo base_url() . "scheduler/library_action" ?>";
-    var dt, selectedId, selectedRows;
+    var actionUrl = "<?php echo base_url() . "scheduler/post_action" ?>";
+    var dt, selected, selectedRows;
 
     $(document).ready(function() {
         initDt();
@@ -76,7 +75,7 @@
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Library');
+            modal.find('.modal-title').html('Add Post');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -88,20 +87,20 @@
             if(validator.validateForm($('#form-modal'))) {
                 var data = {
                     action: 'save',
-                    library: {
-                        library_type: $('#library-type').val(),
-                        library_name: $('#library-name').val(),
-                        library_description: $('#library-description').val()
+                    post: {
+                        post_category_id: $('#post-category').val(),
+                        post_body: $('#post-body').val(),
+                        post_url: $('#post-url').val()
                     }
                 };
                 if(selectedId > 0) {
-                    data.library.library_id = selectedId;
+                    data.post.post_id = selectedId;
                 }
-                loading('info', 'Saving library...');
+                loading('info', 'Saving post...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving library successful!');
+                        loading('success', 'Saving post successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -110,13 +109,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this library?");
+            var ok = confirm("Are you sure to delete this post?");
             if(ok) {
-                loading('info', 'Deleting library...');
-                $.post(actionUrl, {action: 'delete', library_id: selectedId}, function(res) {
+                loading('info', 'Deleting post...');
+                $.post(actionUrl, {action: 'delete', post_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting library successful!');
+                        loading('success', 'Deleting post successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -126,9 +125,9 @@
     });
 
     function initDt() {
-        dt = $("#schedulerLibraryDt").dataTable({
+        dt = $("#schedulerContentDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [4],
+            "aaSorting": [3],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -137,25 +136,16 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "library_name", width: "15%"},
-                {data: "library_description", width: "30%"},
-                {data: "library_type", width: "20%", render: function(data) {
-                        if(data == "CWoP") {
-                            return "Content without post";
-                        } else if(data == "CWP") {
-                            return "Content with post";
-                        } else {
-                            return "Cross Promotional";
-                        }
-                    }
-                },
-                {data: "content_count", width: "15%"},
-                {data: "date_created", width: "20%"},
-                {data: "library_id", visible: false}
+                {data: "category_name", width: "20%"},
+                {data: "post_body", width: "40%"},
+                {data: "post_url", width: "20%"},
+                {data: "post_date_created", width: "20%"},
+                {data: "post_id", visible: false},
+                {data: "post_category_id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
-                var table = $("#schedulerLibraryDt").dataTable();
-                $('#schedulerLibraryDt tbody tr').on('dblclick', function () {
+                var table = $("#schedulerContentDt").dataTable();
+                $('#schedulerContentDt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -165,17 +155,17 @@
     }
 
     function showEdit(data) {
-        selectedId = data.library_id;
+        selectedId = data.post_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Library');
+        modal.find('.modal-title').html('Edit Post');
         $('#delete-btn').show();
-        $('#library-name').val(data.library_name);
-        $('#library-description').val(data.library_description);
-        $('#library-type').val(data.library_type);
+        $('#post-category').val(data.post_category_id);
+        $('#post-body').val(data.post_body);
+        $('#post-url').val(data.post_url);
     }
 </script>

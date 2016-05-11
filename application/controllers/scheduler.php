@@ -17,9 +17,9 @@ class scheduler extends MY_Controller {
         $this->data['available_times'] = $this->_getAvailableTimes();
         $this->data['scheduler'] = $this->scheduler_model->get_scheduler_details(
             array('user_id' => $this->user->id));
-        $this->data['user_library'] = $this->scheduler_model->get_scheduler_library(
-            array('library_user_id' => $this->user->id));
-        $this->data['merlin_library'] = $this->merlin_library_model->get_library(array('active' => 1));
+        $this->data['user_category'] = $this->scheduler_model->get_scheduler_category(
+            array('category_user_id' => $this->user->id));
+        $this->data['merlin_category'] = $this->merlin_library_model->get_category(array('active' => 1));
         $this->_renderL('pages/scheduler/index');
     }
 
@@ -51,33 +51,33 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function library() {
-        $this->_renderL('pages/scheduler/library');
+    public function category() {
+        $this->_renderL('pages/scheduler/category');
     }
 
-    public function library_action() {
+    public function category_action() {
         $action = $this->input->post('action');
         switch($action) {
             case 'list' :
-                $list = $this->scheduler_model->get_scheduler_library(
-                    array('library_user_id' => $this->user->id));
+                $list = $this->scheduler_model->get_scheduler_category(
+                    array('category_user_id' => $this->user->id));
                 echo json_encode(array('data' => $list));
                 break;
 
             case 'save' :
-                $library = $this->input->post('library');
-                if(isset($library['library_id'])) {
-                    $result = $this->scheduler_model->update_scheduler_library($library['library_id'], $library);
+                $category = $this->input->post('category');
+                if(isset($category['category_id'])) {
+                    $result = $this->scheduler_model->update_scheduler_category($category['category_id'], $category);
                 } else {
-                    $library['library_user_id'] = $this->user->id;
-                    $result = $this->scheduler_model->add_scheduler_library($library);
+                    $category['category_user_id'] = $this->user->id;
+                    $result = $this->scheduler_model->add_scheduler_category($category);
                 }
                 echo json_encode($result);
                 break;
 
             case 'delete' :
-                $library_id = $this->input->post("library_id");
-                $result = $this->scheduler_model->delete_scheduler_library($library_id);
+                $category_id = $this->input->post("category_id");
+                $result = $this->scheduler_model->delete_scheduler_category($category_id);
                 echo json_encode($result);
                 break;
 
@@ -89,37 +89,37 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function content() {
-        $library = $this->scheduler_model->get_scheduler_library(
-            array('library_user_id' => $this->user->id));
-        $this->data['library'] = $library;
-        $this->_renderL('pages/scheduler/content');
+    public function post() {
+        $category = $this->scheduler_model->get_scheduler_category(
+            array('category_user_id' => $this->user->id));
+        $this->data['category'] = $category;
+        $this->_renderL('pages/scheduler/post');
     }
 
-    public function content_action() {
+    public function post_action() {
         $action = $this->input->post('action');
         switch($action) {
 
             case 'list' :
-                $list = $this->scheduler_model->get_scheduler_content(
-                    array('content_user_id' => $this->user->id));
+                $list = $this->scheduler_model->get_scheduler_post(
+                    array('post_user_id' => $this->user->id));
                 echo json_encode(array('data' => $list));
                 break;
 
             case 'save' :
-                $content = $this->input->post('content');
-                if(isset($content['content_id'])) {
-                    $result = $this->scheduler_model->update_scheduler_content($content['content_id'], $content);
+                $post = $this->input->post('post');
+                if(isset($post['post_id'])) {
+                    $result = $this->scheduler_model->update_scheduler_post($post['post_id'], $post);
                 } else {
-                    $content['content_user_id'] = $this->user->id;
-                    $result = $this->scheduler_model->add_scheduler_content($content);
+                    $post['post_user_id'] = $this->user->id;
+                    $result = $this->scheduler_model->add_scheduler_post($post);
                 }
                 echo json_encode($result);
                 break;
 
             case 'delete' :
-                $content_id = $this->input->post("content_id");
-                $result = $this->scheduler_model->delete_scheduler_content($content_id);
+                $post_id = $this->input->post("post_id");
+                $result = $this->scheduler_model->delete_scheduler_post($post_id);
                 echo json_encode($result);
                 break;
 

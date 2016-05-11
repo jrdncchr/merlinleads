@@ -8,6 +8,7 @@ class Admin2 extends MY_Controller
 
     public function __construct()
     {
+    
         parent::__construct();
         $this->load->library('session');
         $user = $this->session->userdata('user');

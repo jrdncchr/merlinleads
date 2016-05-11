@@ -6,9 +6,9 @@ if (!defined('BASEPATH'))
 class scheduler_model extends CI_Model {
 
     private $scheduler_table = 'scheduler';
-    private $scheduler_content_table = 'scheduler_content';
-    private $scheduler_library_table = 'scheduler_library';
-    private $merlin_library_table = 'merlin_library';
+    private $scheduler_post_table = 'scheduler_post';
+    private $scheduler_category_table = 'scheduler_category';
+    private $merlin_category_table = 'merlin_category';
 
     function __construct() {
         $this->load->database();
@@ -19,7 +19,7 @@ class scheduler_model extends CI_Model {
      */
 
     public function get_scheduler($where = array(), $list = true) {
-        $this->db->join($this->scheduler_library_table, 'scheduler_library.library_id = scheduler.library_id', 'left');
+        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler.category_id', 'left');
         $result = $this->db->get_where($this->scheduler_table, $where);
         return $list ? $result->result() : $result->row();
     }
@@ -30,12 +30,12 @@ class scheduler_model extends CI_Model {
         if($result->num_rows() > 0) {
             $scheduler = $result->result();
             foreach($scheduler as $s) {
-                if($s->type == "user") {
-                    $library_details = $this->db->get_where($this->scheduler_library_table, array('library_id' => $s->library_id));
-                    $s->library = $library_details->row();
-                } else if($s->type == "merlin") {
-                    $library_details = $this->db->get_where($this->merlin_library_table, array('library_id' => $s->library_id));
-                    $s->library = $library_details->row();
+                if($s->library == "user") {
+                    $category_details = $this->db->get_where($this->scheduler_category_table, array('category_id' => $s->category_id));
+                    $s->category = $category_details->row();
+                } else if($s->library == "merlin") {
+                    $category_details = $this->db->get_where($this->merlin_category_table, array('category_id' => $s->category_id));
+                    $s->category = $category_details->row();
                 }
                 $list[] = $s;
             }
@@ -55,61 +55,61 @@ class scheduler_model extends CI_Model {
     }
 
     public function delete_scheduler($id) {
-        $this->db->where('library_id', $id);
+        $this->db->where('scheduler_id', $id);
         $this->db->delete($this->scheduler_table);
         return array('success' => true);
     }
 
     /*
-     * Scheduler Library
+     * Scheduler Category
      */
-    public function get_scheduler_library($where = array(), $list = true) {
+    public function get_scheduler_category($where = array(), $list = true) {
         $this->db->select('*');
-        $this->db->select('(SELECT count(content_id) FROM scheduler_content WHERE content_library_id = scheduler_library.library_id) as content_count');
-        $result = $this->db->get_where($this->scheduler_library_table, $where);
+        $this->db->select('(SELECT count(post_id) FROM scheduler_post WHERE post_category_id = scheduler_category.category_id) as post_count');
+        $result = $this->db->get_where($this->scheduler_category_table, $where);
         return $list ? $result->result() : $result->row();
     }
 
-    public function add_scheduler_library($library) {
-        $this->db->insert($this->scheduler_library_table, $library);
+    public function add_scheduler_category($category) {
+        $this->db->insert($this->scheduler_category_table, $category);
         return array('success' => true, 'inserted_id' => $this->db->insert_id());
     }
 
-    public function update_scheduler_library($library_id, $library) {
-        $this->db->where('library_id', $library_id);
-        $this->db->update($this->scheduler_library_table, $library);
+    public function update_scheduler_category($id, $category) {
+        $this->db->where('category_id', $id);
+        $this->db->update($this->scheduler_category_table, $category);
         return array('success' => true);
     }
 
-    public function delete_scheduler_library($library_id) {
-        $this->db->where('library_id', $library_id);
-        $this->db->delete($this->scheduler_library_table);
+    public function delete_scheduler_category($id) {
+        $this->db->where('category_id', $id);
+        $this->db->delete($this->scheduler_category_table);
         return array('success' => true);
     }
 
     /*
-     * Scheduler Content
+     * Scheduler Post
      */
-    public function get_scheduler_content($where = array(), $list = true) {
-        $this->db->join($this->scheduler_library_table, 'scheduler_library.library_id = scheduler_content.content_library_id');
-        $result = $this->db->get_where($this->scheduler_content_table, $where);
+    public function get_scheduler_post($where = array(), $list = true) {
+        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler_post.post_category_id');
+        $result = $this->db->get_where($this->scheduler_post_table, $where);
         return $list ? $result->result() : $result->row();
     }
 
-    public function add_scheduler_content($content) {
-        $this->db->insert($this->scheduler_content_table, $content);
+    public function add_scheduler_post($post) {
+        $this->db->insert($this->scheduler_post_table, $post);
         return array('success' => true, 'inserted_id' => $this->db->insert_id());
     }
 
-    public function update_scheduler_content($content_id, $content) {
-        $this->db->where('content_id', $content_id);
-        $this->db->update($this->scheduler_content_table, $content);
+    public function update_scheduler_post($id, $post) {
+        $this->db->where('post_id', $id);
+        $this->db->update($this->scheduler_post_table, $post);
         return array('success' => true);
     }
 
-    public function delete_scheduler_content($content_id) {
-        $this->db->where('content_id', $content_id);
-        $this->db->delete($this->scheduler_content_table);
+    public function delete_scheduler_post($post_id) {
+        $this->db->where('post_id', $post_id);
+        $this->db->delete($this->scheduler_post_table);
         return array('success' => true);
     }
 } 
