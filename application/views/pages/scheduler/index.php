@@ -39,12 +39,13 @@
 </style>
 
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-calendar"></i> Scheduler</h4>
+
 <div class="row">
     <div class="col-sm-12">
         <button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
         <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
         <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
+<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
         <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</button>
     </div>
 </div>
@@ -80,6 +81,7 @@
                                     <input type="hidden" class="s_library" value="<?php echo $s->library; ?>" />
                                     <input type="hidden" class="s_category_id" value="<?php echo $s->category_id; ?>" />
                                     <input type="hidden" class="s_property_id" value="<?php echo $s->property_id; ?>" />
+                                    <input type="hidden" class="s_profile_id" value="<?php echo $s->profile_id; ?>" />
                                     <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
                                     <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
                                     <p><?php echo $s->category->category_name; ?></p>
@@ -173,13 +175,62 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="category-merlin-options">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="property">* Property</label>
+                            <select id="property" class="form-control">
+                                <option value="">Select Property</option>
+                                <?php foreach($property as $p): ?>
+                                    <option value="<?php echo $p->property_id; ?>"><?php echo $p->name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="profile">* Profile</label>
+                            <select id="profile" class="form-control">
+                                <option value="">Select Profile</option>
+                                <?php foreach($profile as $p): ?>
+                                    <option value="<?php echo $p->id; ?>"><?php echo $p->name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label>* Accounts</label>
                     <div id="accounts">
-                        <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
-                        <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
-                        <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
+                        <?php if(isset($main_f->facebook_feed_posting)) { ?>
+                            <?php if(isset($fb['valid_access_token'])) { ?>
+                                <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
+                            <?php } ?>
+                        <?php } ?>
+
+
+                        <?php if(isset($main_f->twitter_feed_posting)) { ?>
+                            <?php if($twitter['has_access_key']) { ?>
+                                <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
+                            <?php } ?>
+                        <?php } ?>
+
+
+                        <?php if(isset($main_f->linkedin_feed_posting)) { ?>
+                            <?php if(isset($linkedIn['access_token'])) { ?>
+                                <?php if(!$linkedIn['expired_access_token']) { ?>
+                                    <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if(!$user->fb_access_token && !$user->twitter_access_token && !$user->li_access_token) { ?>
+                            <span class="text-danger">No accounts setup yet. <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup Now.</a></span>
+                        <?php } ?>
+
+                        <br />
+                        <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup your social accounts now.</a>
                     </div>
                 </div>
             </div>
@@ -220,8 +271,11 @@
                 category_id : selectedBlock.find('.s_category_id').val(),
                 time : selectedBlock.find('.s_time').val(),
                 day : selectedBlock.find('.s_day').val(),
-                library : selectedBlock.find('.s_library').val()
+                library : selectedBlock.find('.s_library').val(),
+                property_id : selectedBlock.find('.s_property_id').val(),
+                profile_id : selectedBlock.find('.s_profile_id').val()
             };
+
             $('#delete-btn').show();
             var modal = $('#form-modal');
             modal.modal({
@@ -229,6 +283,7 @@
                 backdrop: 'static',
                 keyboard: false
             });
+
             modal.find('.modal-title').html('Edit Timeslot');
             $('#time').val(scheduler.time);
             $('#day').val(scheduler.day);
@@ -236,10 +291,14 @@
             $('#category-section').show();
             if(scheduler.library == 'user') {
                 $('#category-merlin').hide();
+                $('#category-merlin-options').hide();
                 $('#category-user').show().val(scheduler.category_id);
             } else if(scheduler.library == 'merlin') {
                 $('#category-user').hide();
                 $('#category-merlin').show().val(scheduler.category_id);
+                $('#category-merlin-options').show();
+                $('#property').val(scheduler.property_id);
+                $('#profile').val(scheduler.profile_id);
             }
 
             if(selectedBlock.find('.fa-facebook').length > 0) {
@@ -274,18 +333,26 @@
                 $('#category-section').show();
                 if(library == 'merlin') {
                     $('#category-merlin').addClass('required').show();
+                    $('#category-merlin-options').show();
                     $('#category-user').removeClass('required').hide();
+                    $('#property').addClass('required');
+                    $('#profile').addClass('required');
                 } else if(library == 'user') {
                     $('#category-user').addClass('required').show();
                     $('#category-merlin').removeClass('required').hide();
+                    $('#category-merlin-options').hide();
+                    $('#property').removeClass('required');
+                    $('#profile').removeClass('required');
                 }
             } else {
                 $('#category-section').hide();
+                $('#category-merin-options').hide();
             }
         });
 
         $('#form-modal').on("hidden.bs.modal", function() {
             $('#category-section').hide();
+            $('#category-merlin-options').hide();
         });
 
         $('#save-btn').on('click', function() {
@@ -300,6 +367,10 @@
                         category_id: library == 'user' ? $('#category-user').val() : $('#category-merlin').val()
                     }
                 };
+                if(library == 'merlin') {
+                    data.scheduler.property_id = $('#property').val();
+                    data.scheduler.profile_id = $('#profile').val();
+                }
                 var modules = "";
                 $('#accounts').find('.social').each(function() {
                     if($(this).hasClass('account-on')) {

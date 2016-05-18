@@ -7,73 +7,75 @@ class Cron extends CI_Controller {
     }
 
     public function scheduled_posting($time) {
+        $posted_posts = array();
+
         $this->load->model('api_model');
         $this->api_model->load();
 
-        $posts = array();
+        $time = str_replace('_', ' ', $time);
+        $date = date('Y-m-d');
+        $day = date('l');
 
         $this->load->model('scheduler_model');
-        $schedulers = $this->scheduler_model->getListByTimeForScheduledPosting($time . ":00");
+        $this->load->model('user_model');
 
-        $this->load->model('api_model');
+        /*
+         * WEEKLY SCHEDULED
+         */
+        $schedulers = $this->scheduler_model->get_scheduler(array('time' => $time, 'day' => $day, 'status' => 'Active'));
         foreach($schedulers as $s) {
-            $result = [];
-
-            if($s->type == "Custom") {
-                $custom_content = $this->scheduler_model->scheduler_custom_content_get($s->content_id);
-                $s->headline = $custom_content->headline;
-                $s->content = $custom_content->content;
-                $s->keywords = $custom_content->keywords;
-                $s->url = $custom_content->url;
-            } else if($s->type == "Library") {
-                $template = $this->scheduler_model->scheduler_library_get_template($s);
-                $s->headline = $template->headline;
-                $s->content = $template->content;
-                $s->keywords = $template->keywords;
-                $s->url = $template->url;
-                $s->template_id = $template->id;
-            } else if($s->type == "Merlin Library") {
+            $user = $this->user_model->get($s->user_id);
+            if($s->library == "user") {
+                $post = $this->scheduler_model->get_scheduler_next_post($s);
+            } else if($s->library == "merlin") {
                 $this->load->model('merlin_library_model');
-                $template = $this->merlin_library_model->library_get_template($s);
-                $s->headline = $template->headline;
-                $s->content = $template->content;
-                $s->keywords = $template->keywords;
-                $s->url = $template->url;
-                $s->template_id = $template->id;
+                $post = $this->merlin_library_model->get_scheduler_next_post($s);
+                $this->load->model('property_model');
+                $property = $this->property_model->getProperty($s->property_id);
+                $this->load->model('profile_model');
+                $profile = $this->profile_model->getProfile($s->profile_id);
+                $this->load->model('template_model');
+                $post->post_body = $this->template_model->generateData($post->post_body, $property, $profile);
             }
 
-            switch($s->interval_code) {
-                case "E":
-                    $result = $this->api_model->post($s);
-                    break;
-
-                case "W":
-                    // check if already a week has passed
-                    break;
-
-                case "S":
-                    break;
-
-                default;
-            }
-
-            if($result['success']) {
-                $post = array(
-                    'scheduler_id' => $s->scheduler_id,
-                    'link' => $result['link'],
-                    'module' => $s->module
-                );
-                if($s->type == "Library" || $s->type == "Merlin Library") {
-                    $post['template_id'] = $s->template_id;
+            $result = $this->api_model->post($s, $post, $user);
+            foreach($result as $r) {
+                if($r['success']) {
+                    $posted_post = array(
+                        'scheduler_id' => $s->scheduler_id,
+                        'link' => $r['link'],
+                        'module' => $r['module'],
+                        'post_id' => $post->post_id
+                    );
+                    $posted_posts[] = $posted_post;
                 }
-                $posts[] = $post;
             }
         }
 
-        $this->db->reconnect();
-        for($i = 0; $i < sizeof($posts); $i++) {
-            $this->api_model->insertPosts($posts[$i]);
+        /*
+         * ONE TIME POST
+         */
+        $otp = $this->scheduler_model->get_scheduler_post(array('otp' => 1, 'otp_date' => $date, 'otp_time' => $time));
+        foreach($otp as $p) {
+            $user = $this->user_model->get($p->post_user_id);
+            $result = $this->api_model->ot_post($p, $user);
+            foreach($result as $r) {
+                if($r['success']) {
+                    $posted_post = array(
+                        'scheduler_id' => null,
+                        'link' => $r['link'],
+                        'module' => $r['module'],
+                        'post_id' => $p->post_id
+                    );
+                    $posted_posts[] = $posted_post;
+                }
+            }
+        }
+
+        for($i = 0; $i < sizeof($posted_posts); $i++) {
+            $this->api_model->insertPosts($posted_posts[$i]);
         }
     }
+
 
 }

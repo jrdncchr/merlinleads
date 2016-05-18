@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 
 class Email_Model extends CI_Model {
 
-    protected $from = "support@merlinleads.net";
+    protected $from = "support@merlinleads.com";
 //    protected $cc = "Yates Harrison <yatesharrison@yahoo.com>, Jordan Cachero <jrdncchr@gmail.com>";
     protected $cc = ", Jordan Cachero <jrdncchr@gmail.com>";
 
@@ -38,7 +38,6 @@ class Email_Model extends CI_Model {
         $message .= "<p><a href='".base_url(). "pages/login'>Login Now</a></p>";
         $message .= "</body></html>";
 
-        $from = "support@merlinleads.net";
         $to = $user->email;
         $subject = 'Merlin Leads - Forget Password';
 
@@ -49,8 +48,27 @@ class Email_Model extends CI_Model {
         mail($to, $subject, $message, $headers);
     }
 
+    public function sendNewUserNotification($user) {
+        $to = 'support@merlinleads.com';
+        $subject = 'Merlin Leads - [New User] A new user has registered to merlinleads.net';
+        $headers = "From: <" . $this->from . ">"  . "\r\n";
+        $headers .= "BCC: <jrdncchr@gmail.com>" . "\r\n";
+        $headers .= "Content-type: text/html";
+
+        $message = "User Details: <br />"
+            . "First Name: " . $user['firstname'] . "<br />"
+            . "Last Name: " . $user['lastname'] . "<br />"
+            . "Phone: " . $user['phone'] . "<br />"
+            . "Email: " . $user['email'] . "<br />"
+            . "Country: " . $user['country'] . "<br />"
+            . "State: " . $user['state'] . "<br />"
+            . "Stripe ID" . $user['stripe_customer_id'];
+
+        mail($to, $subject, $message, $headers);
+    }
+
     public function contactUsSendEmail($from, $message) {
-        $to = 'support@merlinleads.net';
+        $to = 'support@merlinleads.com';
         $subject = 'Merlin Leads - [New Message] Contact Us';
         $headers = "From: <" . $from . ">"  . "\r\n";
         $headers .= "BCC: <" . $this->$cc . ">" . "\r\n";

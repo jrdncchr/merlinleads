@@ -10,6 +10,8 @@ class scheduler_model extends CI_Model {
     private $scheduler_category_table = 'scheduler_category';
     private $merlin_category_table = 'merlin_category';
 
+    private $scheduler_pp_table = 'scheduler_posted_post';
+
     function __construct() {
         $this->load->database();
     }
@@ -91,7 +93,7 @@ class scheduler_model extends CI_Model {
      * Scheduler Post
      */
     public function get_scheduler_post($where = array(), $list = true) {
-        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler_post.post_category_id');
+        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler_post.post_category_id', 'left');
         $result = $this->db->get_where($this->scheduler_post_table, $where);
         return $list ? $result->result() : $result->row();
     }
@@ -112,4 +114,31 @@ class scheduler_model extends CI_Model {
         $this->db->delete($this->scheduler_post_table);
         return array('success' => true);
     }
+
+    public function get_scheduler_next_post($scheduler) {
+        $this->db->reconnect();
+        $result = $this->db->get_where($this->scheduler_category_table, array('category_id' => $scheduler->category_id));
+        $category = $result->row();
+
+        $this->db->order_by('post_date_created', 'asc');
+        $result = $this->db->get_where($this->scheduler_post_table, array('post_category_id' => $category->category_id));
+        $posts = $result->result();
+
+        $this->db->order_by('date_posted', 'desc');
+        $result = $this->db->get_where($this->scheduler_pp_table, array('scheduler_id' => $scheduler->scheduler_id));
+        if($result->num_rows() > 0) {
+            $pp = $result->result();
+            if($pp[0]->post_id == $posts[sizeof($posts)-1]->post_id) {
+                return $posts[0];
+            } else {
+                for($i = 0; $i < sizeof($posts); $i++) {
+                    if($pp[0]->post_id == $posts[$i]->post_id) {
+                        return $posts[$i+1];
+                    }
+                }
+            }
+        }
+        return $posts[0];
+    }
+
 } 

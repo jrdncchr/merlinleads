@@ -49,22 +49,11 @@ class Registration extends MY_Controller {
             );
             $this->load->model('email_model');
             if ($this->user_model->add($user)) {
-                $this->session->set_userdata('registerEmail', $user['email']);
-                $this->email_model->sendConfirmationEmail($_POST['email'], $key);
                 echo "OK";
             }
         } else {
             $this->index();
         }
-    }
-
-    public function generateRandomString($length = 20) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $randomString;
     }
 
     public function getCountryStates() {

@@ -36,8 +36,15 @@ class User_Model extends CI_Model {
     }
 
     public function add($user) {
-        $this->db->insert('users', $user);
-        return true;
+        if($this->db->insert('users', $user)) {
+            $CI =& get_instance();
+            $CI->load->model('email_model');
+            $this->session->set_userdata('registerEmail', $user['email']);
+            $this->email_model->sendConfirmationEmail($_POST['email'], $this->generateRandomString());
+            $this->email_model->sendNewUserNotification($user);
+            return true;
+        }
+        return false;
     }
 
     public function update($update, $id) {
@@ -149,6 +156,15 @@ class User_Model extends CI_Model {
         } else {
             return "FAILED";
         }
+    }
+
+    public function generateRandomString($length = 20) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $randomString;
     }
 
 }

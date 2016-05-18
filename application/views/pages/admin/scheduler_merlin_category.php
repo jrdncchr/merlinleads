@@ -7,7 +7,6 @@
                 <tr>
                     <th>Category Name</th>
                     <th>Description</th>
-                    <th>Type</th>
                     <th>Post Count</th>
                     <th>Date Created</th>
                 </tr>
@@ -28,13 +27,6 @@
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
-                <div class="form-group">
-                    <label for="category-type">* Category Type</label>
-                    <select id="category-type" class="form-control required">
-                        <option value="WITHOUT_BLOG_POST">Without blog post</option>
-                        <option value="WITH_BLOG_POST">With blog post</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label for="category-name">* Category Name</label>
                     <input type="text" class="form-control required" id="category-name" />
@@ -81,7 +73,6 @@
                 var data = {
                     action: 'save',
                     category: {
-                        category_type: $('#category-type').val(),
                         category_name: $('#category-name').val(),
                         category_description: $('#category-description').val()
                     }
@@ -129,16 +120,8 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "15%"},
-                {data: "category_description", width: "30%"},
-                {data: "category_type", width: "20%", render: function(data) {
-                    if(data == "WITHOUT_BLOG_POST") {
-                        return "Without blog post";
-                    } else if(data == "WITH_BLOG_POST") {
-                        return "With blog post";
-                    }
-                }
-                },
+                {data: "category_name", width: "20%"},
+                {data: "category_description", width: "45%"},
                 {data: "post_count", width: "15%"},
                 {data: "category_date_created", width: "20%"},
                 {data: "category_id", visible: false}
@@ -166,6 +149,5 @@
         $('#delete-btn').show();
         $('#category-name').val(data.category_name);
         $('#category-description').val(data.category_description);
-        $('#category-type').val(data.category_type);
     }
 </script>

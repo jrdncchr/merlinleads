@@ -241,57 +241,124 @@ class Api_Model extends CI_Model {
      * SCHEDULER POST
      */
     public function insertPosts($post) {
-        $this->db->insert('scheduler_posts', $post);
+        $this->db->insert('scheduler_posted_post', $post);
     }
 
-    public function post($scheduler) {
+    public function ot_post($post, $user) {
         $result = array();
-        switch($scheduler->module) {
-            /*
-             * LinkedIn
-             */
-            case 'LinkedIn' :
-                $data = array(
-                    'content' => array(
-                        'title' => $scheduler->headline,
-                        'description' => $scheduler->content . "\n\n" . $scheduler->keywords
-                    ),
-                    'visibility' => array(
-                        "code" => "anyone"
-                    )
-                );
-                if($scheduler->url) {
-                    $data['content']['submitted-url'] = $scheduler->url;
-                }
-                $li = json_decode($scheduler->li_access_token);
+        $modules = explode(',', $post->otp_modules);
+        foreach($modules as $m) {
+            switch($m) {
+                /*
+                 * LinkedIn
+                 */
+                case 'LinkedIn' :
+                    $data = array(
+                        'content' => array(
+                            'description' => $post->post_body
+                        ),
+                        'visibility' => array(
+                            "code" => "anyone"
+                        )
+                    );
+                    if($post->post_url) {
+                        $data['content']['submitted-url'] = $post->post_url;
+                    }
+                    $li = json_decode($user->li_access_token);
 
-                $result = $this->post_linkedin($data, $li);
-                break;
-            /*
-             * Facebook
-             */
-            case 'Facebook' :
-                $message = $scheduler->headline .  "\n\n" . $scheduler->content . "\n\n" . $scheduler->keywords;
-                $linkData = [
-                    'message' => $message,
-                    'privacy' => array('value' => "EVERYONE")
-                ];
-                if($scheduler->url) {
-                    $linkData['link'] = $scheduler->url;
-                }
-                $result = $this->post_facebook($linkData, $scheduler->fb_access_token);
-                break;
+                    $r = $this->post_linkedin($data, $li);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
+                /*
+                 * Facebook
+                 */
+                case 'Facebook' :
+                    $linkData = [
+                        'message' => $post->post_body,
+                        'privacy' => array('value' => "EVERYONE")
+                    ];
+                    if($post->post_url) {
+                        $linkData['link'] = $post->post_url;
+                    }
+                    $r = $this->post_facebook($linkData, $user->fb_access_token);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
 
-            case 'Twitter' :
-                $message = $scheduler->headline .  "\n\n" . $scheduler->content . "\n\n" . $scheduler->keywords;
-                if($scheduler->url) {
-                    $this->load->library('Googl');
-                    $short_url = $this->googl->shorten($scheduler->url);
-                    $message .= "\n\n" . $short_url;
-                }
-                $result = $this->post_twitter($scheduler->twitter_access_token, $message);
-            default:
+                case 'Twitter' :
+                    $message = $post->post_body;
+                    if($post->post_url) {
+                        $this->load->library('Googl');
+                        $short_url = $this->googl->shorten($post->post_url);
+                        $message .= "\n\n" . $short_url;
+                    }
+                    $r = $this->post_twitter($user->twitter_access_token, $message);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                default:
+            }
         }
+
+        return $result;
+    }
+
+    public function post($scheduler, $post, $user) {
+        $result = array();
+        $modules = explode(',', $scheduler->modules);
+        foreach($modules as $m) {
+            switch($m) {
+                /*
+                 * LinkedIn
+                 */
+                case 'LinkedIn' :
+                    $data = array(
+                        'content' => array(
+                            'description' => $post->post_body
+                        ),
+                        'visibility' => array(
+                            "code" => "anyone"
+                        )
+                    );
+                    if($post->post_url) {
+                        $data['content']['submitted-url'] = $post->post_url;
+                    }
+                    $li = json_decode($user->li_access_token);
+
+                    $r = $this->post_linkedin($data, $li);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
+                /*
+                 * Facebook
+                 */
+                case 'Facebook' :
+                    $linkData = [
+                        'message' => $post->post_body,
+                        'privacy' => array('value' => "EVERYONE")
+                    ];
+                    if($post->post_url) {
+                        $linkData['link'] = $post->post_url;
+                    }
+                    $r = $this->post_facebook($linkData, $user->fb_access_token);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
+
+                case 'Twitter' :
+                    $message = $post->post_body;
+                    if($post->post_url) {
+                        $this->load->library('Googl');
+                        $short_url = $this->googl->shorten($post->post_url);
+                        $message .= "\n\n" . $short_url;
+                    }
+                    $r = $this->post_twitter($user->twitter_access_token, $message);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                default:
+            }
+        }
+
         return $result;
     }
 

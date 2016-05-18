@@ -14,6 +14,17 @@ class scheduler extends MY_Controller {
     }
 
     public function index() {
+        $this->load->model('api_model');
+        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
+        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
+        $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+
+        $this->load->model('profile_model');
+        $this->data['profile'] = $this->profile_model->getProfilesByUser($this->user->id);
+
+        $this->load->model('property_model');
+        $this->data['property'] = $this->property_model->getPropertiesForMerlinLibrary($this->user->id);
+
         $this->data['available_times'] = $this->_getAvailableTimes();
         $this->data['scheduler'] = $this->scheduler_model->get_scheduler_details(
             array('user_id' => $this->user->id));
@@ -90,6 +101,12 @@ class scheduler extends MY_Controller {
     }
 
     public function post() {
+        $this->load->model('api_model');
+        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
+        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
+        $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+
+        $this->data['available_times'] = $this->_getAvailableTimes();
         $category = $this->scheduler_model->get_scheduler_category(
             array('category_user_id' => $this->user->id));
         $this->data['category'] = $category;

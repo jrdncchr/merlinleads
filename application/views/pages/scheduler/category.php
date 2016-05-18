@@ -5,7 +5,7 @@
         <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
         <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Contents</a>
         <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</button>
-        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
+<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
 </div>
@@ -18,7 +18,6 @@
                 <tr>
                     <th>Category Name</th>
                     <th>Description</th>
-                    <th>Type</th>
                     <th>Post Count</th>
                     <th>Date Created</th>
                 </tr>
@@ -39,13 +38,6 @@
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
-                <div class="form-group">
-                    <label for="category-type">* Category Type</label>
-                    <select id="category-type" class="form-control required">
-                        <option value="CWoP">Without post</option>
-                        <option value="CWP">With post</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label for="category-name">* Category Name</label>
                     <input type="text" class="form-control required" id="category-name" />
@@ -88,7 +80,6 @@
                 var data = {
                     action: 'save',
                     category: {
-                        category_type: $('#category-type').val(),
                         category_name: $('#category-name').val(),
                         category_description: $('#category-description').val()
                     }
@@ -136,16 +127,8 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "15%"},
-                {data: "category_description", width: "30%"},
-                {data: "category_type", width: "20%", render: function(data) {
-                        if(data == "CWoP") {
-                            return "Without post";
-                        } else if(data == "CWP") {
-                            return "With post";
-                        }
-                    }
-                },
+                {data: "category_name", width: "20%"},
+                {data: "category_description", width: "45%"},
                 {data: "post_count", width: "15%"},
                 {data: "category_date_created", width: "20%"},
                 {data: "category_id", visible: false}
@@ -173,6 +156,5 @@
         $('#delete-btn').show();
         $('#category-name').val(data.category_name);
         $('#category-description').val(data.category_description);
-        $('#category-type').val(data.category_type);
     }
 </script>

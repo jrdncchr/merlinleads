@@ -1,3 +1,14 @@
+<style>
+    .social {
+        cursor: pointer;
+    }
+    .account-on {
+        color: #00438A;
+        border-bottom: 3px solid #00438A;
+        padding-bottom: 2px;
+    }
+</style>
+
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Contents</h4>
 
 <div class="row">
@@ -5,7 +16,7 @@
         <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</button>
         <button disabled class="btn btn-default btn-sm pull-right">Post</button>
         <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
+<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
 </div>
@@ -36,9 +47,33 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="form-modal-label">Add Post</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 5px 20px;">
                 <div class="notice"></div>
-                <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="post-otp" type="checkbox"> One time post?
+                    </label>
+                </div>
+                <div class="row" id="date-section" style="display: none;">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="post-otp-date">* Date</label>
+                            <input type="text" id="post-otp-date" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="post-otp-time">* Time</label>
+                            <select id="post-otp-time" class="form-control required">
+                                <option value="">Select Time</option>
+                                <?php foreach($available_times as $t): ?>
+                                    <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" id="category-section">
                     <label for="post-category">* Category</label>
                     <select id="post-category" class="form-control required">
                         <?php foreach($category as $c): ?>
@@ -53,6 +88,39 @@
                 <div class="form-group">
                     <label for="post-url">Url</label>
                     <input type="text" class="form-control url" id="post-url" />
+                </div>
+                <div id="accounts-section" class="form-group" style="display: none;">
+                    <label>* Accounts</label>
+                    <div id="accounts">
+                        <?php if(isset($main_f->facebook_feed_posting)) { ?>
+                            <?php if(isset($fb['valid_access_token'])) { ?>
+                                <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
+                            <?php } ?>
+                        <?php } ?>
+
+
+                        <?php if(isset($main_f->twitter_feed_posting)) { ?>
+                            <?php if($twitter['has_access_key']) { ?>
+                                <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
+                            <?php } ?>
+                        <?php } ?>
+
+
+                        <?php if(isset($main_f->linkedin_feed_posting)) { ?>
+                            <?php if(isset($linkedIn['access_token'])) { ?>
+                                <?php if(!$linkedIn['expired_access_token']) { ?>
+                                    <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if(!$user->fb_access_token && !$user->twitter_access_token && !$user->li_access_token) { ?>
+                            <span class="text-danger">No accounts setup yet. <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup Now.</a></span>
+                        <?php } ?>
+
+                        <br />
+                        <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup your social accounts now.</a>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -71,6 +139,8 @@
     $(document).ready(function() {
         initDt();
 
+        $('#post-otp-date').datepicker({ dateFormat: 'yy-mm-dd' });
+
         $('#add-btn').on('click', function() {
             $('#delete-btn').hide();
             selectedId = 0;
@@ -81,18 +151,66 @@
                 keyboard: false,
                 backdrop: 'static'
             });
+            modal.find('.fa-facebook-square').removeClass('account-on');
+            modal.find('.fa-twitter-square').removeClass('account-on');
+            modal.find('.fa-linkedin-square').removeClass('account-on');
+            modal.find('.modal-title').html('Add Timeslot');
+        });
+
+        $('#post-otp').on('change', function() {
+            if($(this).is(':checked')) {
+                $('#date-section').show();
+                $('#category-section').hide();
+                $('#post-category').removeClass('required');
+                $('#post-otp-date').addClass('required');
+                $('#post-otp-time').addClass('required');
+                $('#accounts-section').show();
+            } else {
+                $('#date-section').hide();
+                $('#category-section').show();
+                $('#post-category').addClass('required');
+                $('#post-otp-date').removeClass('required');
+                $('#post-otp-time').removeClass('required');
+                $('#accounts-section').hide();
+            }
         });
 
         $('#save-btn').on('click', function() {
             if(validator.validateForm($('#form-modal'))) {
+                var otp = $('#post-otp').is(':checked') ? 1 : 0;
                 var data = {
                     action: 'save',
                     post: {
-                        post_category_id: $('#post-category').val(),
                         post_body: $('#post-body').val(),
-                        post_url: $('#post-url').val()
+                        post_url: $('#post-url').val(),
+                        otp: otp
                     }
                 };
+                if(otp) {
+                    data.post.otp_date = $('#post-otp-date').val();
+                    data.post.otp_time = $('#post-otp-time').val();
+                    var modules = "";
+                    $('#accounts-section').find('.social').each(function() {
+                        if($(this).hasClass('account-on')) {
+                            if($(this).hasClass('account-facebook')) {
+                                modules += "Facebook";
+                            } else if($(this).hasClass('account-twitter')) {
+                                modules += "Twitter";
+                            } else if($(this).hasClass('account-linkedin')) {
+                                modules += "LinkedIn";
+                            }
+                            modules += ",";
+                        }
+                    });
+                    modules = modules.substring(0, modules.length - 1);
+                    if(modules == "") {
+                        validator.displayAlertError($('#form-modal'), true, "Select at least one account.");
+                        return false;
+                    }
+                    data.post.otp_modules = modules;
+                } else {
+                    data.post.post_category_id = $('#post-category').val();
+                }
                 if(selectedId > 0) {
                     data.post.post_id = selectedId;
                 }
@@ -122,12 +240,21 @@
             }
         });
 
+        $('.social').on('click', function() {
+            var modal = $('#form-modal');
+            if(!$(this).hasClass('account-on')) {
+                $(this).addClass('account-on');
+            } else {
+                $(this).removeClass('account-on');
+            }
+        });
+
     });
 
     function initDt() {
         dt = $("#schedulerContentDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [3],
+            "aaSorting": [4],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -136,10 +263,15 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "20%"},
-                {data: "post_body", width: "40%"},
+                {data: "category_name", width: "20%", render: function(data, type, row) {
+                    return row.otp == "1" ?
+                        "<span class='text-warning'>One Time Post</span>" :
+                        "<span class='text-primary'>" + data + "</span>";
+                    }
+                },
+                {data: "post_body", width: "45%"},
                 {data: "post_url", width: "20%"},
-                {data: "post_date_created", width: "20%"},
+                {data: "post_date_created", width: "15%"},
                 {data: "post_id", visible: false},
                 {data: "post_category_id", visible: false}
             ],
@@ -163,9 +295,42 @@
             backdrop: 'static'
         });
         modal.find('.modal-title').html('Edit Post');
+        modal.find('.fa-facebook-square').removeClass('account-on');
+        modal.find('.fa-twitter-square').removeClass('account-on');
+        modal.find('.fa-linkedin-square').removeClass('account-on');
+
         $('#delete-btn').show();
-        $('#post-category').val(data.post_category_id);
         $('#post-body').val(data.post_body);
         $('#post-url').val(data.post_url);
+
+        if(data.otp == 1) {
+            $('#date-section').show();
+            $('#category-section').hide();
+            $('#post-category').removeClass('required');
+            $('#post-otp').attr('checked', 'checked');
+            $('#post-otp-date').val(data.otp_date).addClass('required');
+            $('#post-otp-time').val(data.otp_time).addClass('required');
+            $('#accounts-section').show();
+
+            var modules = data.otp_modules.split(',');
+            for(var i = 0; i < modules.length; i++) {
+                if(modules[i] == 'Facebook') {
+                    modal.find('.fa-facebook-square').addClass('account-on');
+                } else if(modules[i] == 'Twitter') {
+                    modal.find('.fa-twitter-square').addClass('account-on');
+                } else if(modules[i] == 'LinkedIn') {
+                    modal.find('.fa-linkedin-square').addClass('account-on');
+                }
+            }
+        } else {
+            $('#date-section').hide();
+            $('#category-section').show();
+            $('#post-otp').attr('checked', false);
+            $('#post-category').val(data.post_category_id).addClass('required');
+            $('#post-otp-date').removeClass('required');
+            $('#post-otp-time').removeClass('required');
+            $('#accounts-section').hide();
+        }
+
     }
 </script>

@@ -22,7 +22,7 @@
     <a id="modulesSideLink" href="<?php echo base_url() . 'admin/modules'; ?>">Modules</a>
 </li>
 <li>
-    <a id="schedulerSideLink" href="<?php echo base_url() . 'admin/scheduler_merlin_library'; ?>">Scheduler</a>
+    <a id="schedulerSideLink" href="<?php echo base_url() . 'admin/scheduler_merlin_category'; ?>">Scheduler</a>
 </li>
 <hr />
 <li>

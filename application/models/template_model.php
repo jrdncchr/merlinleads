@@ -437,6 +437,10 @@ class Template_Model extends CI_Model {
     }
 
     /* Property Classfieds Templates Post */
+    public function generateData($data, $property, $profile) {
+        $this->load->library("templates_lib_properties", null, "templates");
+        return $this->templates->generateContent($data, $property, $profile, null) . "\n";
+    }
 
     public function generatePropertyCraiglistData($data, $property, $profile, $module) {
         $this->load->library("templates_lib_properties", null, "templates");
