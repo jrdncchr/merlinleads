@@ -64,7 +64,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="post-otp-time">* Time</label>
-                            <select id="post-otp-time" class="form-control required">
+                            <select id="post-otp-time" class="form-control">
                                 <option value="">Select Time</option>
                                 <?php foreach($available_times as $t): ?>
                                     <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
@@ -83,7 +83,43 @@
                 </div>
                 <div class="form-group">
                     <label for="post-body">* Post</label>
-                    <textarea class="form-control required" id="post-body" rows="4"></textarea>
+                    <textarea class="form-control required" id="post-body" rows="3"></textarea>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input id="post-bp" type="checkbox"> Generate a Blog Post?
+                    </label>
+                </div>
+                <div id="post-bp-section" class="row well" style="display: none;">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="post-bp-template"> Template</label>
+                            <select id="post-bp-template" class="form-control">
+                                <option value="">Select Template</option>
+                                <option value="23">Sample Template</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button id="post-bp-generate" class="btn btn-sm btn-block btn-default">Generate</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="post-bp-headline">* Headline</label>
+                            <input type="text" class="form-control" id="post-bp-headline" />
+                        </div>
+                        <div class="form-group">
+                            <label for="post-bp-body">* Body</label>
+                            <textarea class="form-control" id="post-bp-body" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-bp-keywords">* Keywords</label>
+                            <textarea class="form-control" id="post-bp-keywords" rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="post-url">Url</label>
@@ -141,6 +177,16 @@
 
         $('#post-otp-date').datepicker({ dateFormat: 'yy-mm-dd' });
 
+        $('#post-bp').on('change', function() {
+            if($(this).is(':checked')) {
+                $('#post-bp-section').slideDown('fast').find('.form-control').addClass('required');
+                $('#post-url').addClass('required');
+            } else {
+                $('#post-bp-section').slideUp('fast').find('.form-control').removeClass('required');
+                $('#post-url').removeClass('required');
+            }
+        });
+
         $('#add-btn').on('click', function() {
             $('#delete-btn').hide();
             selectedId = 0;
@@ -154,7 +200,7 @@
             modal.find('.fa-facebook-square').removeClass('account-on');
             modal.find('.fa-twitter-square').removeClass('account-on');
             modal.find('.fa-linkedin-square').removeClass('account-on');
-            modal.find('.modal-title').html('Add Timeslot');
+            modal.find('.modal-title').html('Add Post');
         });
 
         $('#post-otp').on('change', function() {
@@ -178,14 +224,22 @@
         $('#save-btn').on('click', function() {
             if(validator.validateForm($('#form-modal'))) {
                 var otp = $('#post-otp').is(':checked') ? 1 : 0;
+                var bp = $('#post-bp').is(':checked') ? 1 : 0;
                 var data = {
                     action: 'save',
                     post: {
                         post_body: $('#post-body').val(),
                         post_url: $('#post-url').val(),
-                        otp: otp
+                        otp: otp,
+                        bp: bp,
+                        bp_headline: $('#post-bp-headline').val(),
+                        bp_body: $('#post-bp-body').val(),
+                        bp_keywords: $('#post-bp-keywords').val()
                     }
                 };
+                if(bp) {
+                    data.post.bp_template = $('#post-bp-template').val();
+                }
                 if(otp) {
                     data.post.otp_date = $('#post-otp-date').val();
                     data.post.otp_time = $('#post-otp-time').val();
