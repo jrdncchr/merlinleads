@@ -71,7 +71,8 @@ class Admin_Navs {
                 $nav = array(
                     "nav" => array(
                         array("title" => "Merlin Categories", "url" => "admin/scheduler_merlin_category", "id" => "schedulerCategoriesTopLink"),
-                        array("title" => "Merlin Posts", "url" => "admin/scheduler_merlin_post", "id" => "schedulerPostsTopLink")
+                        array("title" => "Merlin Posts", "url" => "admin/scheduler_merlin_post", "id" => "schedulerPostsTopLink"),
+                        array("title" => "Blog Post Templates", "url" => "admin/scheduler_blog_post", "id" => "schedulerBlogPostTemplateTopLink")
                     )
                 );
                 break;

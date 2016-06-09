@@ -1,15 +1,11 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
-        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Post</button>
+        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Blog Post Template</button>
         <div class="table-responsive" style="margin-top: 10px;">
             <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
                 <thead>
                 <tr>
-                    <th>Category</th>
-                    <th>Facebook Snippet</th>
-                    <th>Twitter Snippet</th>
-                    <th>LinkedIn Snippet</th>
-                    <th>Url</th>
+                    <th>Template Name</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -25,33 +21,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Post</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Blog Post Template</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="post-category">* Category</label>
-                    <select id="post-category" class="form-control required">
-                        <?php foreach($category as $c): ?>
-                            <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="bp-template-name">* Template Name</label>
+                    <input type="text" class="form-control required" id="bp-template-name" />
                 </div>
                 <div class="form-group">
-                    <label for="post-facebook-snippet">* Facebook Snippet</label>
-                    <textarea class="form-control required" id="post-facebook-snippet" rows="2"></textarea>
+                    <label for="bp-headline">* Headline</label>
+                    <textarea class="form-control required" id="bp-headline" rows="2"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="post-body">* Twitter Snippet</label>
-                    <textarea class="form-control required" id="post-twitter-snippet" rows="2"></textarea>
+                    <label for="bp-body">* Body</label>
+                    <textarea class="form-control required" id="bp-body" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="post-linkedin-snippet">* LinkedIn Snippet</label>
-                    <textarea class="form-control required" id="post-linkedin-snippet" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="post-url">Url</label>
-                    <input type="text" class="form-control url" id="post-url" />
+                    <label for="bp-keywords">* Keywords</label>
+                    <textarea class="form-control required" id="bp-keywords" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -64,11 +52,11 @@
 </div>
 
 <script>
-    var actionUrl = "<?php echo base_url() . "admin/scheduler_post_action" ?>";
-    var dt, selected, selectedRows;
+    var actionUrl = "<?php echo base_url() . "admin/scheduler_blog_post_action" ?>";
+    var dt, selectedId, selectedRows;
 
     $(document).ready(function() {
-        $("#schedulerPostsTopLink").addClass("custom-nav-active");
+        $("#schedulerBlogPostTemplateTopLink").addClass("custom-nav-active");
         $("#schedulerSideLink").addClass("custom-nav-active");
 
         initDt();
@@ -77,7 +65,7 @@
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Post');
+            modal.find('.modal-title').html('Add Blog Post Template');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -90,21 +78,20 @@
                 var data = {
                     action: 'save',
                     post: {
-                        post_category_id: $('#post-category').val(),
-                        post_facebook_snippet: $('#post-facebook-snippet').val(),
-                        post_twitter_snippet: $('#post-twitter-snippet').val(),
-                        post_linkedin_snippet: $('#post-linkedin-snippet').val(),
-                        post_url: $('#post-url').val()
+                        bp_template_name: $('#bp-template-name').val(),
+                        bp_headline: $('#bp-headline').val(),
+                        bp_body: $('#bp-body').val(),
+                        bp_keywords: $('#bp-keywords').val()
                     }
                 };
                 if(selectedId > 0) {
-                    data.post.post_id = selectedId;
+                    data.post.bp_id = selectedId;
                 }
-                loading('info', 'Saving post...');
+                loading('info', 'Saving blog post template...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving post successful!');
+                        loading('success', 'Saving blog post template successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -113,13 +100,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this post?");
+            var ok = confirm("Are you sure to delete this blog post template?");
             if(ok) {
-                loading('info', 'Deleting post...');
-                $.post(actionUrl, {action: 'delete', post_id: selectedId}, function(res) {
+                loading('info', 'Deleting blog post template...');
+                $.post(actionUrl, {action: 'delete', bp_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting post successful!');
+                        loading('success', 'Deleting blog post template successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -131,7 +118,7 @@
     function initDt() {
         dt = $("#scheduler-post-dt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [5],
+            "aaSorting": [1],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -140,19 +127,12 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "20%"},
-                {data: "post_facebook_snippet", width: "20%"},
-                {data: "post_twitter_snippet", width: "20%"},
-                {data: "post_linkedin_snippet", width: "20%"},
-                {data: "post_url", width: "10%", render: function(data, row, type) {
-                    return data ?
-                        '<i class="fa fa-check text-success"></i>' :
-                        '<i class="fa fa-times text-danger"></i>';
-                    }
-                },
-                {data: "post_date_created", width: "10%"},
-                {data: "post_id", visible: false},
-                {data: "post_category_id", visible: false}
+                {data: "bp_template_name", width: "80%"},
+                {data: "bp_date_created", width: "20%"},
+                {data: "bp_headline", visible: false},
+                {data: "bp_id", visible: false},
+                {data: "bp_body", visible: false},
+                {data: "bp_keywords", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#scheduler-post-dt").dataTable();
@@ -166,19 +146,18 @@
     }
 
     function showEdit(data) {
-        selectedId = data.post_id;
+        selectedId = data.bp_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Post');
+        modal.find('.modal-title').html('Edit Blog Post Template');
         $('#delete-btn').show();
-        $('#post-category').val(data.post_category_id);
-        $('#post-facebook-snippet').val(data.post_facebook_snippet);
-        $('#post-twitter-snippet').val(data.post_twitter_snippet);
-        $('#post-linkedin-snippet').val(data.post_linkedin_snippet);
-        $('#post-url').val(data.post_url);
+        $('#bp-template-name').val(data.bp_template_name);
+        $('#bp-headline').val(data.bp_headline);
+        $('#bp-body').val(data.bp_body);
+        $('#bp-keywords').val(data.bp_keywords);
     }
 </script>

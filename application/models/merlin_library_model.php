@@ -7,6 +7,7 @@ class merlin_library_model extends CI_Model {
 
     private $merlin_post_table = 'merlin_post';
     private $merlin_category_table = 'merlin_category';
+    private $merlin_blog_post_table = 'merlin_blog_post';
 
     private $scheduler_pp_table = 'scheduler_posted_post';
 
@@ -90,6 +91,32 @@ class merlin_library_model extends CI_Model {
     public function delete_post($id) {
         $this->db->where('post_id', $id);
         $this->db->delete($this->merlin_post_table);
+        return array('success' => true);
+    }
+
+
+    /*
+     * Merlin Blog Post
+     */
+    public function get_blog_post($where = array(), $list = true) {
+        $result = $this->db->get_where($this->merlin_blog_post_table, $where);
+        return $list ? $result->result() : $result->row();
+    }
+
+    public function add_blog_post($post) {
+        $this->db->insert($this->merlin_blog_post_table, $post);
+        return array('success' => true, 'inserted_id' => $this->db->insert_id());
+    }
+
+    public function update_blog_post($id, $post) {
+        $this->db->where('bp_id', $id);
+        $this->db->update($this->merlin_blog_post_table, $post);
+        return array('success' => true);
+    }
+
+    public function delete_blog_post($id) {
+        $this->db->where('bp_id', $id);
+        $this->db->delete($this->merlin_blog_post_table);
         return array('success' => true);
     }
 

@@ -105,6 +105,7 @@ class scheduler extends MY_Controller {
         $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
         $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
         $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+        $this->data['templates'] = $this->merlin_library_model->get_blog_post();
 
         $this->data['available_times'] = $this->_getAvailableTimes();
         $category = $this->scheduler_model->get_scheduler_category(

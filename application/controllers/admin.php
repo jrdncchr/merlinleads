@@ -207,6 +207,45 @@ class Admin extends MY_Controller
         }
     }
 
+    public function scheduler_blog_post() {
+        $this->_renderA('pages/admin/scheduler_merlin_blog_post', 'Scheduler');
+    }
+
+    public function scheduler_blog_post_action() {
+        $this->load->model('merlin_library_model');
+        $action = $this->input->post('action');
+        switch($action) {
+
+            case 'list' :
+                $list = $this->merlin_library_model->get_blog_post();
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'save' :
+                $post = $this->input->post('post');
+                if(isset($post['bp_id'])) {
+                    $result = $this->merlin_library_model->update_blog_post($post['bp_id'], $post);
+                } else {
+                    $result = $this->merlin_library_model->add_blog_post($post);
+                }
+                echo json_encode($result);
+                break;
+
+            case 'delete' :
+                $post_id = $this->input->post("bp_id");
+                $result = $this->merlin_library_model->delete_blog_post($post_id);
+                echo json_encode($result);
+                break;
+
+            default:
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => "Action not found."
+                ));
+
+        }
+    }
+
     /*
      * Features
      */

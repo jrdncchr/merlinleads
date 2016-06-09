@@ -178,30 +178,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="category-merlin-options" style="display: none;">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="property">* Property</label>
-                            <select id="property" class="form-control">
-                                <option value="">Select Property</option>
-                                <?php foreach($property as $p): ?>
-                                    <option value="<?php echo $p->property_id; ?>"><?php echo $p->name; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="profile">* Profile</label>
-                            <select id="profile" class="form-control">
-                                <option value="">Select Profile</option>
-                                <?php foreach($profile as $p): ?>
-                                    <option value="<?php echo $p->id; ?>"><?php echo $p->name; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="row" id="category-merlin-options" style="display: none;">-->
+<!--                    <div class="col-sm-6">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="property">* Property</label>-->
+<!--                            <select id="property" class="form-control">-->
+<!--                                <option value="">Select Property</option>-->
+<!--                                --><?php //foreach($property as $p): ?>
+<!--                                    <option value="--><?php //echo $p->property_id; ?><!--">--><?php //echo $p->name; ?><!--</option>-->
+<!--                                --><?php //endforeach; ?>
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-sm-6">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="profile">* Profile</label>-->
+<!--                            <select id="profile" class="form-control">-->
+<!--                                <option value="">Select Profile</option>-->
+<!--                                --><?php //foreach($profile as $p): ?>
+<!--                                    <option value="--><?php //echo $p->id; ?><!--">--><?php //echo $p->name; ?><!--</option>-->
+<!--                                --><?php //endforeach; ?>
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <div class="form-group">
                     <label>* Accounts</label>
@@ -336,10 +336,10 @@
                 $('#category-section').show();
                 if(library == 'merlin') {
                     $('#category-merlin').addClass('required').show();
-                    $('#category-merlin-options').show();
+                    $('#category-merlin-options').hide();
                     $('#category-user').removeClass('required').hide();
-                    $('#property').addClass('required');
-                    $('#profile').addClass('required');
+                    $('#property').removeClass('required');
+                    $('#profile').removeClass('required');
                 } else if(library == 'user') {
                     $('#category-user').addClass('required').show();
                     $('#category-merlin').removeClass('required').hide();
@@ -370,7 +370,7 @@
                         category_id: library == 'user' ? $('#category-user').val() : $('#category-merlin').val()
                     }
                 };
-                if(library == 'merlin') {
+                if(library == 'property') {
                     data.scheduler.property_id = $('#property').val();
                     data.scheduler.profile_id = $('#profile').val();
                 }

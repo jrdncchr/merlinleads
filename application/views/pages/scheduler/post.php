@@ -9,7 +9,7 @@
     }
 </style>
 
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Contents</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Posts</h4>
 
 <div class="row">
     <div class="col-sm-12">
@@ -28,8 +28,10 @@
                 <thead>
                 <tr>
                     <th>Category</th>
-                    <th>Post</th>
-                    <th>Url</th>
+                    <th>Facebook Snippet</th>
+                    <th>LinkedIn Snippet</th>
+                    <th>Twitter Snippet</th>
+                    <th>URL</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -82,8 +84,16 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="post-body">* Post</label>
-                    <textarea class="form-control required" id="post-body" rows="3"></textarea>
+                    <label for="post-facebook-snippet">* Facebook Snippet</label>
+                    <textarea class="form-control required" id="post-facebook-snippet" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-linkedin-snippet">* LinkedIn Snippet</label>
+                    <textarea class="form-control required" id="post-linkedin-snippet" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-twitter-snippet">* Twitter Snippet</label>
+                    <textarea class="form-control required" id="post-twitter-snippet" rows="2"></textarea>
                 </div>
                 <div class="checkbox">
                     <label>
@@ -96,7 +106,9 @@
                             <label for="post-bp-template"> Template</label>
                             <select id="post-bp-template" class="form-control">
                                 <option value="">Select Template</option>
-                                <option value="23">Sample Template</option>
+                                <?php foreach($templates as $t): ?>
+                                    <option value="<?php echo  $t->bp_id?>"><?php echo $t->bp_template_name; ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -109,15 +121,24 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="post-bp-headline">* Headline</label>
-                            <input type="text" class="form-control" id="post-bp-headline" />
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="post-bp-headline" />
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="post-bp-body">* Body</label>
-                            <textarea class="form-control" id="post-bp-body" rows="3"></textarea>
+                            <div class="input-group input-group-sm">
+                                <textarea class="form-control" id="post-bp-body" style="height: 60px;"></textarea>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="post-bp-keywords">* Keywords</label>
-                            <textarea class="form-control" id="post-bp-keywords" rows="3"></textarea>
+                            <div class="input-group input-group-sm">
+                                <textarea class="form-control" id="post-bp-keywords" style="height: 60px;"></textarea>
+                                <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -228,7 +249,9 @@
                 var data = {
                     action: 'save',
                     post: {
-                        post_body: $('#post-body').val(),
+                        post_facebook_snippet: $('#post-facebook-snippet').val(),
+                        post_twitter_snippet: $('#post-twitter-snippet').val(),
+                        post_linkedin_snippet: $('#post-linkedin-snippet').val(),
                         post_url: $('#post-url').val(),
                         otp: otp,
                         bp: bp,
@@ -308,7 +331,7 @@
     function initDt() {
         dt = $("#schedulerContentDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [4],
+            "aaSorting": [5],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -323,9 +346,16 @@
                         "<span class='text-primary'>" + data + "</span>";
                     }
                 },
-                {data: "post_body", width: "45%"},
-                {data: "post_url", width: "20%"},
-                {data: "post_date_created", width: "15%"},
+                {data: "post_facebook_snippet", width: "20%"},
+                {data: "post_twitter_snippet", width: "20%"},
+                {data: "post_linkedin_snippet", width: "20%"},
+                {data: "post_url", width: "10%", render: function(data, type, row) {
+                    return data ?
+                        '<i class="fa fa-check text-success"></i>' :
+                        '<i class="fa fa-times text-danger"></i>';
+                    }
+                },
+                {data: "post_date_created", width: "10%"},
                 {data: "post_id", visible: false},
                 {data: "post_category_id", visible: false}
             ],
@@ -354,14 +384,16 @@
         modal.find('.fa-linkedin-square').removeClass('account-on');
 
         $('#delete-btn').show();
-        $('#post-body').val(data.post_body);
+        $('#post-facebook-snippet').val(data.post_facebook_snippet);
+        $('#post-twitter-snippet').val(data.post_twitter_snippet);
+        $('#post-linkedin-snippet').val(data.post_linkedin_snippet);
         $('#post-url').val(data.post_url);
 
         if(data.otp == 1) {
             $('#date-section').show();
             $('#category-section').hide();
             $('#post-category').removeClass('required');
-            $('#post-otp').attr('checked', 'checked');
+            $('#post-otp').attr('checked', 'checked').attr('checked', true);
             $('#post-otp-date').val(data.otp_date).addClass('required');
             $('#post-otp-time').val(data.otp_time).addClass('required');
             $('#accounts-section').show();
@@ -384,6 +416,20 @@
             $('#post-otp-date').removeClass('required');
             $('#post-otp-time').removeClass('required');
             $('#accounts-section').hide();
+        }
+
+        if(data.bp == 1) {
+            $('#post-bp').attr('checked', 'checked');
+            $('#post-bp-section').slideDown('fast').find('.form-control').addClass('required');
+            $('#post-url').addClass('required');
+            $('#post-bp-template').val(data.bp_template);
+            $('#post-bp-headline').val(data.bp_headline);
+            $('#post-bp-body').val(data.bp_body);
+            $('#post-bp-keywords').val(data.bp_keywords);
+        } else {
+            $('#post-otp').removeAttr('checked');
+            $('#post-bp-section').slideUp('fast').find('.form-control').removeClass('required');
+            $('#post-url').removeClass('required');
         }
 
     }

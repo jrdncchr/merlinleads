@@ -192,7 +192,7 @@ PROPERTY
         <div class="form-group">
             <label for="advance" class="col-xs-3 control-label">MLS/Main Description
                 <i class="fa fa-question-circle text-info helper" data-container="body"
-                   data-toggle="popover" data-placement="top" data-content="Enter the MLS description or make one - up to 1,000 characters"></i>
+                   data-toggle="popover" data-placement="top" data-content="Enter the MLS description or make one - up to 1,000 characters and avoid abbreviations."></i>
             </label>
             <div class="input-group input-group-sm col-xs-9">
                 <textarea class="form-control required" id="mlsDescription" style="min-height: 80px;" placeholder="Enter MLS Description"><?php if (isset($property)) echo $property->mls_description; ?></textarea>
