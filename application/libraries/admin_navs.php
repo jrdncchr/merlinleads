@@ -77,6 +77,14 @@ class Admin_Navs {
                 );
                 break;
 
+            case "CitiesZipcodes":
+                $nav = array(
+                    "nav" => array(
+                        array("title" => "List", "url" => "admin/cities_zipcodes", "id" => "czListTopLink"),
+                        array("title" => "Users Requests", "url" => "admin/cities_zipcodes_users", "id" => "czUsersTopLink")
+                    )
+                );
+                break;
             default:
                 $nav = array();
 

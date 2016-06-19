@@ -9,11 +9,12 @@
     }
 </style>
 
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-file-text-o"></i> Posts</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Posts</h4>
 
 <div class="row">
     <div class="col-sm-12">
-        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</button>
+<!--        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</button>-->
+        <a href="<?php echo base_url() . 'scheduler/post/form'; ?>" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</a>
         <button disabled class="btn btn-default btn-sm pull-right">Post</button>
         <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
 <!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
@@ -364,7 +365,8 @@
                 $('#schedulerContentDt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
-                    showEdit(data);
+//                    showEdit(data);
+                    window.location = base_url + 'scheduler/post/form/' + data.post_id;
                 });
             }
         });

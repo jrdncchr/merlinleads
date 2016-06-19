@@ -208,6 +208,9 @@ class Admin extends MY_Controller
     }
 
     public function scheduler_blog_post() {
+        $this->load->model('merlin_library_model');
+        $category = $this->merlin_library_model->get_category(array('active' => 1));
+        $this->data['category'] = $category;
         $this->_renderA('pages/admin/scheduler_merlin_blog_post', 'Scheduler');
     }
 
@@ -234,6 +237,50 @@ class Admin extends MY_Controller
             case 'delete' :
                 $post_id = $this->input->post("bp_id");
                 $result = $this->merlin_library_model->delete_blog_post($post_id);
+                echo json_encode($result);
+                break;
+
+            default:
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => "Action not found."
+                ));
+
+        }
+    }
+
+    /*
+     * Cities / Zipcodes
+     */
+
+    public function cities_zipcodes() {
+        $this->_renderA('pages/admin/cities_zipcodes', 'CitiesZipcodes');
+    }
+
+    public function cities_zipcodes_action() {
+        $this->load->model('city_zipcode_model');
+
+        $action = $this->input->post('action');
+        switch($action) {
+
+            case 'list' :
+                $list = $cz = $this->city_zipcode_model->get_cz();
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'save' :
+                $cz = $this->input->post('cz');
+                if(isset($post['cz_id'])) {
+                    $result = $this->city_zipcode_model->update_cz($cz['cz_id'], $cz);
+                } else {
+                    $result = $this->city_zipcode_model->add_cz($cz);
+                }
+                echo json_encode($result);
+                break;
+
+            case 'delete' :
+                $cz_id = $this->input->post("cz_id");
+                $result = $this->city_zipcode_model->delete_cz($cz_id);
                 echo json_encode($result);
                 break;
 

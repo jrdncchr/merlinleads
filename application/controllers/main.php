@@ -83,6 +83,10 @@ class Main extends MY_Controller {
         $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
         $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
 
+        //Cities / Zip Codes
+        $this->load->model('city_zipcode_model');
+        $this->data['cz_list'] = $this->city_zipcode_model->get_cz();
+
         $this->data['redirect'] = $redirect;
 
         $this->title = "Merlin Leads &raquo; My Account";

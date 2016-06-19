@@ -5,7 +5,8 @@
             <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
                 <thead>
                 <tr>
-                    <th>Template Name</th>
+                    <th>Category</th>
+                    <th>Topic</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -21,13 +22,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Blog Post Template</h4>
+                <h4 class="modal-title" id="form-modal-label">Add Blog Post</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="bp-template-name">* Template Name</label>
-                    <input type="text" class="form-control required" id="bp-template-name" />
+                    <label for="bp-category">* Category</label>
+                    <select id="bp-category" class="form-control required">
+                        <?php foreach($category as $c): ?>
+                            <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bp-topic">* Topic</label>
+                    <input type="text" class="form-control required" id="bp-topic" />
                 </div>
                 <div class="form-group">
                     <label for="bp-headline">* Headline</label>
@@ -40,6 +49,18 @@
                 <div class="form-group">
                     <label for="bp-keywords">* Keywords</label>
                     <textarea class="form-control required" id="bp-keywords" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bp-facebook-snippet">* Facebook Snippet</label>
+                    <textarea class="form-control required" id="bp-facebook-snippet" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bp-twitter-snippet">* Twitter Snippet</label>
+                    <textarea class="form-control required" id="bp-twitter-snippet" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bp-linkedin-snippet">* LinkedIn Snippet</label>
+                    <textarea class="form-control required" id="bp-linkedin-snippet" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -78,10 +99,14 @@
                 var data = {
                     action: 'save',
                     post: {
-                        bp_template_name: $('#bp-template-name').val(),
+                        bp_category: $('#bp-category').val(),
+                        bp_topic: $('#bp-topic').val(),
                         bp_headline: $('#bp-headline').val(),
                         bp_body: $('#bp-body').val(),
-                        bp_keywords: $('#bp-keywords').val()
+                        bp_keywords: $('#bp-keywords').val(),
+                        bp_facebook_snippet: $('#bp-facebook-snippet').val(),
+                        bp_twitter_snippet: $('#bp-twitter-snippet').val(),
+                        bp_linkedin_snippet: $('#bp-linkedin-snippet').val()
                     }
                 };
                 if(selectedId > 0) {
@@ -127,12 +152,17 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "bp_template_name", width: "80%"},
+                {data: "category_name", width: "30%"},
+                {data: "bp_topic", width: "50%"},
                 {data: "bp_date_created", width: "20%"},
+                {data: "bp_category", visible: false},
                 {data: "bp_headline", visible: false},
                 {data: "bp_id", visible: false},
                 {data: "bp_body", visible: false},
-                {data: "bp_keywords", visible: false}
+                {data: "bp_keywords", visible: false},
+                {data: "bp_facebook_snippet", visible: false},
+                {data: "bp_twitter_snippet", visible: false},
+                {data: "bp_linkedin_snippet", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#scheduler-post-dt").dataTable();
@@ -155,9 +185,13 @@
         });
         modal.find('.modal-title').html('Edit Blog Post Template');
         $('#delete-btn').show();
-        $('#bp-template-name').val(data.bp_template_name);
+        $('#bp-category').val(data.bp_category);
+        $('#bp-topic').val(data.bp_topic);
         $('#bp-headline').val(data.bp_headline);
         $('#bp-body').val(data.bp_body);
         $('#bp-keywords').val(data.bp_keywords);
+        $('#bp-facebook-snippet').val(data.bp_facebook_snippet);
+        $('#bp-twitter-snippet').val(data.bp_twitter_snippet);
+        $('#bp-linkedin-snippet').val(data.bp_linkedin_snippet);
     }
 </script>

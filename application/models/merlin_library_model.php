@@ -99,7 +99,12 @@ class merlin_library_model extends CI_Model {
      * Merlin Blog Post
      */
     public function get_blog_post($where = array(), $list = true) {
-        $result = $this->db->get_where($this->merlin_blog_post_table, $where);
+        $this->db->select('mbpt.*, mct.category_name');
+        $this->db->from($this->merlin_blog_post_table . ' as mbpt');
+        $this->db->join($this->merlin_category_table . ' as mct', 'mct.category_id = mbpt.bp_category', 'left');
+        $this->db->where($where);
+        $result = $this->db->get();
+//        echo $this->db->last_query();exit;
         return $list ? $result->result() : $result->row();
     }
 

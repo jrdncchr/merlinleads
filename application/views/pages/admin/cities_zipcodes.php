@@ -1,24 +1,13 @@
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Categories</h4>
-
-<div class="row">
-    <div class="col-sm-12">
-        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
-        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
-        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</button>
-<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
-        <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
-    </div>
-</div>
-
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
-        <div class="table-responsive">
-            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add City / Zip Code</button>
+        <div class="table-responsive" style="margin-top: 10px;">
+            <table id="dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Category Name</th>
-                    <th>Description</th>
-                    <th>Post Count</th>
+                    <th>City</th>
+                    <th>Zip Code</th>
+                    <th>Used By</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -34,17 +23,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="form-modal-label">Add Category</h4>
+                <h4 class="modal-title" id="form-modal-label">Add City / Zip Code</h4>
             </div>
             <div class="modal-body">
                 <div class="notice"></div>
                 <div class="form-group">
-                    <label for="category-name">* Category Name</label>
-                    <input type="text" class="form-control required" id="category-name" />
+                    <label for="cz-city">* City</label>
+                    <input type="text" class="form-control required" id="cz-city" />
                 </div>
                 <div class="form-group">
-                    <label for="category-description">* Category Description</label>
-                    <textarea class="form-control required" id="category-description" rows="4"></textarea>
+                    <label for="cz-zipcode">* Zip Code</label>
+                    <input type="text" class="form-control required" id="cz-zipcode" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -56,18 +45,22 @@
     </div>
 </div>
 
+
+
 <script>
-    var actionUrl = "<?php echo base_url() . "scheduler/category_action" ?>";
+    var actionUrl = "<?php echo base_url() . "admin/cities_zipcodes_action" ?>";
     var dt, selectedId, selectedRows;
 
     $(document).ready(function() {
+        $("#czListTopLink").addClass("custom-nav-active");
+        $("#czSideLink").addClass("custom-nav-active");
         initDt();
 
         $('#add-btn').on('click', function() {
             $('#delete-btn').hide();
             selectedId = 0;
             var modal = $('#form-modal');
-            modal.find('.modal-title').html('Add Category');
+            modal.find('.modal-title').html('Add City / Zip Code');
             modal.modal({
                 show: true,
                 keyboard: false,
@@ -79,19 +72,19 @@
             if(validator.validateForm($('#form-modal'))) {
                 var data = {
                     action: 'save',
-                    category: {
-                        category_name: $('#category-name').val(),
-                        category_description: $('#category-description').val()
+                    cz: {
+                        cz_city: $('#cz-city').val(),
+                        cz_zipcode: $('#cz-zipcode').val()
                     }
                 };
                 if(selectedId > 0) {
                     data.category.category_id = selectedId;
                 }
-                loading('info', 'Saving category...');
+                loading('info', 'Saving...');
                 $.post(actionUrl, data, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Saving category successful!');
+                        loading('success', 'Saving successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -100,13 +93,13 @@
         });
 
         $('#delete-btn').on('click', function() {
-            var ok = confirm("Are you sure to delete this category?");
+            var ok = confirm("Are you sure to delete this?");
             if(ok) {
-                loading('info', 'Deleting category...');
-                $.post(actionUrl, {action: 'delete', category_id: selectedId}, function(res) {
+                loading('info', 'Deleting...');
+                $.post(actionUrl, {action: 'delete', cz_id: selectedId}, function(res) {
                     if(res.success) {
                         $('#form-modal').modal('hide');
-                        loading('success', 'Deleting category successful!');
+                        loading('success', 'Deleting successful!');
                         dt.fnReloadAjax();
                     }
                 }, 'json');
@@ -116,7 +109,7 @@
     });
 
     function initDt() {
-        dt = $("#schedulerLibraryDt").dataTable({
+        dt = $("#dt").dataTable({
             "bJQueryUI": true,
             "aaSorting": [4],
             "bDestroy": true,
@@ -127,15 +120,15 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "20%"},
-                {data: "category_description", width: "45%"},
-                {data: "post_count", width: "15%"},
-                {data: "category_date_created", width: "20%"},
-                {data: "category_id", visible: false}
+                {data: "cz_city", width: "30%"},
+                {data: "cz_zipcode", width: "20%"},
+                {data: "email", width: "30%"},
+                {data: "cz_date_created", width: "20%"},
+                {data: "cz_id", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
-                var table = $("#schedulerLibraryDt").dataTable();
-                $('#schedulerLibraryDt tbody tr').on('dblclick', function () {
+                var table = $("#dt").dataTable();
+                $('#dt tbody tr').on('dblclick', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -145,16 +138,16 @@
     }
 
     function showEdit(data) {
-        selectedId = data.category_id;
+        selectedId = data.cz_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-        modal.find('.modal-title').html('Edit Category');
+        modal.find('.modal-title').html('Edit City / Zip Code');
         $('#delete-btn').show();
-        $('#category-name').val(data.category_name);
-        $('#category-description').val(data.category_description);
+        $('#cz-city').val(data.cz_city);
+        $('#cz-zipcode').val(data.cz_zipcode);
     }
 </script>

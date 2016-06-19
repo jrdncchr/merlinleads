@@ -41,7 +41,7 @@
     }
 </style>
 
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;"><i class="fa fa-calendar"></i> Scheduler</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler</h4>
 
 <div class="row">
     <div class="col-sm-12">

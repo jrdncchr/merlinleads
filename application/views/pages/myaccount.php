@@ -16,6 +16,7 @@
     <li><a href="#basic" data-toggle="tab">Basic</a></li>
     <li><a href="#passwordDiv" data-toggle="tab">Password</a></li>
     <li <?php echo $redirect != '' ? "class='active'" : '' ?>><a href="#advance" data-toggle="tab">Integrations</a></li>
+    <li><a href="#citiesZipcodesDiv" data-toggle="tab">Cities/Zip Codes</a></li>
     <li><a href="#card" data-toggle="tab">Card</a></li>
 </ul>
 <!-- Tab panes -->
@@ -405,6 +406,71 @@
         </div>
     </div>
 </div>
+
+    <div class="tab-pane" id="citiesZipcodesDiv">
+        <div class="row">
+            <div class="col-sm-9 col-sm-offset-1">
+                <br />
+                <div class="alert alert-info">
+                    <i class="fa fa-question-circle"></i> Cities/Zip codes will be used when you are generating blog post for the scheduler.
+                </div>
+                <h4 style="font-weight: bold;">Select your cities/zip codes</h4>
+                <br />
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="cz-first" class="control-label col-sm-3">Primary</label>
+                        <div class="col-sm-9">
+                            <select id="cz-first" class="form-control">
+                                <option value="">Select City/Zip code</option>
+                                <?php foreach($cz_list as $cz): ?>
+                                    <option value="<?php echo $cz->cz_id; ?>"><?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cz-second" class="control-label col-sm-3">Secondary</label>
+                        <div class="col-sm-9">
+                            <select id="cz-second" class="form-control">
+                                <option value="">Select City/Zip code</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cz-third" class="control-label col-sm-3">Third</label>
+                        <div class="col-sm-9">
+                            <select id="cz-third" class="form-control">
+                                <option value="">Select City/Zip code</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cz-fourth" class="control-label col-sm-3">Fourth</label>
+                        <div class="col-sm-9">
+                            <select id="cz-first" class="form-control">
+                                <option value="">Select City/Zip code</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cz-fifth" class="control-label col-sm-3">Fifth</label>
+                        <div class="col-sm-9">
+                            <select id="cz-first" class="form-control">
+                                <option value="">Select City/Zip code</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cz-fifth" class="control-label col-sm-3"></label>
+                        <div class="col-sm-9">
+                            <button class="btn-sm btn btn-primary pull-right">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 <!-- Card Div -->
 <div class="tab-pane" id="card">

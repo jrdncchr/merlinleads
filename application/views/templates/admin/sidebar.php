@@ -24,6 +24,9 @@
 <li>
     <a id="schedulerSideLink" href="<?php echo base_url() . 'admin/scheduler_merlin_category'; ?>">Scheduler</a>
 </li>
+<li>
+    <a id="czSideLink" href="<?php echo base_url() . 'admin/cities_zipcodes'; ?>">Cities / Zip Codes</a>
+</li>
 <hr />
 <li>
     <a href="<?php echo base_url() . 'property'; ?>">Return to Properties</a>

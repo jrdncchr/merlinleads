@@ -38,6 +38,7 @@
 
     <script src="<?php echo base_url() . JS . 'modernizr-2.6.2.min.js'; ?>"></script>
     <script src="<?php echo base_url() . JS . "jquery-1.11.2.min.js"; ?>"></script>
+    <script src="<?php echo base_url() . 'bower_components/vue/dist/vue.min.js'; ?>"></script>
 <!--    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>-->
     <script src="<?php echo base_url() . JS . "jquery-ui.min.js"; ?>"></script>
     <script src="<?php echo base_url() . JS . "datatables/jquery.dataTables.js"; ?>"></script>
