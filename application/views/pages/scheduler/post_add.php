@@ -10,7 +10,7 @@
 </style>
 <ol class="breadcrumb">
     <li><a href="<?php echo base_url() . 'scheduler'; ?>">Scheduler</a></li>
-    <li><a href="<?php echo base_url() . 'scheduler/post' ?>">Posts</a></li>
+    <li><a href="<?php echo base_url() . 'scheduler/post' ?>">Post</a></li>
     <li class="active">Add Post</li>
 </ol>
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Add Post</h4>
@@ -151,9 +151,9 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="merlin-library-area">* Area</label>
-                                <select id="merlin-library-area" class="form-control required" v-model="form.bp_area_id">
-                                    <option value="">Select Area</option>
+                                <label for="merlin-library-cz">* City / Zip Code</label>
+                                <select id="merlin-library-cz" class="form-control required" v-model="form.bp_cz_id">
+                                    <option value="">Select City / Zip Code</option>
                                     <option value="1234">Test</option>
                                 </select>
                             </div>
@@ -230,7 +230,7 @@
                 bp : 0,
                 bp_category_id : '',
                 bp_profile_id : '',
-                bp_area_id : '',
+                bp_cz_id : '',
                 bp_topic_id : '',
                 bp_headline : '',
                 bp_body : '',
@@ -306,7 +306,7 @@
                     if(validator.validateForm($('#main-form'))) {
                         if(data.form.otp == 1) {
                             var modules = "";
-                            $('#accounts-section').find('.social').each(function() {
+                            $('#accounts').find('.social').each(function() {
                                 if($(this).hasClass('account-on')) {
                                     if($(this).hasClass('account-facebook')) {
                                         modules += "Facebook";
@@ -334,7 +334,7 @@
                             if(res.success) {
                                 loading('success', 'Saving post successful!');
                                 setTimeout(function() {
-                                    window.location = baseUrl + 'scheduler/post';
+                                    window.location = base_url + 'scheduler/post';
                                 }, 500);
                             }
                         }, 'json');
