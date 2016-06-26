@@ -74,7 +74,7 @@
 
 <script>
     var actionUrl = "<?php echo base_url() . "admin/cities_zipcodes_action" ?>";
-    var dt, selectedId, selectedRows;
+    var dt, selectedId, selectedRows, oldCz;
 
     $(document).ready(function() {
         $("#czUsersTopLink").addClass("custom-nav-active");
@@ -108,6 +108,7 @@
                     data.email = $('#czu-email').val();
                 } else {
                     data.czu.czu_id = selectedId;
+                    data.old_cz = oldCz;
                 }
                 loading('info', 'Saving...');
                 $.post(actionUrl, data, function(res) {
@@ -182,6 +183,7 @@
 
     function showEdit(data) {
         selectedId = data.czu_id;
+        oldCz = data.czu_cz_id;
         var modal = $('#form-modal');
         modal.modal({
             show: true,

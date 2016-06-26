@@ -276,17 +276,30 @@ class Admin extends MY_Controller
             case 'czu_save' :
                 $czu = $this->input->post('czu');
                 if(isset($czu['czu_id'])) {
-                    $result = $this->city_zipcode_model->update_czu($czu['czu_id'], $czu);
-                } else {
-                    $this->load->model('user_model');
-                    $user = $this->user_model->getByEmail($this->input->post('email'));
-                    if($user) {
-                        $czu['czu_user_id'] = $user->id;
-                        $result = $this->city_zipcode_model->add_czu($czu);
+                    if($this->input->post('old_cz') != $czu['czu_cz_id']) {
+                        $result = $this->city_zipcode_model->validate_czu($czu);
                     } else {
-                        $result = array('success' => false, 'message' => 'User email not found.');
+                        $result = array('success' => true);
+                    }
+                } else {
+                    $result = $this->city_zipcode_model->validate_czu($czu);
+                }
+
+                if($result['success']) {
+                    if(isset($czu['czu_id'])) {
+                        $result = $this->city_zipcode_model->update_czu($czu['czu_id'], $czu);
+                    } else {
+                        $this->load->model('user_model');
+                        $user = $this->user_model->getByEmail($this->input->post('email'));
+                        if($user) {
+                            $czu['czu_user_id'] = $user->id;
+                            $result = $this->city_zipcode_model->add_czu($czu);
+                        } else {
+                            $result = array('success' => false, 'message' => 'User email not found.');
+                        }
                     }
                 }
+
                 echo json_encode($result);
                 break;
 

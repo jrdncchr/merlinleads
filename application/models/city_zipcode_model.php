@@ -95,4 +95,14 @@ class city_zipcode_model extends CI_Model {
         return array('success' => true);
     }
 
+    public function validate_czu($czu) {
+        $result['success'] = true;
+        $cz = $this->get_czu(array('czu_cz_id' => $czu['czu_cz_id'], 'czu_status' => 'active'), true);
+        if($cz) {
+            $result['success'] = false;
+            $result['message'] = "City / Zip Code already used by other user.";
+        }
+        return $result;
+    }
+
 } 
