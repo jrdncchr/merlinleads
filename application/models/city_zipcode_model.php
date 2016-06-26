@@ -17,10 +17,7 @@ class city_zipcode_model extends CI_Model {
      */
 
     public function get_cz($where = array(), $list = true) {
-        $this->db->select('cz.cz_id, cz.cz_city, cz.cz_zipcode, u.email, cz.cz_date_created');
-        $this->db->join($this->czu_table . ' as czu', 'czu.czu_cz_id = cz.cz_id', 'left');
-        $this->db->join($this->users_table . ' as u', 'u.id = czu.czu_user_id', 'left');
-        $result = $this->db->get_where($this->cz_table . ' as cz', $where);
+        $result = $this->db->get_where($this->cz_table, $where);
         return $list ? $result->result() : $result->row();
     }
 

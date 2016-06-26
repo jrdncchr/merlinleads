@@ -310,7 +310,7 @@ class Admin extends MY_Controller
                 break;
 
             case 'list' :
-                $list = $this->city_zipcode_model->get_cz(array('czu_status' => 'active'));
+                $list = $this->city_zipcode_model->get_cz();
                 echo json_encode(array('data' => $list));
                 break;
 

@@ -8,7 +8,6 @@
                 <tr>
                     <th>City</th>
                     <th>Zip Code</th>
-                    <th>Used By</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -112,7 +111,7 @@
     function initDt() {
         dt = $("#dt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [4],
+            "aaSorting": [2],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -121,9 +120,8 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "cz_city", width: "30%"},
-                {data: "cz_zipcode", width: "20%"},
-                {data: "email", width: "30%"},
+                {data: "cz_city", width: "40%"},
+                {data: "cz_zipcode", width: "40%"},
                 {data: "cz_date_created", width: "20%"},
                 {data: "cz_id", visible: false}
             ],
