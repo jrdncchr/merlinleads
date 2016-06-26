@@ -1,8 +1,9 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
-        <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add City / Zip Code</button>
+        <h2 style="margin-top: 0;">City / Zip Codes</h2>
+        <button class="btn btn-success btn-sm pull-right" id="add-btn" style="margin-bottom: 10px;"><i class="fa fa-plus-circle"></i> Add</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+            <table id="dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>City</th>
@@ -128,7 +129,7 @@
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#dt").dataTable();
-                $('#dt tbody tr').on('dblclick', function () {
+                $('#dt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);

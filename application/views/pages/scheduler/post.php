@@ -25,7 +25,7 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
         <div class="table-responsive">
-            <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+            <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>Category</th>
@@ -362,7 +362,7 @@
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#schedulerContentDt").dataTable();
-                $('#schedulerContentDt tbody tr').on('dblclick', function () {
+                $('#schedulerContentDt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
 //                    showEdit(data);

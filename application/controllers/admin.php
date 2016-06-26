@@ -257,14 +257,48 @@ class Admin extends MY_Controller
         $this->_renderA('pages/admin/cities_zipcodes', 'CitiesZipcodes');
     }
 
+    public function cities_zipcodes_users() {
+        $this->load->model('city_zipcode_model');
+        $this->data['cz'] = $this->city_zipcode_model->get_cz();
+        $this->_renderA('pages/admin/cities_zipcodes_users', 'CitiesZipcodes');
+    }
+
     public function cities_zipcodes_action() {
         $this->load->model('city_zipcode_model');
 
         $action = $this->input->post('action');
         switch($action) {
 
+            case 'czu_list' :
+                $list = $this->city_zipcode_model->get_czu();
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'czu_save' :
+                $czu = $this->input->post('czu');
+                if(isset($czu['czu_id'])) {
+                    $result = $this->city_zipcode_model->update_czu($czu['czu_id'], $czu);
+                } else {
+                    $this->load->model('user_model');
+                    $user = $this->user_model->getByEmail($this->input->post('email'));
+                    if($user) {
+                        $czu['czu_user_id'] = $user->id;
+                        $result = $this->city_zipcode_model->add_czu($czu);
+                    } else {
+                        $result = array('success' => false, 'message' => 'User email not found.');
+                    }
+                }
+                echo json_encode($result);
+                break;
+
+            case 'czu_delete' :
+                $czu_id = $this->input->post("czu_id");
+                $result = $this->city_zipcode_model->delete_czu($czu_id);
+                echo json_encode($result);
+                break;
+
             case 'list' :
-                $list = $cz = $this->city_zipcode_model->get_cz();
+                $list = $this->city_zipcode_model->get_cz(array('czu_status' => 'active'));
                 echo json_encode(array('data' => $list));
                 break;
 

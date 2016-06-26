@@ -110,9 +110,12 @@ $(function() {
 
     /* DataTables Global Events */
     $(".dataTable").on('click', 'tr', function () {
-        var $button = $(this).find('button');
-        if($button.length == 0) {
-            $(this).toggleClass('selected');
+        var table = $(this).closest('.dataTable');
+        if(!table.hasClass('no-multiple')) {
+            var $button = $(this).find('button');
+            if($button.length == 0) {
+                $(this).toggleClass('selected');
+            }
         }
     });
 

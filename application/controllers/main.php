@@ -81,11 +81,13 @@ class Main extends MY_Controller {
         $this->load->model('api_model');
         $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
         $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
+
         $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
 
         //Cities / Zip Codes
         $this->load->model('city_zipcode_model');
         $this->data['cz_list'] = $this->city_zipcode_model->get_cz();
+        $this->data['czu'] = $this->city_zipcode_model->get_czu(array('czu_user_id' => $this->user->id));
 
         $this->data['redirect'] = $redirect;
 
@@ -93,6 +95,13 @@ class Main extends MY_Controller {
         $this->data['user'] = $user;
         $this->js[] = "custom/myaccount.js";
         $this->_renderL('pages/myaccount');
+    }
+
+    public function save_city_zipcode() {
+        $this->load->model('city_zipcode_model');
+        $cz = $this->input->post();
+        $result = $this->city_zipcode_model->save_czu($cz, $this->user->id);
+        echo json_encode($result);
     }
 
     public function upgrade() {

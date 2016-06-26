@@ -13,7 +13,7 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
         <div class="table-responsive">
-            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+            <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>Category Name</th>
@@ -135,7 +135,7 @@
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#schedulerLibraryDt").dataTable();
-                $('#schedulerLibraryDt tbody tr').on('dblclick', function () {
+                $('#schedulerLibraryDt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);

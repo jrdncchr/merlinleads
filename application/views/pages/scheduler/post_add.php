@@ -212,140 +212,140 @@
 </div>
 
 <script>
-    $(function() {
-        var actionUrl = "<?php echo base_url() . "scheduler/post_action" ?>";
+    var actionUrl = "<?php echo base_url() . "scheduler/post_action" ?>";
 
-        var data = {
-            type : 'Evergreen',
-            form : {
-                post_category_id : '<?php echo isset($post) ? json_encode($post->post_category_id) : '' ?>',
-                post_facebook_snippet : '<?php echo isset($post) ? json_encode($post->post_facebook_snippet) : '' ?>',
-                post_twitter_snippet : '<?php echo isset($post) ? json_encode($post->post_twitter_snippet) : '' ?>',
-                post_linkedin_snippet : '<?php echo isset($post) ? json_encode($post->post_linkedin_snippet) : '' ?>',
-                post_url : '<?php echo isset($post) ? json_encode($post->post_url) : '' ?>',
-                otp : '<?php echo isset($post) ? json_encode($post->otp) : '0' ?>',
-                otp_date : '<?php echo isset($post) ? json_encode($post->otp_date) : '' ?>',
-                otp_time : '<?php echo isset($post) ? json_encode($post->otp_time) : '' ?>',
-                otp_modules : '<?php echo isset($post) ? json_encode($post->otp_modules) : '' ?>',
-                bp : 0,
-                bp_category_id : '',
-                bp_profile_id : '',
-                bp_cz_id : '',
-                bp_topic_id : '',
-                bp_headline : '',
-                bp_body : '',
-                bp_keywords : ''
-            }
-        };
+    var data = {
+        type : 'Evergreen',
+        form : {
+            post_category_id : <?php echo isset($post) ? json_encode($post->post_category_id) : '\'\'' ?>,
+            post_facebook_snippet : <?php echo isset($post) ? json_encode($post->post_facebook_snippet) : '\'\'' ?>,
+            post_twitter_snippet : <?php echo isset($post) ? json_encode($post->post_twitter_snippet) : '\'\'' ?>,
+            post_linkedin_snippet : <?php echo isset($post) ? json_encode($post->post_linkedin_snippet) : '\'\'' ?>,
+            post_url : <?php echo isset($post) ? json_encode($post->post_url) : '\'\'' ?>,
+            otp : <?php echo isset($post) ? json_encode($post->otp) : '0' ?>,
+            otp_date : <?php echo isset($post) ? json_encode($post->otp_date) : '\'\'' ?>,
+            otp_time : <?php echo isset($post) ? json_encode($post->otp_time) : '\'\'' ?>,
+            otp_modules : <?php echo isset($post) ? json_encode($post->otp_modules) : '\'\'' ?>,
+            bp : 0,
+            bp_category_id : '',
+            bp_profile_id : '',
+            bp_cz_id : '',
+            bp_topic_id : '',
+            bp_headline : '',
+            bp_body : '',
+            bp_keywords : ''
+        }
+    };
 
-        var vm = new Vue({
-            el: '#app',
-            data: data,
-            methods: {
-                toggleTypeView: function() {
-                    if(data.type == "OTP") {
-                        data.form.otp = 1;
-                        $('#otp-section').show();
-                        $('#evergreen-section').hide();
-                        $('#post-category').removeClass('required');
-                        $('#post-otp-date').addClass('required');
-                        $('#post-otp-time').addClass('required');
-                        $('#accounts-section').show();
-                    } else {
-                        $('#otp-section').hide();
-                        $('#evergreen-section').show();
-                        $('#post-category').addClass('required');
-                        $('#post-otp-date').removeClass('required');
-                        $('#post-otp-time').removeClass('required');
-                        $('#accounts-section').hide();
-                    }
-                },
-                showFormModal: function() {
-                    $('#form-modal').modal({
-                        show: true,
-                        keyboard: false,
-                        backdrop: 'static'
-                    });
-                },
-                bpGenerate: function() {
-                    loading('info', 'Generating blog post, please wait...');
-                    if(validator.validateForm($('#form-modal'))) {
-                        data.form.bp = 1;
-                        var postData = {
-                            action : 'generate',
-                            topic_id : data.form.bp_topic_id,
-                            profile_id : data.form.bp_profile_id,
-                            area : data.form.bp_area_id
-                        };
-                        $.post(actionUrl, postData, function(res) {
-                            data.form.bp_headline = res.headline;
-                            data.form.bp_body = res.body;
-                            data.form.bp_keywords = res.keywords;
-                            data.form.post_facebook_snippet = res.facebook_snippet;
-                            data.form.post_twitter_snippet = res.twitter_snippet;
-                            data.form.post_linkedin_snippet = res.linkedin_snippet;
-                            loading('success', 'Generating blog post successful!');
-                        }, 'json');
-                    }
-                },
-                bpComplete: function() {
-                    if(validator.validateUrl($('#post-bp-url').val())) {
-                        $('#form-modal').modal('hide');
-                        validator.displayInputError($('#post-bp-url'), false);
-                    } else {
-                        validator.displayInputError($('#post-bp-url'), true);
-                        validator.displayAlertError($('#form-modal'), true, 'You must enter back your correct generated blog url.');
-                    }
-                },
-                bpCategoryChange: function() {
-                    $.post(actionUrl, {action: 'category_change', 'category_id': data.form.bp_category_id}, function(res) {
-                        $('#post-bp-topic').html(res);
-                    });
-                },
-                savePost: function() {
-                    if(validator.validateForm($('#main-form'))) {
-                        if(data.form.otp == 1) {
-                            var modules = "";
-                            $('#accounts').find('.social').each(function() {
-                                if($(this).hasClass('account-on')) {
-                                    if($(this).hasClass('account-facebook')) {
-                                        modules += "Facebook";
-                                    } else if($(this).hasClass('account-twitter')) {
-                                        modules += "Twitter";
-                                    } else if($(this).hasClass('account-linkedin')) {
-                                        modules += "LinkedIn";
-                                    }
-                                    modules += ",";
-                                }
-                            });
-                            modules = modules.substring(0, modules.length - 1);
-                            if(modules == "") {
-                                validator.displayAlertError($('#main-form'), true, "Select at least one account.");
-                                return false;
-                            }
-                            data.form.otp_modules = modules;
-                        }
-                        loading('info', 'Saving post, please wait...');
-                        var postData = {
-                            action: 'save',
-                            post: data.form
-                        };
-                        $.post(actionUrl, postData, function(res) {
-                            if(res.success) {
-                                loading('success', 'Saving post successful!');
-                                setTimeout(function() {
-                                    window.location = base_url + 'scheduler/post';
-                                }, 500);
-                            }
-                        }, 'json');
-                    }
-                },
-                deletePost: function() {
-
+    var vm = new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            toggleTypeView: function() {
+                if(data.type == "OTP") {
+                    data.form.otp = 1;
+                    $('#otp-section').show();
+                    $('#evergreen-section').hide();
+                    $('#post-category').removeClass('required');
+                    $('#post-otp-date').addClass('required');
+                    $('#post-otp-time').addClass('required');
+                    $('#accounts-section').show();
+                } else {
+                    $('#otp-section').hide();
+                    $('#evergreen-section').show();
+                    $('#post-category').addClass('required');
+                    $('#post-otp-date').removeClass('required');
+                    $('#post-otp-time').removeClass('required');
+                    $('#accounts-section').hide();
                 }
-            }
-        });
+            },
+            showFormModal: function() {
+                $('#form-modal').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            },
+            bpGenerate: function() {
+                loading('info', 'Generating blog post, please wait...');
+                if(validator.validateForm($('#form-modal'))) {
+                    data.form.bp = 1;
+                    var postData = {
+                        action : 'generate',
+                        topic_id : data.form.bp_topic_id,
+                        profile_id : data.form.bp_profile_id,
+                        area : data.form.bp_area_id
+                    };
+                    $.post(actionUrl, postData, function(res) {
+                        data.form.bp_headline = res.headline;
+                        data.form.bp_body = res.body;
+                        data.form.bp_keywords = res.keywords;
+                        data.form.post_facebook_snippet = res.facebook_snippet;
+                        data.form.post_twitter_snippet = res.twitter_snippet;
+                        data.form.post_linkedin_snippet = res.linkedin_snippet;
+                        loading('success', 'Generating blog post successful!');
+                    }, 'json');
+                }
+            },
+            bpComplete: function() {
+                if(validator.validateUrl($('#post-bp-url').val())) {
+                    $('#form-modal').modal('hide');
+                    validator.displayInputError($('#post-bp-url'), false);
+                } else {
+                    validator.displayInputError($('#post-bp-url'), true);
+                    validator.displayAlertError($('#form-modal'), true, 'You must enter back your correct generated blog url.');
+                }
+            },
+            bpCategoryChange: function() {
+                $.post(actionUrl, {action: 'category_change', 'category_id': data.form.bp_category_id}, function(res) {
+                    $('#post-bp-topic').html(res);
+                });
+            },
+            savePost: function() {
+                if(validator.validateForm($('#main-form'))) {
+                    if(data.form.otp == 1) {
+                        var modules = "";
+                        $('#accounts').find('.social').each(function() {
+                            if($(this).hasClass('account-on')) {
+                                if($(this).hasClass('account-facebook')) {
+                                    modules += "Facebook";
+                                } else if($(this).hasClass('account-twitter')) {
+                                    modules += "Twitter";
+                                } else if($(this).hasClass('account-linkedin')) {
+                                    modules += "LinkedIn";
+                                }
+                                modules += ",";
+                            }
+                        });
+                        modules = modules.substring(0, modules.length - 1);
+                        if(modules == "") {
+                            validator.displayAlertError($('#main-form'), true, "Select at least one account.");
+                            return false;
+                        }
+                        data.form.otp_modules = modules;
+                    }
+                    loading('info', 'Saving post, please wait...');
+                    var postData = {
+                        action: 'save',
+                        post: data.form
+                    };
+                    $.post(actionUrl, postData, function(res) {
+                        if(res.success) {
+                            loading('success', 'Saving post successful!');
+                            setTimeout(function() {
+                                window.location = base_url + 'scheduler/post';
+                            }, 500);
+                        }
+                    }, 'json');
+                }
+            },
+            deletePost: function() {
 
+            }
+        }
+    });
+
+    $(function() {
         $('#post-otp-date').datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('.social').on('click', function() {

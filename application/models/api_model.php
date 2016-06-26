@@ -147,14 +147,17 @@ class Api_Model extends CI_Model {
 
     public function twitter_verify_access_key($user) {
         $result['has_access_key'] = false;
-        if($user->twitter_access_token) {
-            $result['has_access_key'] = true;
-            $access_token = json_decode($user->twitter_access_token);
-            $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
-            $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
-            $result['user_info'] = $content;
-        }
         $result['auth_url'] = $this->get_twitter_auth_url();
+        try {
+            if($user->twitter_access_token) {
+                $result['has_access_key'] = true;
+                $access_token = json_decode($user->twitter_access_token);
+                $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
+                $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
+                $result['user_info'] = $content;
+            }
+        }catch(Exception $e) {}
+
         return $result;
     }
 
@@ -222,16 +225,16 @@ class Api_Model extends CI_Model {
         $oauth['oauth_signature'] = $oauth_signature;
 
         $response = sendRequest($oauth, $baseURI);
-
+        if(!$response) {
+            return null;
+        }
         $responseArray = array();
         $parts = explode('&', $response);
         foreach($parts as $p){
             $p = explode('=', $p);
             $responseArray[$p[0]] = $p[1];
         }
-
         $oauth_token = $responseArray['oauth_token'];
-
         $this->session->set_userdata('twitter_oauth_token', $oauth_token);
         return $oauth_token;
     }

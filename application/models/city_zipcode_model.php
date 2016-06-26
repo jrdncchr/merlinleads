@@ -14,8 +14,9 @@ class city_zipcode_model extends CI_Model {
     }
 
     /*
-     * Merlin Post
+     * City Zip Code
      */
+
     public function get_cz($where = array(), $list = true) {
         $this->db->select('cz.cz_id, cz.cz_city, cz.cz_zipcode, u.email, cz.cz_date_created');
         $this->db->join($this->czu_table . ' as czu', 'czu.czu_cz_id = cz.cz_id', 'left');
@@ -41,34 +42,57 @@ class city_zipcode_model extends CI_Model {
         return array('success' => true);
     }
 
-
     /*
-     * Merlin Blog Post
+     * User City Zip Code
      */
-    public function get_blog_post($where = array(), $list = true) {
-        $this->db->select('mbpt.*, mct.category_name');
-        $this->db->from($this->merlin_blog_post_table . ' as mbpt');
-        $this->db->join($this->merlin_category_table . ' as mct', 'mct.category_id = mbpt.bp_category', 'left');
-        $this->db->where($where);
-        $result = $this->db->get();
-//        echo $this->db->last_query();exit;
+
+    public function get_czu($where = array(), $list = true) {
+        $this->db->select('czu.*, cz.cz_zipcode, cz_city, users.email');
+        $this->db->join($this->users_table, 'users.id = czu.czu_user_id', 'left');
+        $this->db->join($this->cz_table . ' as cz', 'cz.cz_id = czu.czu_cz_id', 'left');
+        $result = $this->db->get_where($this->czu_table . ' as czu', $where);
         return $list ? $result->result() : $result->row();
     }
 
-    public function add_blog_post($post) {
-        $this->db->insert($this->merlin_blog_post_table, $post);
-        return array('success' => true, 'inserted_id' => $this->db->insert_id());
-    }
-
-    public function update_blog_post($id, $post) {
-        $this->db->where('bp_id', $id);
-        $this->db->update($this->merlin_blog_post_table, $post);
+    public function save_czu($cz, $user_id) {
+        $old_cz = $this->get_czu(array('czu_user_id' => $user_id));
+        if(sizeof($old_cz) > 0) {
+            foreach($old_cz as $ocz) {
+                if(isset($cz[$ocz->czu_type])) {
+                    if($cz[$ocz->czu_type] != $ocz->czu_cz_id) {
+                        if($cz[$ocz->czu_type]) {
+                            $this->update_czu($ocz->czu_id, array('czu_cz_id' => $cz[$ocz->czu_type], 'czu_status' => 'pending'));
+                        } else {
+                            $this->delete_czu($ocz->czu_id);
+                        }
+                    }
+                    unset($cz[$ocz->czu_type]);
+                }
+            }
+        }
+        foreach($cz as $k => $v) {
+            if($v) {
+                $data = array('czu_type' => $k, 'czu_cz_id' => $v, 'czu_user_id' => $user_id, 'czu_status' => 'pending');
+                $this->add_czu($data);
+            }
+        }
         return array('success' => true);
     }
 
-    public function delete_blog_post($id) {
-        $this->db->where('bp_id', $id);
-        $this->db->delete($this->merlin_blog_post_table);
+    public function add_czu($cz) {
+        $this->db->insert($this->czu_table, $cz);
+        return array('success' => true, 'inserted_id' => $this->db->insert_id());
+    }
+
+    public function update_czu($id, $cz) {
+        $this->db->where('czu_id', $id);
+        $this->db->update($this->czu_table, $cz);
+        return array('success' => true);
+    }
+
+    public function delete_czu($id) {
+        $this->db->where('czu_id', $id);
+        $this->db->delete($this->czu_table);
         return array('success' => true);
     }
 
