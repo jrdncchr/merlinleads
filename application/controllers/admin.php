@@ -268,7 +268,6 @@ class Admin extends MY_Controller
 
         $action = $this->input->post('action');
         switch($action) {
-
             case 'czu_list' :
                 $list = $this->city_zipcode_model->get_czu();
                 echo json_encode(array('data' => $list));

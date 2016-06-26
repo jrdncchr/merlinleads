@@ -372,6 +372,7 @@
         });
     }
 
+
     function showEdit(data) {
         selectedId = data.post_id;
         var modal = $('#form-modal');

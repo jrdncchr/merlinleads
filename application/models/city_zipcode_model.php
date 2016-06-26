@@ -4,7 +4,6 @@ if (!defined('BASEPATH'))
     exit('No direct access is allowed!');
 
 class city_zipcode_model extends CI_Model {
-
     private $cz_table = 'city_zipcode';
     private $czu_table = 'city_zipcode_user';
     private $users_table = 'users';

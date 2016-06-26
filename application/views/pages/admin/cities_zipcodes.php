@@ -138,6 +138,7 @@
         });
     }
 
+
     function showEdit(data) {
         selectedId = data.cz_id;
         var modal = $('#form-modal');

@@ -143,7 +143,6 @@
             }
         });
     }
-
     function showEdit(data) {
         selectedId = data.category_id;
         var modal = $('#form-modal');

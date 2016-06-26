@@ -48,7 +48,6 @@ class Main extends MY_Controller {
      */
     public function myaccount($redirect = false) {
         $user = $this->session->userdata('user');
-
         //get user subscription from stripe
         $this->load->library('stripe_library');
         $subscriptions = $this->stripe_library->get_subscriptions($user->stripe_customer_id);

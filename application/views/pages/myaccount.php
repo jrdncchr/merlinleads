@@ -790,7 +790,6 @@
                     }
                 });
             });
-
             if(valid) {
                 validator.displayAlertError($('#citiesZipcodesDiv'), false);
                 $.post(base_url + 'main/save_city_zipcode', cz, function(res) {
