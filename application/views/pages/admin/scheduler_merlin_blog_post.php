@@ -1,12 +1,19 @@
+<style>
+    .counter {
+        color: darkgray;
+        font-size: 12px;
+    }
+</style>
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
         <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Blog Post Template</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+            <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>Category</th>
                     <th>Topic</th>
+                    <th>Status</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -56,11 +63,25 @@
                 </div>
                 <div class="form-group">
                     <label for="bp-twitter-snippet">* Twitter Snippet</label>
-                    <textarea class="form-control required" id="bp-twitter-snippet" rows="2"></textarea>
+                    <textarea class="form-control required" id="bp-twitter-snippet" rows="2" maxlength="140"></textarea>
+                    <span class="counter pull-right">0/140</span>
                 </div>
                 <div class="form-group">
                     <label for="bp-linkedin-snippet">* LinkedIn Snippet</label>
-                    <textarea class="form-control required" id="bp-linkedin-snippet" rows="2"></textarea>
+                    <textarea class="form-control required" id="bp-linkedin-snippet" rows="2" maxlength="600"></textarea>
+                    <span class="counter pull-right">0/600</span>
+                </div>
+                <div class="form-group">
+                    <label for="bp-subject-line">* Subject Line</label>
+                    <input type="text" class="form-control required" id="bp-subject-line" />
+                </div>
+                <div class="form-group">
+                    <label for="bp-email-content">* Email Content</label>
+                    <textarea class="form-control required" id="bp-email-content" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bp-end-date">End Date</label>
+                    <input type="text" class="form-control" id="bp-end-date" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -79,6 +100,7 @@
     $(document).ready(function() {
         $("#schedulerBlogPostTemplateTopLink").addClass("custom-nav-active");
         $("#schedulerSideLink").addClass("custom-nav-active");
+        $('#bp-end-date').datepicker({ dateFormat: 'yy-mm-dd' });
 
         initDt();
 
@@ -106,7 +128,10 @@
                         bp_keywords: $('#bp-keywords').val(),
                         bp_facebook_snippet: $('#bp-facebook-snippet').val(),
                         bp_twitter_snippet: $('#bp-twitter-snippet').val(),
-                        bp_linkedin_snippet: $('#bp-linkedin-snippet').val()
+                        bp_linkedin_snippet: $('#bp-linkedin-snippet').val(),
+                        bp_end_date: $('#bp-end-date').val(),
+                        bp_subject_line: $('#bp-subject-line').val(),
+                        bp_email_content: $('#bp-email-content').val()
                     }
                 };
                 if(selectedId > 0) {
@@ -138,12 +163,24 @@
             }
         });
 
+        $('#bp-linkedin-snippet').keyup(updateCount).keydown(updateCount);
+        $('#bp-twitter-snippet').keyup(updateCount).keydown(updateCount);
+
+        function updateCount() {
+            var id = $(this).attr('id');
+            if(id == 'bp-linkedin-snippet') {
+                $(this).parent().find('.counter').html($(this).val().length + "/600 characters");
+            } else if(id == 'bp-twitter-snippet') {
+                $(this).parent().find('.counter').html($(this).val().length + "/140 characters");
+            }
+        }
+
     });
 
     function initDt() {
         dt = $("#scheduler-post-dt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [1],
+            "aaSorting": [3],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -153,7 +190,8 @@
             },
             columns: [
                 {data: "category_name", width: "30%"},
-                {data: "bp_topic", width: "50%"},
+                {data: "bp_topic", width: "40%"},
+                {data: "bp_status", width: "10%"},
                 {data: "bp_date_created", width: "20%"},
                 {data: "bp_category", visible: false},
                 {data: "bp_headline", visible: false},
@@ -162,11 +200,14 @@
                 {data: "bp_keywords", visible: false},
                 {data: "bp_facebook_snippet", visible: false},
                 {data: "bp_twitter_snippet", visible: false},
-                {data: "bp_linkedin_snippet", visible: false}
+                {data: "bp_linkedin_snippet", visible: false},
+                {data: "bp_subject_line", visible: false},
+                {data: "bp_email_content", visible: false},
+                {data: "bp_end_date", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#scheduler-post-dt").dataTable();
-                $('#scheduler-post-dt tbody tr').on('dblclick', function () {
+                $('#scheduler-post-dt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);
@@ -193,5 +234,10 @@
         $('#bp-facebook-snippet').val(data.bp_facebook_snippet);
         $('#bp-twitter-snippet').val(data.bp_twitter_snippet);
         $('#bp-linkedin-snippet').val(data.bp_linkedin_snippet);
+        if(data.bp_end_date != "0000-00-00") {
+            $('#bp-end-date').val(data.bp_end_date);
+        }
+        $('#bp-subject-line').val(data.bp_subject_line);
+        $('#bp-email-content').val(data.bp_email_content);
     }
 </script>

@@ -408,146 +408,184 @@
 </div>
 
     <div class="tab-pane" id="citiesZipcodesDiv">
-        <div class="row">
-            <div class="col-sm-9 col-sm-offset-1">
-                <br />
-                <div class="alert alert-info">
-                    <i class="fa fa-question-circle"></i> Cities/Zip codes will be used when you are generating blog post for the scheduler.
-                </div>
-                <div class="notice"></div>
-                <h4 style="font-weight: bold;">Select your cities/zip codes</h4>
-                <br />
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="cz-first" class="control-label col-sm-3">Primary</label>
-                        <div class="col-sm-9">
-                            <select id="cz-first" class="form-control">
-                                <option value="">Select City/Zip code</option>
-                                <?php foreach($cz_list as $cz): ?>
-                                    <option value="<?php echo $cz->cz_id; ?>"
-                                        <?php foreach($czu as $c) {
-                                            if($c->czu_type == 'first' && $c->czu_cz_id == $cz->cz_id) {
-                                                echo "selected"; }
-                                        } ?>>
-                                        <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php foreach($czu as $c) { ?>
-                                <?php if($c->czu_type == 'first')  { ?>
-                                    <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
-                                        <?php echo ucfirst($c->czu_status); ?>
-                                    </span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cz-second" class="control-label col-sm-3">Secondary</label>
-                        <div class="col-sm-9">
-                            <select id="cz-second" class="form-control">
-                                <option value="">Select City/Zip code</option>
-                                <?php foreach($cz_list as $cz): ?>
-                                    <option value="<?php echo $cz->cz_id; ?>"
-                                        <?php foreach($czu as $c) {
-                                            if($c->czu_type == 'second' && $c->czu_cz_id == $cz->cz_id) {
-                                                echo "selected"; }
-                                        } ?>>
-                                        <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php foreach($czu as $c) { ?>
-                                <?php if($c->czu_type == 'second')  { ?>
-                                    <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
-                                        <?php echo ucfirst($c->czu_status); ?>
-                                    </span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cz-third" class="control-label col-sm-3">Third</label>
-                        <div class="col-sm-9">
-                            <select id="cz-third" class="form-control">
-                                <option value="">Select City/Zip code</option>
-                                <?php foreach($cz_list as $cz): ?>
-                                    <option value="<?php echo $cz->cz_id; ?>"
-                                        <?php foreach($czu as $c) {
-                                            if($c->czu_type == 'third' && $c->czu_cz_id == $cz->cz_id) {
-                                                echo "selected"; }
-                                        } ?>>
-                                        <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php foreach($czu as $c) { ?>
-                                <?php if($c->czu_type == 'third')  { ?>
-                                    <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
-                                        <?php echo ucfirst($c->czu_status); ?>
-                                    </span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cz-fourth" class="control-label col-sm-3">Fourth</label>
-                        <div class="col-sm-9">
-                            <select id="cz-fourth" class="form-control">
-                                <option value="">Select City/Zip code</option>
-                                <?php foreach($cz_list as $cz): ?>
-                                    <option value="<?php echo $cz->cz_id; ?>"
-                                        <?php foreach($czu as $c) {
-                                            if($c->czu_type == 'fourth' && $c->czu_cz_id == $cz->cz_id) {
-                                                echo "selected"; }
-                                        } ?>>
-                                        <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php foreach($czu as $c) { ?>
-                                <?php if($c->czu_type == 'fourth')  { ?>
-                                    <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
-                                        <?php echo ucfirst($c->czu_status); ?>
-                                    </span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cz-fifth" class="control-label col-sm-3">Fifth</label>
-                        <div class="col-sm-9">
-                            <select id="cz-fifth" class="form-control">
-                                <option value="">Select City/Zip code</option>
-                                <?php foreach($cz_list as $cz): ?>
-                                    <option value="<?php echo $cz->cz_id; ?>"
-                                        <?php foreach($czu as $c) {
-                                            if($c->czu_type == 'fifth' && $c->czu_cz_id == $cz->cz_id) {
-                                                echo "selected"; }
-                                        } ?>>
-                                        <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php foreach($czu as $c) { ?>
-                                <?php if($c->czu_type == 'fifth')  { ?>
-                                    <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
-                                        <?php echo ucfirst($c->czu_status); ?>
-                                    </span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cz-fifth" class="control-label col-sm-3"></label>
-                        <div class="col-sm-9">
-                            <button class="btn-sm btn btn-primary pull-right" id="saveCz">Save</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="tabbable tabs-left" style="margin-top: 20px; text-overflow: ellipsis">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#cz-main" data-toggle="tab">City / Zip Code</a></li>
+                <li><a href="#cz-request" data-toggle="tab">Request</a></li>
+            </ul>
 
+            <div class="tab-content">
+                <!-- CZ Main -->
+                <div class="tab-pane active" id="cz-main" style="margin-left: 185px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br />
+                            <div class="alert alert-info">
+                                <i class="fa fa-question-circle"></i> Cities/Zip codes will be used when you are generating blog post for the scheduler.
+                            </div>
+                            <div class="notice"></div>
+                            <h4 style="font-weight: bold;">Select your cities/zip codes</h4>
+                            <br />
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="cz-first" class="control-label col-sm-3">Primary</label>
+                                    <div class="col-sm-9">
+                                        <select id="cz-first" class="form-control">
+                                            <option value="">Select City/Zip code</option>
+                                            <?php foreach($cz_list as $cz): ?>
+                                                <option value="<?php echo $cz->cz_id; ?>"
+                                                    <?php foreach($czu as $c) {
+                                                        if($c->czu_type == 'first' && $c->czu_cz_id == $cz->cz_id) {
+                                                            echo "selected"; }
+                                                    } ?>>
+                                                    <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php foreach($czu as $c) { ?>
+                                            <?php if($c->czu_type == 'first')  { ?>
+                                                <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
+                                        <?php echo ucfirst($c->czu_status); ?>
+                                    </span>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cz-second" class="control-label col-sm-3">Secondary</label>
+                                    <div class="col-sm-9">
+                                        <select id="cz-second" class="form-control">
+                                            <option value="">Select City/Zip code</option>
+                                            <?php foreach($cz_list as $cz): ?>
+                                                <option value="<?php echo $cz->cz_id; ?>"
+                                                    <?php foreach($czu as $c) {
+                                                        if($c->czu_type == 'second' && $c->czu_cz_id == $cz->cz_id) {
+                                                            echo "selected"; }
+                                                    } ?>>
+                                                    <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php foreach($czu as $c) { ?>
+                                            <?php if($c->czu_type == 'second')  { ?>
+                                                <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
+                                        <?php echo ucfirst($c->czu_status); ?>
+                                    </span>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cz-third" class="control-label col-sm-3">Third</label>
+                                    <div class="col-sm-9">
+                                        <select id="cz-third" class="form-control">
+                                            <option value="">Select City/Zip code</option>
+                                            <?php foreach($cz_list as $cz): ?>
+                                                <option value="<?php echo $cz->cz_id; ?>"
+                                                    <?php foreach($czu as $c) {
+                                                        if($c->czu_type == 'third' && $c->czu_cz_id == $cz->cz_id) {
+                                                            echo "selected"; }
+                                                    } ?>>
+                                                    <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php foreach($czu as $c) { ?>
+                                            <?php if($c->czu_type == 'third')  { ?>
+                                                <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
+                                        <?php echo ucfirst($c->czu_status); ?>
+                                    </span>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cz-fourth" class="control-label col-sm-3">Fourth</label>
+                                    <div class="col-sm-9">
+                                        <select id="cz-fourth" class="form-control">
+                                            <option value="">Select City/Zip code</option>
+                                            <?php foreach($cz_list as $cz): ?>
+                                                <option value="<?php echo $cz->cz_id; ?>"
+                                                    <?php foreach($czu as $c) {
+                                                        if($c->czu_type == 'fourth' && $c->czu_cz_id == $cz->cz_id) {
+                                                            echo "selected"; }
+                                                    } ?>>
+                                                    <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php foreach($czu as $c) { ?>
+                                            <?php if($c->czu_type == 'fourth')  { ?>
+                                                <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
+                                        <?php echo ucfirst($c->czu_status); ?>
+                                    </span>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cz-fifth" class="control-label col-sm-3">Fifth</label>
+                                    <div class="col-sm-9">
+                                        <select id="cz-fifth" class="form-control">
+                                            <option value="">Select City/Zip code</option>
+                                            <?php foreach($cz_list as $cz): ?>
+                                                <option value="<?php echo $cz->cz_id; ?>"
+                                                    <?php foreach($czu as $c) {
+                                                        if($c->czu_type == 'fifth' && $c->czu_cz_id == $cz->cz_id) {
+                                                            echo "selected"; }
+                                                    } ?>>
+                                                    <?php echo $cz->cz_city . ' / ' . $cz->cz_zipcode; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php foreach($czu as $c) { ?>
+                                            <?php if($c->czu_type == 'fifth')  { ?>
+                                                <span class='<?php echo $c->czu_status == 'active' ? 'text-success' : 'text-warning'; ?>'>
+                                        <?php echo ucfirst($c->czu_status); ?>
+                                    </span>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cz-fifth" class="control-label col-sm-3"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn-sm btn btn-primary pull-right" id="saveCz">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- CZ Requests -->
+                <div class="tab-pane" id="cz-request" style="margin-left: 185px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br />
+                            <h4 style="font-weight: bold;">Request your city / zip code</h4>
+                            <button class="btn btn-success btn-sm" id="add-czr-btn" style="margin-bottom: 10px;"><i class="fa fa-plus-circle"></i> Request City / Zip Code</button>
+                            <br />
+                            <div class="alert alert-info"><i class="fa fa-question-circle"></i> Here are the list of your requested city / zip code and their status. </div>
+                            <div class="table-responsive" style="margin-top: 10px;">
+                                <table id="czr-dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped no-multiple">
+                                    <thead>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Zip Code</th>
+                                        <th>Status</th>
+                                        <th>Date Requested</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                   </div>
+                </div>
             </div>
         </div>
+
     </div>
 
 <!-- Card Div -->
@@ -765,9 +803,42 @@
 </div>
 
 </div>
+
+<div class="modal fade" id="czr-modal" tabindex="-1" role="dialog" aria-labelledby="form-modal-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="form-modal-label">Request City / Zip Code</h4>
+            </div>
+            <div class="modal-body">
+                <div class="notice"></div>
+                <div class="form-group">
+                    <label for="czr-city">* City</label>
+                    <input type="text" class="form-control required" id="czr-city" />
+                </div>
+                <div class="form-group">
+                    <label for="czr-zipcode">* Zip Code</label>
+                    <input type="text" class="form-control required" id="czr-zipcode" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm pull-left" id="delete-czr-btn">Delete</button>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success btn-sm" id="save-czr-btn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    var selectedCzrId = 0;
+    var czrDt;
+    var czrActionUrl = base_url + 'main/czr_action';
+
     $(document).ready(function () {
         $("#myAccountLink").addClass("active");
+
+        initCzrDt();
 
         $('#saveCz').on('click', function() {
             loading('info', 'Saving city zip code, please wait...');
@@ -804,6 +875,99 @@
             }
         });
 
+        $('#add-czr-btn').on('click', function() {
+            $('#delete-btn').hide();
+            selectedCzrId = 0;
+            var modal = $('#czr-modal');
+            modal.find('.modal-title').html('Request City / Zip Code');
+            modal.modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+        });
+
+        $('#save-czr-btn').on('click', function() {
+            if(validator.validateForm($('#cz-request-modal'))) {
+                var data = {
+                    action: 'save',
+                    czr: {
+                        czr_city: $('#czr-city').val(),
+                        czr_zipcode: $('#czr-zipcode').val()
+                    }
+                };
+                if(selectedCzrId > 0) {
+                    data.czr.czr_id = selectedCzrId;
+                }
+                loading('info', 'Saving...');
+                $.post(czrActionUrl, data, function(res) {
+                    if(res.success) {
+                        $('#czr-modal').modal('hide');
+                        loading('success', 'Saving successful!');
+                        czrDt.fnReloadAjax();
+                    }
+                }, 'json');
+            }
+
+        });
+
+        $('#delete-czr-btn').on('click', function() {
+            var ok = confirm("Are you sure to delete this?");
+            if(ok) {
+                loading('info', 'Deleting...');
+                $.post(czrActionUrl, {action: 'delete', czr_id: selectedCzrId}, function(res) {
+                    if(res.success) {
+                        $('#czr-modal').modal('hide');
+                        loading('success', 'Deleting successful!');
+                        czrDt.fnReloadAjax();
+                    }
+                }, 'json');
+            }
+        });
+
+        function initCzrDt() {
+            czrDt = $("#czr-dt").dataTable({
+                "bJQueryUI": true,
+                "aaSorting": [3],
+                "bDestroy": true,
+                "filter": true,
+                "ajax": {
+                    "type": "POST",
+                    "url": czrActionUrl,
+                    "data": {action: "list"}
+                },
+                columns: [
+                    {data: "czr_city", width: "40%"},
+                    {data: "czr_zipcode", width: "30%"},
+                    {data: "czr_status", width: "10%"},
+                    {data: "czr_date_requested", width: "20%"},
+                    {data: "czr_id", visible: false}
+                ],
+                "fnDrawCallback": function (oSettings) {
+                    var table = $("#czr-dt").dataTable();
+                    $('#czr-dt tbody tr').on('click', function () {
+                        var pos = table.fnGetPosition(this);
+                        var data = table.fnGetData(pos);
+                        showCzrEdit(data);
+                    });
+                }
+            });
+        }
+
+        function showCzrEdit(data) {
+            selectedCzrId = data.czr_id;
+            var modal = $('#czr-modal');
+            modal.modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+            modal.find('.modal-title').html('Edit Requested City / Zip Code');
+            $('#delete-czr-btn').show();
+            $('#czr-city').val(data.czr_city);
+            $('#czr-zipcode').val(data.czr_zipcode);
+        }
 
     });
+
 </script>

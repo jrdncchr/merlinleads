@@ -263,6 +263,10 @@ class Admin extends MY_Controller
         $this->_renderA('pages/admin/cities_zipcodes_users', 'CitiesZipcodes');
     }
 
+    public function cities_zipcodes_requests() {
+        $this->_renderA('pages/admin/cities_zipcodes_requests', 'CitiesZipcodes');
+    }
+
     public function cities_zipcodes_action() {
         $this->load->model('city_zipcode_model');
 
@@ -306,6 +310,26 @@ class Admin extends MY_Controller
             case 'czu_delete' :
                 $czu_id = $this->input->post("czu_id");
                 $result = $this->city_zipcode_model->delete_czu($czu_id);
+                echo json_encode($result);
+                break;
+
+            case 'czr_list' :
+                $list = $this->city_zipcode_model->get_czr_admin(array('czr_status !=' => 'approved'));
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'czr_save' :
+                $status = $this->input->post('status');
+                $czr_id = $this->input->post('czr_id');
+                if($status == 'approved') {
+                    $czr = $this->city_zipcode_model->get_czr(array('czr_id' => $czr_id), false);
+                    $new_cz = array(
+                        'cz_city' => $czr->czr_city,
+                        'cz_zipcode' => $czr->czr_zipcode
+                    );
+                    $this->city_zipcode_model->add_cz($new_cz);
+                }
+                $result = $this->city_zipcode_model->update_czr($czr_id, array('czr_status' => $status));
                 echo json_encode($result);
                 break;
 

@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Category</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="scheduler-category-dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped">
+            <table id="scheduler-category-dt" cellpadding="0" cellspacing="0" border="0" class="table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>Category Name</th>
@@ -111,7 +111,7 @@
     function initDt() {
         dt = $("#scheduler-category-dt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [4],
+            "aaSorting": [3],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -128,7 +128,7 @@
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#scheduler-category-dt").dataTable();
-                $('#scheduler-category-dt tbody tr').on('dblclick', function () {
+                $('#scheduler-category-dt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);

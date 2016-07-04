@@ -39,6 +39,9 @@
     .merlin-block {
         background-color: #A1D1FF;
     }
+    .user-block {
+        background-color: lightgreen;
+    }
 </style>
 
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler</h4>
@@ -76,7 +79,7 @@
                         <td>
                             <?php foreach($scheduler as $s): ?>
                                 <?php if($s->day == $d && $s->time == $t) { ?>
-                                    <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : ''; ?>">
+                                    <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : 'user-block'; ?>">
                                     <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
                                     <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
                                     <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />

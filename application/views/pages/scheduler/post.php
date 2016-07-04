@@ -29,9 +29,7 @@
                 <thead>
                 <tr>
                     <th>Category</th>
-                    <th>Facebook Snippet</th>
-                    <th>LinkedIn Snippet</th>
-                    <th>Twitter Snippet</th>
+                    <th>Post Name</th>
                     <th>URL</th>
                     <th>Date Created</th>
                 </tr>
@@ -332,7 +330,7 @@
     function initDt() {
         dt = $("#schedulerContentDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [5],
+            "aaSorting": [3],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -341,22 +339,23 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "20%", render: function(data, type, row) {
+                {data: "category_name", width: "30%", render: function(data, type, row) {
                     return row.otp == "1" ?
                         "<span class='text-warning'>One Time Post</span>" :
                         "<span class='text-primary'>" + data + "</span>";
                     }
                 },
-                {data: "post_facebook_snippet", width: "20%"},
-                {data: "post_twitter_snippet", width: "20%"},
-                {data: "post_linkedin_snippet", width: "20%"},
+                {data: "post_name", width: "50%"},
                 {data: "post_url", width: "10%", render: function(data, type, row) {
-                    return data ?
-                        '<i class="fa fa-check text-success"></i>' :
-                        '<i class="fa fa-times text-danger"></i>';
+                        return data ?
+                            '<i class="fa fa-check text-success"></i>' :
+                            '<i class="fa fa-times text-danger"></i>';
                     }
                 },
                 {data: "post_date_created", width: "10%"},
+                {data: "post_facebook_snippet", visible: false},
+                {data: "post_twitter_snippet", visible: false},
+                {data: "post_linkedin_snippet", visible: false},
                 {data: "post_id", visible: false},
                 {data: "post_category_id", visible: false}
             ],

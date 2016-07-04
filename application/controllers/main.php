@@ -103,6 +103,40 @@ class Main extends MY_Controller {
         echo json_encode($result);
     }
 
+    public function czr_action() {
+        $action = $this->input->post('action');
+        $this->load->model('city_zipcode_model');
+        switch($action) {
+            case 'list' :
+                $list = $this->city_zipcode_model->get_czr(array('czr_requested_by' => $this->user->id));
+                echo json_encode(array('data' => $list));
+                break;
+
+            case 'save' :
+                $czr = $this->input->post('czr');
+                $czr['czr_requested_by'] = $this->user->id;
+                if(isset($post['czr_id'])) {
+                    $result = $this->city_zipcode_model->update_czr($czr['czr_id'], $czr);
+                } else {
+                    $result = $this->city_zipcode_model->add_czr($czr);
+                }
+                echo json_encode($result);
+                break;
+
+            case 'delete' :
+                $czr_id = $this->input->post("czr_id");
+                $result = $this->city_zipcode_model->delete_czr($czr_id);
+                echo json_encode($result);
+                break;
+
+            default:
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => "Action not found."
+                ));
+        }
+    }
+
     public function upgrade() {
         $user = $this->session->userdata('user');
         $this->load->model('package_model');

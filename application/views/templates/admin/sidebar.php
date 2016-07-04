@@ -1,6 +1,6 @@
 <li class="sidebar-brand">
     <a href="#">
-        LGT.net - Admin
+        ML - Admin
     </a>
 </li>
 <li>

@@ -67,6 +67,20 @@ class Email_Model extends CI_Model {
         mail($to, $subject, $message, $headers);
     }
 
+    public function sendNewCityZipcodeUserRequest($czu) {
+        $to = 'support@merlinleads.com';
+        $subject = 'Merlin Leads - [City Zip Code / User Request] A user has requested a city / zip code.';
+        $headers = "From: <" . $this->from . ">"  . "\r\n";
+        $headers .= "BCC: <jrdncchr@gmail.com>" . "\r\n";
+        $headers .= "Content-type: text/html";
+
+        $message = "User Details: <br />"
+            . "Requested By: " . $czu['email'] . "<br />"
+            . "Requested City / Zip Code: " . $czu['czu_city'] . " / " . $czu['czu_zipcode'] . "<br />";
+
+        mail($to, $subject, $message, $headers);
+    }
+
     public function contactUsSendEmail($from, $message) {
         $to = 'support@merlinleads.com';
         $subject = 'Merlin Leads - [New Message] Contact Us';

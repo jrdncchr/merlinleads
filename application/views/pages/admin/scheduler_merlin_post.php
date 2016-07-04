@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <button class="btn btn-success btn-sm" id="add-btn"><i class="fa fa-plus-circle"></i> Add Post</button>
         <div class="table-responsive" style="margin-top: 10px;">
-            <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped">
+            <table id="scheduler-post-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped no-multiple">
                 <thead>
                 <tr>
                     <th>Category</th>
@@ -109,7 +109,6 @@
                     }
                 }, 'json');
             }
-
         });
 
         $('#delete-btn').on('click', function() {
@@ -156,7 +155,7 @@
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#scheduler-post-dt").dataTable();
-                $('#scheduler-post-dt tbody tr').on('dblclick', function () {
+                $('#scheduler-post-dt tbody tr').on('click', function () {
                     var pos = table.fnGetPosition(this);
                     var data = table.fnGetData(pos);
                     showEdit(data);

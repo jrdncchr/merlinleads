@@ -120,6 +120,7 @@ $(function() {
     });
 
 
+
     /* Copy to Clipboard */
     $(".clip").off("click").click(function() {
         var e = $(this).closest(".input-group").find(".form-control");

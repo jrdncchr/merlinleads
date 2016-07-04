@@ -1,8 +1,10 @@
 <?php
 
-class scheduler extends MY_Controller {
+class scheduler extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('session');
         $user = $this->session->userdata('user');
@@ -13,7 +15,8 @@ class scheduler extends MY_Controller {
         $this->load->model('merlin_library_model');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->load->model('api_model');
         $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
         $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
@@ -34,7 +37,8 @@ class scheduler extends MY_Controller {
         $this->_renderL('pages/scheduler/index');
     }
 
-    public function scheduler_action() {
+    public function scheduler_action()
+    {
         $action = $this->input->post('action');
         switch($action) {
             case 'save' :
@@ -62,7 +66,8 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function category() {
+    public function category()
+    {
         $this->_renderL('pages/scheduler/category');
     }
 
@@ -100,7 +105,8 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function post($action = "", $id = 0) {
+    public function post($action = "", $id = 0)
+    {
         if($action == "form") {
             $this->load->model('api_model');
             $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
@@ -119,6 +125,9 @@ class scheduler extends MY_Controller {
             $this->load->model('profile_model');
             $this->data['profile'] = $this->profile_model->getProfilesByUser($this->user->id);
 
+            $this->load->model('city_zipcode_model');
+            $this->data['city_zipcode'] = $this->city_zipcode_model->get_czu(array('czu_user_id' => $this->user->id, 'czu_status' => 'active'));
+
             if($id > 0) {
                 $this->load->model('scheduler_model');
                 $post = $this->scheduler_model->get_scheduler_post(array('post_id' => $id, 'post_user_id' => $this->user->id), false);
@@ -131,7 +140,8 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function post_action() {
+    public function post_action()
+    {
         $action = $this->input->post('action');
         switch($action) {
 
@@ -176,7 +186,9 @@ class scheduler extends MY_Controller {
                     'keywords' => $this->template_model->generateData($blog_post->bp_keywords, null, $profile),
                     'facebook_snippet' => $this->template_model->generateData($blog_post->bp_facebook_snippet, null, $profile),
                     'twitter_snippet' => $this->template_model->generateData($blog_post->bp_twitter_snippet, null, $profile),
-                    'linkedin_snippet' => $this->template_model->generateData($blog_post->bp_linkedin_snippet, null, $profile)
+                    'linkedin_snippet' => $this->template_model->generateData($blog_post->bp_linkedin_snippet, null, $profile),
+                    'subject_line' => $this->template_model->generateData($blog_post->bp_subject_line, null, $profile),
+                    'email_content' => $this->template_model->generateData($blog_post->bp_email_content, null, $profile)
                 );
                 echo json_encode($result);
                 break;
@@ -200,7 +212,8 @@ class scheduler extends MY_Controller {
         }
     }
 
-    public function _getAvailableTimes() {
+    public function _getAvailableTimes()
+    {
         return array(
         '12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM',
         '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM');
