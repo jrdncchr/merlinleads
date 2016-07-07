@@ -364,6 +364,50 @@ class Admin extends MY_Controller
     }
 
     /*
+     * Settings
+     */
+
+    public function settings($page = "general")
+    {
+        $this->load->model('settings_model');
+        if($page == "general") {
+            $this->load->model('package_model');
+            $this->data['packages'] = $this->package_model->get
+            $general = $this->settings_model->get(array('category' => 'general'));
+            $this->data['trial_period_day_count'] = $this->_findObjInArray($general, 'trial_period_day_count');
+            $this->data['trial_period_package'] = $this->_findObjInArray($general, 'trial_period_package');
+            $this->_renderA("pages/admin/settings_general", "Settings");
+        }
+    }
+
+    public function settings_action()
+    {
+        $action = $this->input->get('action');
+
+        switch($action) {
+            case 'add' :
+                break;
+            default:
+                $this->output->set_status_header("400");
+                echo json_encode(array("error" => "Action is unknown"));
+                break;
+        }
+
+    }
+
+    public function _findObjInArray($array, $key)
+    {
+        foreach($array as $obj) {
+            if ($key == $obj->k) {
+                return $obj->v;
+            }
+        }
+        return null;
+    }
+
+
+
+    /*
      * Features
      */
 

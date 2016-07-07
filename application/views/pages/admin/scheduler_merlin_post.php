@@ -6,10 +6,7 @@
                 <thead>
                 <tr>
                     <th>Category</th>
-                    <th>Facebook Snippet</th>
-                    <th>Twitter Snippet</th>
-                    <th>LinkedIn Snippet</th>
-                    <th>Url</th>
+                    <th>Post Name</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -38,6 +35,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="post-name">* Post Name</label>
+                    <input type="text" class="form-control required" id="post-name" />
+                </div>
+                <div class="form-group">
                     <label for="post-facebook-snippet">* Facebook Snippet</label>
                     <textarea class="form-control required" id="post-facebook-snippet" rows="2"></textarea>
                 </div>
@@ -49,10 +50,7 @@
                     <label for="post-linkedin-snippet">* LinkedIn Snippet</label>
                     <textarea class="form-control required" id="post-linkedin-snippet" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="post-url">Url</label>
-                    <input type="text" class="form-control url" id="post-url" />
-                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-sm pull-left" id="delete-btn">Delete</button>
@@ -94,7 +92,7 @@
                         post_facebook_snippet: $('#post-facebook-snippet').val(),
                         post_twitter_snippet: $('#post-twitter-snippet').val(),
                         post_linkedin_snippet: $('#post-linkedin-snippet').val(),
-                        post_url: $('#post-url').val()
+                        post_name: $('#post-name').val()
                     }
                 };
                 if(selectedId > 0) {
@@ -139,17 +137,12 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "20%"},
-                {data: "post_facebook_snippet", width: "20%"},
-                {data: "post_twitter_snippet", width: "20%"},
-                {data: "post_linkedin_snippet", width: "20%"},
-                {data: "post_url", width: "10%", render: function(data, row, type) {
-                    return data ?
-                        '<i class="fa fa-check text-success"></i>' :
-                        '<i class="fa fa-times text-danger"></i>';
-                    }
-                },
-                {data: "post_date_created", width: "10%"},
+                {data: "category_name", width: "30%"},
+                {data: "post_name", width: "50%"},
+                {data: "post_date_created", width: "20%"},
+                {data: "post_twitter_snippet", visible: false},
+                {data: "post_twitter_snippet", visible: false},
+                {data: "post_linkedin_snippet", visible: false},
                 {data: "post_id", visible: false},
                 {data: "post_category_id", visible: false}
             ],
@@ -178,6 +171,6 @@
         $('#post-facebook-snippet').val(data.post_facebook_snippet);
         $('#post-twitter-snippet').val(data.post_twitter_snippet);
         $('#post-linkedin-snippet').val(data.post_linkedin_snippet);
-        $('#post-url').val(data.post_url);
+        $('#post-name').val(data.post_name);
     }
 </script>
