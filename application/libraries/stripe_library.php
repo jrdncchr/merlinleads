@@ -8,6 +8,7 @@ class Stripe_Library {
 	public function __construct() {
 		include_once OTHERS . 'stripe/lib/Stripe.php';
         Stripe::setApiKey(STRIPE_SECRET_KEY);
+        \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
 	}
 
 	public function get_all_plans() {
@@ -81,12 +82,19 @@ class Stripe_Library {
 		$result = Stripe_Customer::retrieve($customer_id)->subscriptions->all();
 		foreach ($result->data as $subscription) {
 			$plan = $subscription->plan;
-			if($plan->statement_descriptor == "Main") {
+			if($plan->statement_descriptor == "MERLINLEADS.COM") {
 				return $subscription;
 			}
 		}
 		return false;
 	}
+
+    public function add_subscription($stripe_customer_id, $plan_id) {
+        \Stripe\Subscription::create(array(
+            "customer" => $stripe_customer_id,
+            "plan" => $plan_id
+        ));
+    }
 
     /*
      * Cards

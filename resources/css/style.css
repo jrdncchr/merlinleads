@@ -196,6 +196,10 @@ select {
     display: none;
 }
 
+.subscription-nav {
+    color: lightpink;
+}
+
 
 .custom-loading {
     -animation: spin .7s infinite linear;

@@ -132,6 +132,14 @@ class scheduler extends MY_Controller
                 $this->load->model('scheduler_model');
                 $post = $this->scheduler_model->get_scheduler_post(array('post_id' => $id, 'post_user_id' => $this->user->id), false);
                 $this->data['post'] = $post;
+
+                $category_id = $post->bp_category_id;
+                $categories = $this->merlin_library_model->get_blog_post(array('bp_category' => $category_id));
+                $topics = "<option value=''>Select Topic</option>";
+                foreach($categories as $c) {
+                    $topics .= "<option value='" . $c->bp_id . "'>" . $c->bp_topic . "</option>";
+                }
+                $this->data['topics'] = $topics;
             }
 
             $this->_renderL('pages/scheduler/post_add');

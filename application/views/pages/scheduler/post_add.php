@@ -17,14 +17,33 @@
     <li><a href="<?php echo base_url() . 'scheduler/post' ?>">Post</a></li>
     <li class="active">Add Post</li>
 </ol>
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Add Post</h4>
+
 
 <div class="row" id="app">
+    <div class="col-sm-12">
+        <h4 style="font-weight: bold; margin-bottom: 30px;">
+            <?php echo isset($post) ? "Edit" : "Add"; ?> Post
+            <button id="save-btn" class="btn btn-sm btn-success pull-right" v-on:click="savePost">Save</button>
+            <?php if(isset($post->post_id)) { ?>
+                <button class="btn btn-default btn-sm pull-right" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
+            <?php } ?>
+        </h4>
+    </div>
+
+
     <div id="main-form">
         <div class="col-sm-12">
             <div class="notice"></div>
         </div>
         <div class="col-sm-6">
+            <div class="form-group">
+                <label for="post-name">* Library</label>
+                <p class="form-control-static" style="font-weight: bold;">{{ form.post_library == 'user' ? 'User Library' : 'Merlin Library' }}</p>
+            </div>
+            <div class="form-group">
+                <label for="post-otp-date">Using Merlin Library changes the post Library to Merlin Library.</label>
+                <button v-on:click="showFormModal" class="btn-block btn btn-default btn-sm"> Use Merlin Library</button>
+            </div>
             <div class="form-group">
                 <label for="post-name">* Post Name</label>
                 <input type="text" class="form-control required" id="post-name" v-model="form.post_name" />
@@ -35,10 +54,6 @@
                     <option value="Evergreen">Evergreen</option>
                     <option value="OTP">One Time Post</option>
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="post-otp-date">Use Merlin Library to generate a content: </label>
-                <button v-on:click="showFormModal" class="btn-block btn btn-default btn-sm"> Merlin Library</button>
             </div>
             <div class="row" id="otp-section" style="display: none;">
                 <div class="col-sm-12" style="margin-top: 15px;">
@@ -71,7 +86,7 @@
 
 
                             <?php if(isset($main_f->twitter_feed_posting)) { ?>
-                                <?php if($twitter['has_access_key']) { ?>
+                                <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
                                     <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
                                 <?php } ?>
                             <?php } ?>
@@ -96,10 +111,12 @@
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6">
             <div class="form-group" id="evergreen-section" style="<?php if(isset($post)) { if($post->otp == 1) { echo 'display: none;'; } } ?>">
                 <label for="post-category">* Category</label>
-                <select id="post-category" v-model="form.post_category_id" class="form-control required">
+                <p class="form-control-static" style="font-weight: bold;" v-if="is_merlin">{{ selected_merlin_category }}</p>
+                <select id="post-category" v-model="form.post_category_id" class="form-control required" v-if="!is_merlin">
                     <option value="">Select Category</option>
                     <?php foreach($category as $c): ?>
                         <option value="<?php echo $c->category_id; ?>"><?php echo $c->category_name; ?></option>
@@ -110,26 +127,51 @@
                 <label for="post-url">Url</label>
                 <input type="text" class="form-control url" id="post-url" v-model="form.post_url" value="{{ form.post_url }}" />
             </div>
+
+            <?php if(isset($fb['valid_access_token'])) { ?>
             <div class="form-group">
                 <label for="post-facebook-snippet">* Facebook Snippet</label>
                 <textarea class="form-control required" v-model="form.post_facebook_snippet" id="post-facebook-snippet" rows="3">{{ form.post_facebook_snippet }}</textarea>
             </div>
+            <?php } ?>
+
+            <?php if(isset($linkedIn['access_token'])) { ?>
+                <?php if(!$linkedIn['expired_access_token']) { ?>
             <div class="form-group">
                 <label for="post-linkedin-snippet">* LinkedIn Snippet</label>
                 <textarea class="form-control required" maxlength="600" v-model="form.post_linkedin_snippet" id="post-linkedin-snippet" rows="3">{{ form.post_linkedin_snippet }}</textarea>
                 <span  class="pull-right counter">0/600 characters</span>
             </div>
+            <?php }
+            }?>
+
+            <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
             <div class="form-group">
                 <label for="post-twitter-snippet">* Twitter Snippet</label>
                 <textarea class="form-control required" maxlength="140" v-model="form.post_twitter_snippet" id="post-twitter-snippet" rows="3">{{ form.post_twitter_snippet }}</textarea>
                 <span class="pull-right counter">0/140 characters</span>
             </div>
-            <br />
-            <button id="save-btn" class="btn btn-sm btn-success pull-right" v-on:click="savePost">Save</button>
-            <?php if(isset($post->post_id)) { ?>
-            <button class="btn btn-default btn-sm pull-right" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
             <?php } ?>
 
+            <br />
+            <div class="well">
+
+                <div class="form-group">
+                    <label for="post-bp-subject-line">* Subject Line</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="post-bp-subject-line" v-model="form.bp_subject_line" value="{{ form.bp_subject_line }}" />
+                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="post-bp-email-content">* Email Content</label>
+                    <div class="input-group input-group-sm">
+                        <textarea class="form-control" id="post-bp-email-content" style="height: 60px;" v-model="form.bp_email_content">{{ form.bp_email_content }}</textarea>
+                        <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
+                    </div>
+                </div>
+            </div>
+            <br />
         </div>
     </div>
 
@@ -185,6 +227,7 @@
                                         <label for="post-bp-topic">* Topic</label>
                                         <select id="post-bp-topic" class="form-control required" v-model="form.bp_topic_id">
                                             <option value="">Select Topic</option>
+                                            <?php if(isset($topics)) { echo $topics; } ?>
                                         </select>
                                     </div>
                                 </div>
@@ -230,20 +273,6 @@
                                             <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="post-bp-subject-line">* Subject Line</label>
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control" id="post-bp-subject-line" v-model="form.bp_subject_line" value="{{ form.bp_subject_line }}"disabled />
-                                            <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="post-bp-email-content">* Email Content</label>
-                                        <div class="input-group input-group-sm">
-                                            <textarea class="form-control" id="post-bp-email-content" style="height: 60px;" v-model="form.bp_email_content" disabled>{{ form.bp_email_content }}</textarea>
-                                            <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -267,8 +296,11 @@
     var data = {
         type : 'Evergreen',
         post_id: <?php echo isset($post) ? json_encode($post->post_id) : '\'\'' ?>,
+        merlin_category : <?php echo isset($post) ? json_encode($post->merlin_category) : '\'\'' ?>,
+        user_category : <?php echo isset($post) ? json_encode($post->user_category) : '\'\'' ?>,
         form : {
             post_name : <?php echo isset($post) ? json_encode($post->post_name) : '\'\'' ?>,
+            post_library: <?php echo isset($post) ? json_encode($post->post_library) : '\'user\'' ?>,
             post_category_id : <?php echo isset($post) ? json_encode($post->post_category_id) : '\'\'' ?>,
             post_facebook_snippet : <?php echo isset($post) ? json_encode($post->post_facebook_snippet) : '\'\'' ?>,
             post_twitter_snippet : <?php echo isset($post) ? json_encode($post->post_twitter_snippet) : '\'\'' ?>,
@@ -278,18 +310,20 @@
             otp_date : <?php echo isset($post) ? json_encode($post->otp_date) : '\'\'' ?>,
             otp_time : <?php echo isset($post) ? json_encode($post->otp_time) : '\'\'' ?>,
             otp_modules : <?php echo isset($post) ? json_encode($post->otp_modules) : '\'\'' ?>,
-            bp : 0,
-            bp_category_id : '',
-            bp_profile_id : '',
-            bp_cz_id : '',
-            bp_topic_id : '',
-            bp_headline : '',
-            bp_body : '',
-            bp_keywords : '',
-            bp_subject_line: '',
-            bp_email_content: ''
+            bp : <?php echo isset($post) ? json_encode($post->bp) : '0' ?>,
+            bp_category_id : <?php echo isset($post) ? json_encode($post->bp_category_id) : '\'\'' ?>,
+            bp_profile_id : <?php echo isset($post) ? json_encode($post->bp_profile_id) : '\'\'' ?>,
+            bp_cz_id : <?php echo isset($post) ? json_encode($post->bp_cz_id) : '\'\'' ?>,
+            bp_topic_id : <?php echo isset($post) ? json_encode($post->bp_topic_id) : '\'\'' ?>,
+            bp_headline : <?php echo isset($post) ? json_encode($post->bp_headline) : '\'\'' ?>,
+            bp_body : <?php echo isset($post) ? json_encode($post->bp_body) : '\'\'' ?>,
+            bp_keywords : <?php echo isset($post) ? json_encode($post->bp_keywords) : '\'\'' ?>,
+            bp_subject_line: <?php echo isset($post) ? json_encode($post->bp_subject_line) : '\'\'' ?>,
+            bp_email_content: <?php echo isset($post) ? json_encode($post->bp_email_content) : '\'\'' ?>
         }
     };
+    data.is_merlin = data.form.post_library == 'merlin';
+    data.selected_merlin_category = data.is_merlin ? data.merlin_category : data.user_category;
 
     var vm = new Vue({
         el: '#app',
@@ -299,7 +333,9 @@
                 if(data.type == "OTP") {
                     data.form.otp = 1;
                     $('#otp-section').show();
-                    $('#evergreen-section').hide();
+                    if(!this.is_merlin) {
+                        $('#evergreen-section').hide();
+                    }
                     $('#post-category').removeClass('required');
                     $('#post-otp-date').addClass('required');
                     $('#post-otp-time').addClass('required');
@@ -351,8 +387,15 @@
             },
             bpComplete: function() {
                 if(validator.validateUrl($('#post-bp-url').val())) {
+                    this.form.post_library = "merlin";
+                    this.form.post_name = this.form.bp_headline;
+                    this.is_merlin = true;
+                    this.form.post_category_id = $('#merlin-library-category option:selected').val();
+                    this.selected_merlin_category = $('#merlin-library-category option:selected').text();
                     $('#form-modal').modal('hide');
                     validator.displayInputError($('#post-bp-url'), false);
+                    updateCount2($('#post-linkedin-snippet'));
+                    updateCount2($('#post-twitter-snippet'));
                 } else {
                     validator.displayInputError($('#post-bp-url'), true);
                     validator.displayAlertError($('#form-modal'), true, 'You must enter back your correct generated blog url.');
@@ -414,20 +457,32 @@
         }
     });
 
+    function updateCount2(e) {
+        var id = $(e).attr('id');
+        if(id == 'post-linkedin-snippet') {
+            $(e).parent().find('.counter').html($(e).val().length + "/600 characters");
+        } else if(id == 'post-twitter-snippet') {
+            $(e).parent().find('.counter').html($(e).val().length + "/140 characters");
+        }
+    }
+
+    function updateCount() {
+        var id = $(this).attr('id');
+        if(id == 'post-linkedin-snippet') {
+            $(this).parent().find('.counter').html($(this).val().length + "/600 characters");
+        } else if(id == 'post-twitter-snippet') {
+            $(this).parent().find('.counter').html($(this).val().length + "/140 characters");
+        }
+    }
+
     $(function() {
         $('#post-otp-date').datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('#post-linkedin-snippet').keyup(updateCount).keydown(updateCount);
         $('#post-twitter-snippet').keyup(updateCount).keydown(updateCount);
+        updateCount2($('#post-linkedin-snippet'));
+        updateCount2($('#post-twitter-snippet'));
 
-        function updateCount() {
-            var id = $(this).attr('id');
-            if(id == 'post-linkedin-snippet') {
-                $(this).parent().find('.counter').html($(this).val().length + "/600 characters");
-            } else if(id == 'post-twitter-snippet') {
-                $(this).parent().find('.counter').html($(this).val().length + "/140 characters");
-            }
-        }
 
         $('.social').on('click', function() {
             var modal = $('#form-modal');
@@ -440,10 +495,8 @@
 
         <?php if(isset($post))  { ?>
             var modules = <?php echo json_encode($post->otp_modules); ?>;
-        console.log(modules);
             var split = modules.split(',');
             for(var i = 0; i < split.length; i++) {
-
                 if(split[i] == "Facebook") {
                     $('.account-facebook').addClass('account-on');
                 } else if(split[i] == "Twitter") {

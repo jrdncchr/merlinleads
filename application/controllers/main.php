@@ -80,7 +80,6 @@ class Main extends MY_Controller {
         $this->load->model('api_model');
         $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
         $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
-
         $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
 
         //Cities / Zip Codes

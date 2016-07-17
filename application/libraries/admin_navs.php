@@ -71,8 +71,7 @@ class Admin_Navs {
                 $nav = array(
                     "nav" => array(
                         array("title" => "Merlin Categories", "url" => "admin/scheduler_merlin_category", "id" => "schedulerCategoriesTopLink"),
-                        array("title" => "Merlin Posts", "url" => "admin/scheduler_merlin_post", "id" => "schedulerPostsTopLink"),
-                        array("title" => "Blog Post Templates", "url" => "admin/scheduler_blog_post", "id" => "schedulerBlogPostTemplateTopLink")
+                        array("title" => "Merlin Blog Post Templates", "url" => "admin/scheduler_blog_post", "id" => "schedulerBlogPostTemplateTopLink")
                     )
                 );
                 break;
@@ -83,6 +82,13 @@ class Admin_Navs {
                         array("title" => "List", "url" => "admin/cities_zipcodes", "id" => "czListTopLink"),
                         array("title" => "Users Requests", "url" => "admin/cities_zipcodes_users", "id" => "czUsersTopLink"),
                         array("title" => "City / Zip Code Requests", "url" => "admin/cities_zipcodes_requests", "id" => "czRequestsTopLink")
+                    )
+                );
+                break;
+            case "Settings":
+                $nav = array(
+                    "nav" => array(
+                        array("title" => "General", "url" => "admin/settings/general", "id" => "settingsGeneralTopLink")
                     )
                 );
                 break;

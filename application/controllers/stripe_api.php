@@ -20,21 +20,17 @@ class Stripe_Api extends MY_Controller {
         $customer = Stripe_Customer::retrieve($user->stripe_customer_id);
         try {
             $plan = Stripe_Plan::retrieve($_POST['planId']);
-            if($plan->statement_descriptor == "Main") {
-                $this->load->library('stripe_library');
-                $subscription_id = $this->stripe_library->get_main_subscription_id($user->stripe_customer_id);
-                if($subscription_id) {
-                    $subscription = $customer->subscriptions->retrieve($subscription_id);
-                    $subscription->plan = $_POST['planId'];
-                    $subscription->card = $_POST['stripeToken'];
-                    $subscription->save();
-                } else {
-                    $customer->subscriptions->create(
-                        array("plan" => $plan->id, "trial_end" => 'now', 'card' => $_POST['stripeToken']));
-                }    
-            } else { //Package is Addon
-                $customer->subscriptions->create(array("plan" => $plan->id, 'card' => $_POST['stripeToken']));
-            }        
+            $this->load->library('stripe_library');
+            $subscription_id = $this->stripe_library->get_main_subscription_id($user->stripe_customer_id);
+            if($subscription_id) {
+                $subscription = $customer->subscriptions->retrieve($subscription_id);
+                $subscription->plan = $_POST['planId'];
+                $subscription->card = $_POST['stripeToken'];
+                $subscription->save();
+            } else {
+                $customer->subscriptions->create(
+                    array("plan" => $plan->id, "trial_end" => 'now', 'card' => $_POST['stripeToken']));
+            }
             $this->data['message'] = "Success";
         } catch (Stripe_CardError $e) {
             $err  = $e->getJsonBody()['error'];

@@ -370,41 +370,34 @@ class Admin extends MY_Controller
     public function settings($page = "general")
     {
         $this->load->model('settings_model');
-        if($page == "general") {
-            $this->load->model('package_model');
-            $this->data['packages'] = $this->package_model->get
-            $general = $this->settings_model->get(array('category' => 'general'));
-            $this->data['trial_period_day_count'] = $this->_findObjInArray($general, 'trial_period_day_count');
-            $this->data['trial_period_package'] = $this->_findObjInArray($general, 'trial_period_package');
-            $this->_renderA("pages/admin/settings_general", "Settings");
-        }
-    }
 
-    public function settings_action()
-    {
-        $action = $this->input->get('action');
+        $action = $this->input->post('action');
 
-        switch($action) {
-            case 'add' :
-                break;
-            default:
-                $this->output->set_status_header("400");
-                echo json_encode(array("error" => "Action is unknown"));
-                break;
-        }
+        // Actions for AJAX Call
+        if($action) {
+            switch($action) {
+                case 'save_general' :
+                    $settings = $this->input->post('settings');
+                    $result = $this->settings_model->save($settings);
+                    break;
+                default:
+                    $this->output->set_status_header("400");
+                    $result = array('success' => false, 'message' => 'Action not found');
+                    break;
+            }
+            echo json_encode($result);
 
-    }
-
-    public function _findObjInArray($array, $key)
-    {
-        foreach($array as $obj) {
-            if ($key == $obj->k) {
-                return $obj->v;
+        // Page Rendering
+        } else {
+            if($page == "general") {
+                $this->load->model('package_model');
+                $this->data['packages'] = $this->package_model->getPackage();
+                $general = $this->settings_model->get(array('category' => 'general'));
+                $this->data['general'] = transformArrayToKeyValue($general);
+                $this->_renderA("pages/admin/settings_general", "Settings");
             }
         }
-        return null;
     }
-
 
 
     /*

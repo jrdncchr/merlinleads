@@ -64,12 +64,10 @@ class Pages extends MY_Controller
         $this->load->model('user_model');
         $result = $this->user_model->login($_POST['loginEmail'], $_POST['loginPassword']);
         if ($result != "OK") {
-//            session_start();
-            $_SESSION['message'] = "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> $result</div>";
-            $this->login();
+            $this->session->set_flashdata("message", "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> $result</div>");
+            header("Location: " . base_url());
         } else {
             header("Location: " . base_url() . "property");
-//            var_dump($this->user);
         }
     }
 
@@ -90,24 +88,20 @@ class Pages extends MY_Controller
             if ($this->user_model->updateUserFP($update, $user->id)) {
                 $this->load->model('email_model');
                 $this->email_model->forgetPasswordSendEmail($user, $new_password);
-//                session_start();
-                $_SESSION['message'] = "<div class='alert alert-success'><i class='fa fa-check'></i> The new password is sent to your email!</div>";
-                $this->forget_password();
+                $this->session->set_flashdata("message", "<div class='alert alert-success'><i class='fa fa-check'></i> The new password is sent to your email!</div>");
+                header("Location: " . base_url() . 'pages/forget_password');
             } else {
-//                session_start();
-                $_SESSION['message'] = "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> Generating new password failed, please try again later.</div>";
-                $this->forget_password();
+                $this->session->set_flashdata("message", "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> Generating new password failed, please try again later.</div>");
+                header("Location: " . base_url() . 'pages/forget_password');
             }
         } else {
-//            session_start();
-            $_SESSION['message'] = "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> The email you entered was not found.</div>";
-            $this->forget_password();
+            $this->session->set_flashdata("message", "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> The email you entered was not found.</div>");
+            header("Location: " . base_url() . 'pages/forget_password');
         }
     }
 
     public function send_email()
     {
-//        session_start();
         include_once $_SERVER['DOCUMENT_ROOT'] . "/" . OTHERS . "securimage/securimage.php";
         $securimage = new Securimage();
         if ($securimage->check($_POST['captcha_code']) == false) {
@@ -122,14 +116,24 @@ class Pages extends MY_Controller
     public function confirm_email($email, $key)
     {
         $this->load->model('user_model');
-        $confirm = $this->user_model->confirm_email(base64_decode($email), $key);
-//        session_start();
+        $confirm = $this->user_model->confirm_email(urldecode($email), $key);
         if ($confirm == "OK") {
-            $user = $this->user_model->getByEmail(base64_decode($email));
+            $this->load->model('settings_model');
+            $general = transformArrayToKeyValue($this->settings_model->get(array('category' => 'general')));
+            $user = $this->user_model->getByEmail(urldecode($email));
+
             $this->load->model('package_model');
-            $_SESSION['message'] = "<div class='alert alert-success'><i class='fa fa-check'></i> Your account has been confirmed! Your 7 day trial starts now.</div>";
+            $package = $this->package_model->getPackage($general['trial_period_package']->v);
+
+            $this->load->library('stripe_library');
+            $this->stripe_library->add_subscription($user->stripe_customer_id, $package->stripe_plan_id);
+
+            $this->session->set_flashdata("message",
+                "<div class='alert alert-success'>
+                    <i class='fa fa-check'></i> Hi <b>" . $user->firstname . " " . $user->lastname . "</b>, your account has been confirmed!
+                </div>");
         } else {
-            $_SESSION['message'] = "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> Email confirmation failed</div>";
+            $this->session->set_flashdata("message", "<div class='alert alert-danger'><i class='fa fa-exclamation'></i> Email confirmation failed</div>");
         }
         header("Location: " . base_url());
     }

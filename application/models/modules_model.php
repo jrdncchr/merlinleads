@@ -82,36 +82,36 @@ class Modules_Model extends CI_Model {
                                     $list[] = $m->module_name;
                                 }
                                 break;
-	        				case 'Twitter':
-	        					if(isset($features->twitter_template_posting)) {
-	        						$list[] = $m->module_name;
- 	        					}
-	        					break;
-                            case 'Slideshare':
-                                if(isset($features->slideshare_slide_generator)) {
-                                    $list[] = $m->module_name;
-                                }
-                                break;
-                            case 'Facebook':
-                                if(isset($features->facebook_posting)) {
-                                    $list[] = $m->module_name;
-                                }
-                                break;
-                            case 'Google Plus':
-	        					if(isset($features->google_plus_posting)) {
-	        						$list[] = $m->module_name;
- 	        					}
-	        					break;
-                            case 'LinkedIn':
-                                if(isset($features->linkedin_posting)) {
-                                    $list[] = $m->module_name;
-                                }
-                                break;
-                            case 'Blog':
-                                if(isset($features->blog_posting)) {
-                                    $list[] = $m->module_name;
-                                }
-                                break;
+//	        				case 'Twitter':
+//	        					if(isset($features->twitter_template_posting)) {
+//	        						$list[] = $m->module_name;
+// 	        					}
+//	        					break;
+//                            case 'Slideshare':
+//                                if(isset($features->slideshare_slide_generator)) {
+//                                    $list[] = $m->module_name;
+//                                }
+//                                break;
+//                            case 'Facebook':
+//                                if(isset($features->facebook_posting)) {
+//                                    $list[] = $m->module_name;
+//                                }
+//                                break;
+//                            case 'Google Plus':
+//	        					if(isset($features->google_plus_posting)) {
+//	        						$list[] = $m->module_name;
+// 	        					}
+//	        					break;
+//                            case 'LinkedIn':
+//                                if(isset($features->linkedin_posting)) {
+//                                    $list[] = $m->module_name;
+//                                }
+//                                break;
+//                            case 'Blog':
+//                                if(isset($features->blog_posting)) {
+//                                    $list[] = $m->module_name;
+//                                }
+//                                break;
 	        				default: break;
 	        			}
 	            	}

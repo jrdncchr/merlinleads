@@ -28,6 +28,7 @@
             <table id="schedulerContentDt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped no-multiple">
                 <thead>
                 <tr>
+                    <th>Library</th>
                     <th>Category</th>
                     <th>Post Name</th>
                     <th>URL</th>
@@ -330,7 +331,7 @@
     function initDt() {
         dt = $("#schedulerContentDt").dataTable({
             "bJQueryUI": true,
-            "aaSorting": [3],
+            "aaSorting": [4],
             "bDestroy": true,
             "filter": true,
             "ajax": {
@@ -339,10 +340,16 @@
                 "data": {action: "list"}
             },
             columns: [
-                {data: "category_name", width: "30%", render: function(data, type, row) {
+                {data: "post_library", width: "20%", render: function(data, type, row) {
+                    return row.post_library == "user" ?
+                        "User Library" :
+                        "Merlin Library";
+                    }
+                },
+                {data: "post_category_id", width: "20%", render: function(data, type, row) {
                     return row.otp == "1" ?
                         "<span class='text-warning'>One Time Post</span>" :
-                        "<span class='text-primary'>" + data + "</span>";
+                        "<span class='text-primary'>" + (row.post_library == "user" ? row.user_category : row.merlin_category) + "</span>";
                     }
                 },
                 {data: "post_name", width: "50%"},
@@ -357,7 +364,8 @@
                 {data: "post_twitter_snippet", visible: false},
                 {data: "post_linkedin_snippet", visible: false},
                 {data: "post_id", visible: false},
-                {data: "post_category_id", visible: false}
+                {data: "user_category", visible: false},
+                {data: "merlin_category", visible: false}
             ],
             "fnDrawCallback": function (oSettings) {
                 var table = $("#schedulerContentDt").dataTable();

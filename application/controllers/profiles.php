@@ -58,7 +58,7 @@ class Profiles extends MY_Controller
                     $this->_renderL('pages/profiles_cac');
                 }
             } else {
-                $_SESSION['message'] = "Sorry, you already have maximum used of your available profiles. <a href='" . base_url()  ."main/upgrade'>Upgrade now </a>to be able to create more profiles.";
+                $_SESSION['message'] = "Sorry, you already have maximum use of your available profiles. <a href='" . base_url()  ."main/upgrade'>Upgrade now </a>to be able to create more profiles.";
                 $this->index();
             }    
         } else {

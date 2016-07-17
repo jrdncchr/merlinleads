@@ -11,15 +11,7 @@
                 <form class="form-horizontal" role="form" action="<?php echo base_url() . "pages/forget_password_attempt" ?>" method="post">
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <?php
-                            if (isset($_SESSION['message'])) {
-                                ?>
-                                <?php echo $_SESSION['message']; ?>
-                                <?php
-                                unset($_SESSION['message']);
-                            }
-                            ?>
-
+                            <?php echo $this->session->flashdata('message'); ?>
                         </div>
                     </div>
                     <div class="form-group">

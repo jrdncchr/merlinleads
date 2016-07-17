@@ -93,7 +93,9 @@ class scheduler_model extends CI_Model {
      * Scheduler Post
      */
     public function get_scheduler_post($where = array(), $list = true) {
+        $this->db->select('scheduler_post.*, scheduler_category.category_name as user_category, merlin_category.category_name as merlin_category');
         $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler_post.post_category_id', 'left');
+        $this->db->join($this->merlin_category_table, 'merlin_category.category_id = scheduler_post.post_category_id', 'left');
         $result = $this->db->get_where($this->scheduler_post_table, $where);
         return $list ? $result->result() : $result->row();
     }
@@ -121,7 +123,7 @@ class scheduler_model extends CI_Model {
         $category = $result->row();
 
         $this->db->order_by('post_date_created', 'asc');
-        $result = $this->db->get_where($this->scheduler_post_table, array('post_category_id' => $category->category_id));
+        $result = $this->db->get_where($this->scheduler_post_table, array('post_category_id' => $category->category_id, 'post_library' => $scheduler->library));
         $posts = $result->result();
 
         $this->db->order_by('date_posted', 'desc');

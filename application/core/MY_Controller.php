@@ -68,6 +68,7 @@ class MY_Controller extends CI_Controller
                 $this->main_f = json_decode($main_plan->features_json);
             }
 
+            $this->data['subscription'] = $this->subscription;
             $this->data['seo_builder'] = $this->seo_builder_admin->checkAuth($this->user->id);
             $this->data['user'] = $this->user;
             $this->data['main_f'] = $this->main_f;

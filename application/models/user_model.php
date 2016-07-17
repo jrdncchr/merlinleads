@@ -9,6 +9,10 @@ class User_Model extends CI_Model {
         $this->load->database();
     }
 
+    public function get_user_package($user_id) {
+
+    }
+
     public function get($id = 0) {
         if ($id == 0) {
             $result = $this->db->get('users');

@@ -32,7 +32,7 @@ class Registration extends MY_Controller {
             $salt = $this->_get_random_string(16);
             $hashed_password = create_hash($new_password . $salt);
             $stateSplit = explode(' - ', $_POST['state']);
-            $key = $this->generateRandomString();
+            $key = $this->_get_random_string(50);
 
             $user = array(
                 'firstname' => $_POST['firstname'],

@@ -22,7 +22,7 @@
         cursor: pointer;
     }
     .scheduler_block:hover {
-        background-color: lightyellow;
+        font-weight: bold;
     }
 
     .scheduler_block p.modules {
@@ -181,31 +181,6 @@
                         </div>
                     </div>
                 </div>
-<!--                <div class="row" id="category-merlin-options" style="display: none;">-->
-<!--                    <div class="col-sm-6">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="property">* Property</label>-->
-<!--                            <select id="property" class="form-control">-->
-<!--                                <option value="">Select Property</option>-->
-<!--                                --><?php //foreach($property as $p): ?>
-<!--                                    <option value="--><?php //echo $p->property_id; ?><!--">--><?php //echo $p->name; ?><!--</option>-->
-<!--                                --><?php //endforeach; ?>
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-sm-6">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="profile">* Profile</label>-->
-<!--                            <select id="profile" class="form-control">-->
-<!--                                <option value="">Select Profile</option>-->
-<!--                                --><?php //foreach($profile as $p): ?>
-<!--                                    <option value="--><?php //echo $p->id; ?><!--">--><?php //echo $p->name; ?><!--</option>-->
-<!--                                --><?php //endforeach; ?>
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <div class="form-group">
                     <label>* Accounts</label>
                     <div id="accounts">
@@ -217,7 +192,7 @@
 
 
                         <?php if(isset($main_f->twitter_feed_posting)) { ?>
-                            <?php if($twitter['has_access_key']) { ?>
+                            <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
                                 <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
                             <?php } ?>
                         <?php } ?>

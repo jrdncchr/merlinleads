@@ -23,6 +23,7 @@ class Cron extends CI_Controller {
          * WEEKLY SCHEDULED
          */
         $schedulers = $this->scheduler_model->get_scheduler(array('time' => $time, 'day' => $day, 'status' => 'Active'));
+
         foreach($schedulers as $s) {
             $user = $this->user_model->get($s->user_id);
             if($s->library == "user") {

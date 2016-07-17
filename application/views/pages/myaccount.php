@@ -334,14 +334,14 @@
             <!-- Twitter -->
             <div class="tab-pane <?php echo ($redirect == "twitter" || $redirect == "" || $redirect == "integrations") ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
                 <?php
-                if(isset($main_f->twitter_feed_posting) && isset($twitter['user_info'])) { ?>
-                    <?php if($twitter['has_access_key']) { ?>
+                if(isset($main_f->twitter_feed_posting)) { ?>
+                    <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
                         <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Twitter integration into your account! </p>
                         <img class="img img-thumbnail" src="<?php echo $twitter['user_info']->profile_image_url ?>" />
                         <?php echo $twitter['user_info']->description; ?>
                         <br /><br />
                     <?php } ?>
-                    <p><i>Authorize your Twitter</i></p>
+                    <p class="text-warning">You have NOT yet authorized Twitter integration into your account yet.</p>
                     <a class="btn btn-sm btn-primary" href="<?php echo $twitter['auth_url']; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
                 <?php } else { ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>

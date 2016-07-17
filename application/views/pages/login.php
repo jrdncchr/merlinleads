@@ -11,14 +11,7 @@
                 <form class="form-horizontal" role="form" action="<?php echo base_url() . "pages/login_attempt" ?>" method="post">
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <?php
-//                            session_start();
-                            if (isset($_SESSION['message'])) {
-                                echo $_SESSION['message'];
-                                unset($_SESSION['message']);
-                            }
-                            //                            echo $_SERVER['SERVER_NAME'];
-                            ?>
+                            <?php echo $this->session->flashdata('message'); ?>
                         </div>
                     </div>
                     <div class="form-group">

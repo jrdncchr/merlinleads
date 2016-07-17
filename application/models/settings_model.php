@@ -22,23 +22,12 @@ class settings_model extends CI_Model
         return $list ? $result->result() : $result->row();
     }
 
-    public function add($data)
+    public function save($settings)
     {
-        $this->db->insert($this->tbl, $data);
-        return array('success' => true, 'inserted_id' => $this->db->insert_id());
-    }
-
-    public function update($id, $data)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->tbl, $data);
-        return array('success' => true);
-    }
-
-    public function delete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete($this->tbl);
+        foreach($settings as $s) {
+            $this->db->where('id', $s['id']);
+            $this->db->update($this->tbl, array('v' => $s['v']));
+        }
         return array('success' => true);
     }
 
