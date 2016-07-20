@@ -17,7 +17,7 @@
         <a href="<?php echo base_url() . 'scheduler/post/form'; ?>" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Post</a>
         <button disabled class="btn btn-default btn-sm pull-right">Post</button>
         <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
+        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
 </div>
@@ -342,13 +342,13 @@
             columns: [
                 {data: "post_library", width: "20%", render: function(data, type, row) {
                     return row.post_library == "user" ?
-                        "User Library" :
-                        "Merlin Library";
+                        "<span class='badge badge-user-lib'>User Library</span>" :
+                        "<span class='badge badge-merlin-lib'>Merlin Library</span>";
                     }
                 },
                 {data: "post_category_id", width: "20%", render: function(data, type, row) {
                     return row.otp == "1" ?
-                        "<span class='text-warning'>One Time Post</span>" :
+                        "<span class='text-danger'>One Time Post</span>" :
                         "<span class='text-primary'>" + (row.post_library == "user" ? row.user_category : row.merlin_category) + "</span>";
                     }
                 },

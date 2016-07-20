@@ -21,8 +21,10 @@ class scheduler_model extends CI_Model {
      */
 
     public function get_scheduler($where = array(), $list = true) {
-        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler.category_id', 'left');
-        $result = $this->db->get_where($this->scheduler_table, $where);
+        $this->db->select('s.*, scheduler_category.category_name as user_category, merlin_category.category_name as merlin_category');
+        $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = s.category_id', 'left');
+        $this->db->join($this->merlin_category_table, 'merlin_category.category_id = s.category_id', 'left');
+        $result = $this->db->get_where($this->scheduler_table . ' as s', $where);
         return $list ? $result->result() : $result->row();
     }
 
@@ -141,6 +143,53 @@ class scheduler_model extends CI_Model {
             }
         }
         return $posts[0];
+    }
+
+    /*
+     * Scheduler Queue
+     */
+    public function get_queue($user_id, $until_date = false) {
+        date_default_timezone_set('America/Los_Angeles');
+
+        if(!$until_date) {
+            $until_date = "2016-12-25";
+        }
+
+        $otp_schedule = $this->get_scheduler_post(array('post_user_id' => $user_id, 'otp' => 1));
+        $otp_posts = array();
+        foreach($otp_schedule as $os) {
+            $obj = new stdClass();
+            $schedule_date = date('F j, Y', strtotime($os->otp_date));
+
+            $obj->schedule = $schedule_date . " " . date("g:i a", strtotime($os->otp_time));
+            $obj->type = "One Time Post";
+            $obj->library = $os->post_library;
+            $obj->category = $os->post_library == "user" ? $os->user_category : $os->merlin_category;
+            $obj->post_name = $os->post_name;
+
+            $otp_posts[] = $obj;
+        }
+
+        $weekly_schedule = $this->get_scheduler(array('user_id' => $user_id, 'status' => 'active'));
+        $weekly_posts = array();
+        foreach($weekly_schedule as $ws) {
+            $next_schedule = strtotime('next ' . $ws->day);
+            while(strtotime($until_date) > $next_schedule) {
+                $obj = new stdClass();
+                $next_schedule_date = date('F j, Y', $next_schedule);
+
+                $obj->schedule = $next_schedule_date . " " . date("g:i a", strtotime($ws->time));
+                $obj->type = "Weekly";
+                $obj->library = $ws->library;
+                $obj->category = $ws->library == "user" ? $ws->user_category : $ws->merlin_category;
+                $obj->post_name = "";
+
+                $weekly_posts[] = $obj;
+                $next_schedule = strtotime("+7 day", $next_schedule);
+            }
+        }
+
+        return array_merge($otp_posts, $weekly_posts);
     }
 
 } 

@@ -5,7 +5,7 @@
         <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
         <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
         <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</button>
-<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
+        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queue</a>
         <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
     </div>
 </div>

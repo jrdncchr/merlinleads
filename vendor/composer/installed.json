@@ -1,22 +1,21 @@
 [
     {
         "name": "facebook/php-sdk-v4",
-        "version": "5.1.2",
-        "version_normalized": "5.1.2.0",
+        "version": "5.2.0",
+        "version_normalized": "5.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-            "reference": "2c42fb3002953355f12d3c6e8003a9fd5af563d9"
+            "reference": "c60fba1fe1de62db1e0776d32fc2fb778189459c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/2c42fb3002953355f12d3c6e8003a9fd5af563d9",
-            "reference": "2c42fb3002953355f12d3c6e8003a9fd5af563d9",
+            "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/c60fba1fe1de62db1e0776d32fc2fb778189459c",
+            "reference": "c60fba1fe1de62db1e0776d32fc2fb778189459c",
             "shasum": ""
         },
         "require": {
-            "ext-mbstring": "*",
-            "php": ">=5.4.0"
+            "php": "^5.4|^7.0"
         },
         "require-dev": {
             "guzzlehttp/guzzle": "~5.0",
@@ -26,7 +25,7 @@
         "suggest": {
             "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
         },
-        "time": "2015-11-19 21:07:36",
+        "time": "2016-05-18 22:04:36",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -37,7 +36,10 @@
         "autoload": {
             "psr-4": {
                 "Facebook\\": "src/Facebook/"
-            }
+            },
+            "files": [
+                "src/Facebook/polyfills.php"
+            ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -58,17 +60,17 @@
     },
     {
         "name": "abraham/twitteroauth",
-        "version": "0.6.2",
-        "version_normalized": "0.6.2.0",
+        "version": "0.6.4",
+        "version_normalized": "0.6.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/abraham/twitteroauth.git",
-            "reference": "d4fc4a3c36f5ecdfc8865ab1e7cefc432e49491c"
+            "reference": "f7dec715c6e79e6085470b8b5d4dc2727afc5186"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/d4fc4a3c36f5ecdfc8865ab1e7cefc432e49491c",
-            "reference": "d4fc4a3c36f5ecdfc8865ab1e7cefc432e49491c",
+            "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/f7dec715c6e79e6085470b8b5d4dc2727afc5186",
+            "reference": "f7dec715c6e79e6085470b8b5d4dc2727afc5186",
             "shasum": ""
         },
         "require": {
@@ -76,11 +78,11 @@
             "php": ">=5.5.0"
         },
         "require-dev": {
-            "phpmd/phpmd": "2.2.*",
-            "phpunit/phpunit": "4.7.*",
+            "phpmd/phpmd": "2.3.*",
+            "phpunit/phpunit": "4.8.*",
             "squizlabs/php_codesniffer": "2.3.*"
         },
-        "time": "2015-11-05 04:04:20",
+        "time": "2016-04-20 23:23:26",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -114,17 +116,17 @@
     },
     {
         "name": "stripe/stripe-php",
-        "version": "v3.16.0",
-        "version_normalized": "3.16.0.0",
+        "version": "v3.17.0",
+        "version_normalized": "3.17.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/stripe/stripe-php.git",
-            "reference": "f7b9249fd6a085183ffeea68df0e62e32cb37ae9"
+            "reference": "982b90dcbc9cfd59057db8819a247c6db18df6cd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/stripe/stripe-php/zipball/f7b9249fd6a085183ffeea68df0e62e32cb37ae9",
-            "reference": "f7b9249fd6a085183ffeea68df0e62e32cb37ae9",
+            "url": "https://api.github.com/repos/stripe/stripe-php/zipball/982b90dcbc9cfd59057db8819a247c6db18df6cd",
+            "reference": "982b90dcbc9cfd59057db8819a247c6db18df6cd",
             "shasum": ""
         },
         "require": {
@@ -138,7 +140,7 @@
             "satooshi/php-coveralls": "~0.6.1",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2016-07-12 17:04:44",
+        "time": "2016-07-14 17:36:41",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -167,6 +169,108 @@
             "api",
             "payment processing",
             "stripe"
+        ]
+    },
+    {
+        "name": "sendgrid/php-http-client",
+        "version": "3.1.0",
+        "version_normalized": "3.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sendgrid/php-http-client.git",
+            "reference": "01c3fc4b94df008cfe03ffb467d4c6dbe6dcfb2c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/01c3fc4b94df008cfe03ffb467d4c6dbe6dcfb2c",
+            "reference": "01c3fc4b94df008cfe03ffb467d4c6dbe6dcfb2c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2016-06-11 00:47:24",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "SendGrid": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Matt Bernier",
+                "email": "dx@sendgrid.com"
+            },
+            {
+                "name": "Elmer Thomas",
+                "email": "elmer@thinkingserious.com"
+            }
+        ],
+        "description": "HTTP REST client, simplified for PHP",
+        "homepage": "http://github.com/sendgrid/php-http-client",
+        "keywords": [
+            "api",
+            "fluent",
+            "http",
+            "rest",
+            "sendgrid"
+        ]
+    },
+    {
+        "name": "sendgrid/sendgrid",
+        "version": "5.0.4",
+        "version_normalized": "5.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sendgrid/sendgrid-php.git",
+            "reference": "1050d195525ff529036e7804f2c303261d65dca3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sendgrid/sendgrid-php/zipball/1050d195525ff529036e7804f2c303261d65dca3",
+            "reference": "1050d195525ff529036e7804f2c303261d65dca3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3",
+            "sendgrid/php-http-client": "3.1.0"
+        },
+        "replace": {
+            "sendgrid/sendgrid-php": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2016-07-08 02:55:23",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/SendGrid.php",
+                "lib/helpers/mail/Mail.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "This library allows you to quickly and easily send emails through SendGrid using PHP.",
+        "homepage": "http://github.com/sendgrid/sendgrid-php",
+        "keywords": [
+            "email",
+            "grid",
+            "send",
+            "sendgrid"
         ]
     }
 ]

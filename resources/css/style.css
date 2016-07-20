@@ -200,6 +200,23 @@ select {
     color: lightpink;
 }
 
+.badge-merlin-lib {
+    background-color: #C2EAE9;
+}
+
+.badge-user-lib {
+    background-color: #F8EFB6;
+}
+
+.social {
+    cursor: pointer;
+}
+.account-on {
+    color: #00438A;
+    border-bottom: 3px solid #00438A;
+    padding-bottom: 2px;
+}
+
 
 .custom-loading {
     -animation: spin .7s infinite linear;

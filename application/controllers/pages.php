@@ -113,14 +113,14 @@ class Pages extends MY_Controller
         }
     }
 
-    public function confirm_email($email, $key)
+    public function confirm_email($key)
     {
         $this->load->model('user_model');
-        $confirm = $this->user_model->confirm_email(urldecode($email), $key);
+        $confirm = $this->user_model->confirm_email($key);
         if ($confirm == "OK") {
             $this->load->model('settings_model');
             $general = transformArrayToKeyValue($this->settings_model->get(array('category' => 'general')));
-            $user = $this->user_model->getByEmail(urldecode($email));
+            $user = $this->user_model->get_user_by_confirmation_key($key);
 
             $this->load->model('package_model');
             $package = $this->package_model->getPackage($general['trial_period_package']->v);

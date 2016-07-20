@@ -5,89 +5,69 @@ if (!defined('BASEPATH'))
 
 class Email_Model extends CI_Model {
 
-    protected $from = "support@merlinleads.com";
-//    protected $cc = "Yates Harrison <yatesharrison@yahoo.com>, Jordan Cachero <jrdncchr@gmail.com>";
-    protected $cc = ", Jordan Cachero <jrdncchr@gmail.com>";
+    public function __construct() {
+        $this->load->library('email_library');
+    }
 
-    public function sendConfirmationEmail($email, $key, $random_password = false) {
-        $message = "<html><body>";
-//        $message .= "<img src='" . base_url() . IMG . "logo.png' height='100' width='400' />";
-        $message .= "<p>Thank you for registering in Merlin Leads.</p>";
-        $message .= "<p>Please click the this <a href='" . base_url() . "pages/confirm_email/" . base64_encode($email) . "/" . $key . "'>link</a> to activate your account.</p>";
+    public function sendConfirmationEmail($to, $key, $random_password = false) {
+        $email['subject'] = 'Merlin Leads - Email Confirmation';
+        $email['to'] = $to;
+
+        $email['content'] = "Thank you for registering in Merlin Leads.\r\n\r\n";
+        $email['content'] .= "Please click the link below to confirm your email address: \r\n\r\n";
+        $email['content'] .= base_url() . "pages/confirm_email/" . $key . "\r\n\r\n";
         if($random_password) {
-            $message .= "<br />";
-            $message .= "<p>After verifying your account, you may now log in using the generated password: <b>" . $random_password . "</b></p>";
-            $message .= "<p>Make sure to change your password after you logged in successfully.</p>";
+            $email['content'] .= "After verifying your account, you may now log in using the generated password: " . $random_password . "\r\n\r\n";
+            $email['content'] .= "Make sure to change your password after you logged in successfully.\r\n\r\n";
         }
-        $message .= "</body></html>";
 
-        $to = $email;
-        $subject = 'Merlin Leads - Email Confirmation';
-
-        $headers = "From: Merlin Leads<" . $this->from . ">"  . "\r\n";
-        $headers .= "BCC: $this->cc" . "\r\n";
-        $headers .= "Content-type: text/html";
-
-        mail($to, $subject, $message, $headers);
+        $this->email_library->send_email($email);
     }
     
     public function forgetPasswordSendEmail($user, $password) {
-        $message = "<html><body>";
-//        $message .= "<img src='" . base_url() . IMG . "logo.png' height='100' width='400' />";
-        $message .= "<p>Your new generated password is: $password</p>";
-        $message .= "<p><a href='".base_url(). "pages/login'>Login Now</a></p>";
-        $message .= "</body></html>";
+        $email['subject'] = 'Merlin Leads - Forgot Password';
+        $email['to'] = $user->email;
 
-        $to = $user->email;
-        $subject = 'Merlin Leads - Forget Password';
+        $email['content'] = "You have forgotten your password and requested to reset your password. \r\n\r\n";
+        $email['content'] .= "Your new password is: $password \r\n\r\n";
 
-        $headers = "From: <" . $this->from . ">"  . "\r\n";
-        $headers .= "BCC: <" . $this->cc . ">" . "\r\n";
-        $headers .= "Content-type: text/html";
-
-        mail($to, $subject, $message, $headers);
+        $this->email_library->send_email($email);
     }
 
     public function sendNewUserNotification($user) {
-        $to = 'support@merlinleads.com';
-        $subject = 'Merlin Leads - [New User] A new user has registered to merlinleads.net';
-        $headers = "From: <" . $this->from . ">"  . "\r\n";
-        $headers .= "BCC: <jrdncchr@gmail.com>" . "\r\n";
-        $headers .= "Content-type: text/html";
+        $email['to'] = 'support@merlinleads.com';
+        $email['subject'] = 'Merlin Leads - [New User] A new user has registered!';
 
-        $message = "User Details: <br />"
-            . "First Name: " . $user['firstname'] . "<br />"
-            . "Last Name: " . $user['lastname'] . "<br />"
-            . "Phone: " . $user['phone'] . "<br />"
-            . "Email: " . $user['email'] . "<br />"
-            . "Country: " . $user['country'] . "<br />"
-            . "State: " . $user['state'] . "<br />"
-            . "Stripe ID" . $user['stripe_customer_id'];
+        $email['content'] = "User Details: \r\n\r\n"
+            . "First Name: " . $user['firstname'] . "\r\n\r\n"
+            . "Last Name: " . $user['lastname'] . "\r\n\r\n"
+            . "Phone: " . $user['phone'] . "\r\n\r\n"
+            . "Email: " . $user['email'] . "\r\n\r\n"
+            . "Country: " . $user['country'] . "\r\n\r\n"
+            . "State: " . $user['state'] . "\r\n\r\n"
+            . "Stripe ID: " . $user['stripe_customer_id'] . "\r\n\r\n";
 
-        mail($to, $subject, $message, $headers);
+        $this->email_library->send_email($email);
     }
 
     public function sendNewCityZipcodeUserRequest($czu) {
-        $to = 'support@merlinleads.com';
-        $subject = 'Merlin Leads - [City Zip Code / User Request] A user has requested a city / zip code.';
-        $headers = "From: <" . $this->from . ">"  . "\r\n";
-        $headers .= "BCC: <jrdncchr@gmail.com>" . "\r\n";
-        $headers .= "Content-type: text/html";
+        $email['to'] = 'support@merlinleads.com';
+        $email['subject'] = 'Merlin Leads - [City Zip Code / User Request] A user has requested a city / zip code.';
 
-        $message = "User Details: <br />"
-            . "Requested By: " . $czu['email'] . "<br />"
-            . "Requested City / Zip Code: " . $czu['czu_city'] . " / " . $czu['czu_zipcode'] . "<br />";
+        $email['content'] = "Request Details: \r\n\r\n"
+            . "Requested By: " . $czu['email'] . "\r\n\r\n"
+            . "Requested City / Zip Code: " . $czu['czu_city'] . " / " . $czu['czu_zipcode'] . "\r\n\r\n";
 
-        mail($to, $subject, $message, $headers);
+        $this->email_library->send_email($email);
     }
 
     public function contactUsSendEmail($from, $message) {
-        $to = 'support@merlinleads.com';
-        $subject = 'Merlin Leads - [New Message] Contact Us';
-        $headers = "From: <" . $from . ">"  . "\r\n";
-        $headers .= "BCC: <" . $this->$cc . ">" . "\r\n";
-        $headers .= "Content-type: text/html";
-        mail($to, $subject, $message, $headers);
+        $email['to'] = 'support@merlinleads.com';
+        $email['from'] = $from;
+        $email['subject'] = 'Merlin Leads - [New Message] Contact Us';
+        $email['content'] = $message;
+
+        $this->email_library->send_email($email);
     }
    
 

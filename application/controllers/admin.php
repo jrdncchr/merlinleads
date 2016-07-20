@@ -370,7 +370,6 @@ class Admin extends MY_Controller
     public function settings($page = "general")
     {
         $this->load->model('settings_model');
-
         $action = $this->input->post('action');
 
         // Actions for AJAX Call

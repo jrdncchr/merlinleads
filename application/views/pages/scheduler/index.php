@@ -2,18 +2,20 @@
     .table thead tr th {
         padding: 15px;
         font-weight: bold;
-        background-color: #00438A;
+        /*background-color: #00438A;*/
         font-size: 16px;
         text-align: center;;
-        color: white;
+        /*color: white;*/
         border: none !important;
+        color: slategray;
     }
 
     .available_time {
-        background-color: lightyellow !important;
-        color: black;
         text-align: center;
         font-size: 16px !important;
+        background-color: white !important;
+        border-right: 1px solid #DDDDDD !important;
+        color: lightslategray;
     }
 
     .scheduler_block {
@@ -37,10 +39,10 @@
         padding-bottom: 2px;
     }
     .merlin-block {
-        background-color: #A1D1FF;
+        background-color: #C2EAE9;
     }
     .user-block {
-        background-color: lightgreen;
+        background-color: #F8EFB6;
     }
 </style>
 
@@ -51,14 +53,14 @@
         <button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
         <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
         <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-<!--        <a href="--><?php //echo base_url() . 'scheduler/queue'; ?><!--" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>-->
+        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
         <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</button>
     </div>
 </div>
 
 <div class="row" style="margin-top: 10px;">
     <div class="col-sm-12">
-        <table class="table table-bordered table-striped">
+        <table class="table table-striped" style="margin-top: 20px; border: 1px solid #dddddd">
             <thead>
                 <tr>
                     <th><i class="fa fa-clock-o"></i></th>

@@ -220,6 +220,25 @@ class scheduler extends MY_Controller
         }
     }
 
+    public function queue() {
+        $action = $this->input->post('action');
+        if($action) {
+            switch($action) {
+                case 'get_queue':
+                    $list = $this->scheduler_model->get_queue($this->user->id);
+                    echo json_encode(array('data' => $list));
+                    break;
+                default:
+                    echo json_encode(array(
+                        'success' => false,
+                        'message' => "Action not found."
+                    ));
+            }
+        } else {
+            $this->_renderL('pages/scheduler/queue');
+        }
+    }
+
     public function _getAvailableTimes()
     {
         return array(

@@ -235,6 +235,7 @@ class Api_Model extends CI_Model {
         }
         $oauth_token = $responseArray['oauth_token'];
         $this->session->set_userdata('twitter_oauth_token', $oauth_token);
+
         return $oauth_token;
     }
 

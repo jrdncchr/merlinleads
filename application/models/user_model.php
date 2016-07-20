@@ -44,7 +44,7 @@ class User_Model extends CI_Model {
             $CI =& get_instance();
             $CI->load->model('email_model');
             $this->session->set_userdata('registerEmail', $user['email']);
-            $this->email_model->sendConfirmationEmail($_POST['email'], $this->generateRandomString());
+            $this->email_model->sendConfirmationEmail($_POST['email'], $user['confirmation_key']);
             $this->email_model->sendNewUserNotification($user);
             return true;
         }
@@ -154,12 +154,17 @@ class User_Model extends CI_Model {
         return validate_password($password, $u->password);
     }
 
-    public function confirm_email($email, $key) {
-        if ($this->db->update('users', array('status' => 'active'), array('email' => $email, 'confirmation_key' => $key))) {
+    public function confirm_email($key) {
+        if ($this->db->update('users', array('status' => 'active'), array('confirmation_key' => $key, 'status' => 'pending'))) {
             return "OK";
         } else {
             return "FAILED";
         }
+    }
+
+    public function get_user_by_confirmation_key($key) {
+        $result = $this->db->get_where('users', array('confirmation_key' => $key));
+        return $result->row();
     }
 
     public function generateRandomString($length = 20) {
