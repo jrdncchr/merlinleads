@@ -1,16 +1,25 @@
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Categories</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler - User Post Categories</h4>
 
-<div class="row">
-    <div class="col-sm-12">
-        <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
-        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
-        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</button>
-        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queue</a>
-        <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
-    </div>
+<div class="centered-pills" style="margin-bottom: 10px;">
+    <ul class="nav nav-pills">
+        <li role="presentation">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Scheduler <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/'; ?>">Weekly</a></li>
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/monthly'; ?>">Monthly</a></li>
+            </ul>
+        </li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/queue'; ?>">Queues</a></li>
+        <li role="presentation" class="active"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
+    </ul>
 </div>
 
-<div class="row" style="margin-top: 20px;">
+<button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>
+
+<div class="row" style="margin-top: 10px;">
     <div class="col-xs-12">
         <div class="table-responsive">
             <table id="schedulerLibraryDt" cellpadding="0" cellspacing="0" border="0" class="table table-striped no-multiple">

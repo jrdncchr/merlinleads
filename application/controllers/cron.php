@@ -26,19 +26,7 @@ class Cron extends CI_Controller {
 
         foreach($schedulers as $s) {
             $user = $this->user_model->get($s->user_id);
-            if($s->library == "user") {
-                $post = $this->scheduler_model->get_scheduler_next_post($s);
-            } else if($s->library == "merlin") {
-                $this->load->model('merlin_library_model');
-                $post = $this->merlin_library_model->get_scheduler_next_post($s);
-                $this->load->model('property_model');
-                $property = $this->property_model->getProperty($s->property_id);
-                $this->load->model('profile_model');
-                $profile = $this->profile_model->getProfile($s->profile_id);
-                $this->load->model('template_model');
-                $post->post_body = $this->template_model->generateData($post->post_body, $property, $profile);
-            }
-
+            $post = $this->scheduler_model->get_scheduler_next_post($s);
             $result = $this->api_model->post($s, $post, $user);
             foreach($result as $r) {
                 if($r['success']) {

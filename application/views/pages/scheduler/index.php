@@ -44,23 +44,36 @@
     .user-block {
         background-color: #F8EFB6;
     }
+    .block-inactive {
+        background-color: #808080;
+    }
 </style>
 
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler - Weekly</h4>
+
+<div class="centered-pills" style="margin-bottom: 10px;">
+    <ul class="nav nav-pills">
+        <li role="presentation" class="active">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Scheduler <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/'; ?>">Weekly</a></li>
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/monthly'; ?>">Monthly</a></li>
+            </ul>
+        </li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/queue'; ?>">Queues</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
+    </ul>
+</div>
+
+
+<button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
 
 <div class="row">
     <div class="col-sm-12">
-        <button class="btn btn-success btn-sm" id="add-timeslot-btn"><i class="fa fa-plus-circle"></i> Add Timeslot</button>
-        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
-        <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-        <a href="<?php echo base_url() . 'scheduler/queue'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queues</a>
-        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</button>
-    </div>
-</div>
-
-<div class="row" style="margin-top: 10px;">
-    <div class="col-sm-12">
-        <table class="table table-striped" style="margin-top: 20px; border: 1px solid #dddddd">
+        <table class="table table-striped" style="margin-top: 10px; border: 1px solid #dddddd">
             <thead>
                 <tr>
                     <th><i class="fa fa-clock-o"></i></th>
@@ -81,7 +94,7 @@
                         <td>
                             <?php foreach($scheduler as $s): ?>
                                 <?php if($s->day == $d && $s->time == $t) { ?>
-                                    <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : 'user-block'; ?>">
+                                    <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : 'user-block'; ?> <?php echo $s->status != 'Active' ? 'block-inactive' : 'k'; ?>">
                                     <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
                                     <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
                                     <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />

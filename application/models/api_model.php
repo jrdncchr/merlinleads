@@ -258,7 +258,7 @@ class Api_Model extends CI_Model {
                 case 'LinkedIn' :
                     $data = array(
                         'content' => array(
-                            'description' => $post->post_body
+                            'description' => $post->post_linkedin_snippet
                         ),
                         'visibility' => array(
                             "code" => "anyone"
@@ -278,7 +278,7 @@ class Api_Model extends CI_Model {
                  */
                 case 'Facebook' :
                     $linkData = [
-                        'message' => $post->post_body,
+                        'message' => $post->post_facebook_snippet,
                         'privacy' => array('value' => "EVERYONE")
                     ];
                     if($post->post_url) {
@@ -290,7 +290,7 @@ class Api_Model extends CI_Model {
                     break;
 
                 case 'Twitter' :
-                    $message = $post->post_body;
+                    $message = $post->post_twitter_snippet;
                     if($post->post_url) {
                         $this->load->library('Googl');
                         $short_url = $this->googl->shorten($post->post_url);
@@ -317,7 +317,7 @@ class Api_Model extends CI_Model {
                 case 'LinkedIn' :
                     $data = array(
                         'content' => array(
-                            'description' => $post->post_body
+                            'description' => $post->post_linkedin_snippet
                         ),
                         'visibility' => array(
                             "code" => "anyone"
@@ -337,7 +337,7 @@ class Api_Model extends CI_Model {
                  */
                 case 'Facebook' :
                     $linkData = [
-                        'message' => $post->post_body,
+                        'message' => $post->post_facebook_snippet,
                         'privacy' => array('value' => "EVERYONE")
                     ];
                     if($post->post_url) {
@@ -349,7 +349,7 @@ class Api_Model extends CI_Model {
                     break;
 
                 case 'Twitter' :
-                    $message = $post->post_body;
+                    $message = $post->post_twitter_snippet;
                     if($post->post_url) {
                         $this->load->library('Googl');
                         $short_url = $this->googl->shorten($post->post_url);

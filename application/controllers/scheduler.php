@@ -225,7 +225,8 @@ class scheduler extends MY_Controller
         if($action) {
             switch($action) {
                 case 'get_queue':
-                    $list = $this->scheduler_model->get_queue($this->user->id);
+                    $until_date = $this->input->post('until_date');
+                    $list = $this->scheduler_model->get_queue($this->user->id, $until_date);
                     echo json_encode(array('data' => $list));
                     break;
                 default:
@@ -235,7 +236,52 @@ class scheduler extends MY_Controller
                     ));
             }
         } else {
+            $this->data['until_date'] = date('F j, Y', strtotime('12/31'));
             $this->_renderL('pages/scheduler/queue');
+        }
+    }
+
+    public function monthly($month = false, $year = false) {
+        // Validate month and year
+        $valid = true;
+        if($month) {
+            if(!$this->validateDate($month, 'F')) {
+                $valid = false;
+            }
+        } else {
+            $month = date('F');
+        }
+        if($year) {
+            if(!$this->validateDate($year, 'Y')) {
+                $valid = false;
+            }
+        } else {
+            $year = date('Y');
+        }
+
+        if($valid) {
+            // Get data for correct display of the calendar in the view
+            $this->data['last_month_total_days'] = cal_days_in_month(CAL_GREGORIAN, date('m', strtotime("$month $year -1 months")), date('Y',  strtotime("$month $year -1 months")));
+            $this->data['current_m_total_days'] = cal_days_in_month(CAL_GREGORIAN, date('m', strtotime("$month $year")), date('Y', strtotime("$month $year")));
+            $this->data['first_day'] = date('w', strtotime($month . " 1, " . $year));
+            $this->data['month_year'] = date('F Y', strtotime($month . " " . $year));
+            $this->data['selected_month'] = strtolower($month);
+            $this->data['selected_year'] = $year;
+
+            // Get queued post for the selected month and format it by day for easy display
+            $start = date('F') != ucfirst($month) ? date('F', strtotime("$month $year -1 months")) . " " . $this->data['last_month_total_days'] . ", " . date('Y',  strtotime("$month $year -1 months")) : false;
+            $queue = $this->scheduler_model->get_queue($this->user->id, $month . " " . $this->data['current_m_total_days'] . ", " . $year, $start);
+            $formatted_queue = [];
+            foreach($queue as $post) {
+                $day = date('d', strtotime($post->schedule));
+                $formatted_queue[$day][] = $post;
+            }
+            $this->data['queue'] = $formatted_queue;
+
+            $this->_renderL('pages/scheduler/monthly');
+        } else {
+            // Redirect back to the default month
+            redirect(base_url() . 'scheduler/monthly');
         }
     }
 
@@ -244,6 +290,12 @@ class scheduler extends MY_Controller
         return array(
         '12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM',
         '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM');
+    }
+
+    function validateDate($date, $format = 'Y-m-d H:i:s')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == ucfirst($date);
     }
 
 } 

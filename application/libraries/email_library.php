@@ -9,7 +9,7 @@ class Email_Library {
     private $from;
 
     function __construct() {
-        $this->api_key = "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";
+        $this->api_key = SEND_GRID_API_KEY;
         $this->from = "Merlin Leads <support@merlinleads.com>";
     }
 

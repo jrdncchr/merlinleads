@@ -1,16 +1,31 @@
-<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Queue</h4>
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler - Qeueus</h4>
 
-<div class="row">
-    <div class="col-sm-12">
-        <a href="<?php echo base_url() . 'scheduler/post'; ?>" class="btn btn-default btn-sm pull-right">Posts</a>
-        <a href="<?php echo base_url() . 'scheduler/category'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Categories</a>
-        <button disabled class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Queue</button>
-        <a href="<?php echo base_url() . 'scheduler'; ?>" class="btn btn-default btn-sm pull-right" style="margin-right: 10px;">Scheduler</a>
-    </div>
+<div class="centered-pills">
+    <ul class="nav nav-pills">
+        <li role="presentation">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Scheduler <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/'; ?>">Weekly</a></li>
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/monthly'; ?>">Monthly</a></li>
+            </ul>
+        </li>
+        <li role="presentation" class="active"><a href="<?php echo base_url() . 'scheduler/queue'; ?>">Queues</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
+    </ul>
 </div>
 
 <div class="row" style="margin-top: 20px;">
     <div class="col-xs-12">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="until-date">Until Date: </label>
+                <input type="text" class="form-control" id="until-date" value="<?php echo $until_date; ?>" />
+            </div>
+        </div>
+        <br />
         <div class="table-responsive">
             <table id="queue-dt" cellpadding="0" cellspacing="0" border="0" class="display table table-striped no-multiple">
                 <thead>
@@ -19,6 +34,7 @@
                     <th>Type</th>
                     <th>Library</th>
                     <th>Category</th>
+                    <th>Modules</th>
                     <th>Post Name</th>
                 </tr>
                 </thead>
@@ -35,6 +51,18 @@
 
     $(document).ready(function() {
         initDt();
+
+        $('#until-date').datepicker({
+            dateFormat : 'MM d, yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            maxDate: "+2Y",
+            onSelect: function(dateText) {
+                initDt();
+            },
+            defaultDate: new Date($(this).datepicker('getDate'))
+        });
     });
 
     function initDt() {
@@ -46,24 +74,39 @@
             "ajax": {
                 "type": "POST",
                 "url": actionUrl,
-                "data": {action: "get_queue"}
+                "data": {action: "get_queue", until_date: $('#until-date').val()}
             },
             columns: [
-                {data: "schedule", width: "20%"},
-                {data: "type",  width: "15%", render: function(data, type, row) {
+                {data: "schedule", width: "18%"},
+                {data: "type",  width: "13%", render: function(data, type, row) {
                         return data == "Weekly" ?
                             "<span class='text-primary'>" + data + "</span>" :
                             "<span class='text-danger'>" + data + "</span>"
                     }
                 },
-                {data: "library", width: "15%", render: function(data, type, row) {
-                    return row.post_library == "user" ?
+                {data: "library", width: "14%", render: function(data, type, row) {
+                    return row.library == "user" ?
                         "<span class='badge badge-user-lib'>User Library</span>" :
                         "<span class='badge badge-merlin-lib'>Merlin Library</span>";
                     }
                 },
                 {data: "category", width: "15%"},
-                {data: "post_name", width: "30%"}
+                {data: "modules", width: "10%", render:
+                    function(data, type, row) {
+                        var modules = "";
+                        if (data.toLowerCase().indexOf("twitter") != -1){
+                            modules += '<i class="fa fa-twitter"></i> &nbsp;';
+                        }
+                        if (data.toLowerCase().indexOf("facebook") != -1){
+                            modules += '<i class="fa fa-facebook"></i> &nbsp;';
+                        }
+                        if (data.toLowerCase().indexOf("linkedin") != -1){
+                            modules += '<i class="fa fa-linkedin"></i> &nbsp;';
+                        }
+                        return modules;
+                    }
+                },
+                {data: "post_name", width: "25%"}
             ]
         });
     }

@@ -12,24 +12,34 @@
         font-size: 12px;
     }
 </style>
-<ol class="breadcrumb">
-    <li><a href="<?php echo base_url() . 'scheduler'; ?>">Scheduler</a></li>
-    <li><a href="<?php echo base_url() . 'scheduler/post' ?>">Post</a></li>
-    <li class="active">Add Post</li>
-</ol>
 
+
+<h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler - <?php echo isset($post) ? "Edit" : "Add"; ?> Post</h4>
+
+<div class="centered-pills" style="margin-bottom: 10px;">
+    <ul class="nav nav-pills">
+        <li role="presentation">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Scheduler <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/'; ?>">Weekly</a></li>
+                <li role="presentation"><a href="<?php echo base_url() . 'scheduler/monthly'; ?>">Monthly</a></li>
+            </ul>
+        </li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/queue'; ?>">Queues</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
+        <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
+    </ul>
+</div>
 
 <div class="row" id="app">
-    <div class="col-sm-12">
-        <h4 style="font-weight: bold; margin-bottom: 30px;">
-            <?php echo isset($post) ? "Edit" : "Add"; ?> Post
-            <button id="save-btn" class="btn btn-sm btn-success pull-right" v-on:click="savePost">Save</button>
-            <?php if(isset($post->post_id)) { ?>
-                <button class="btn btn-default btn-sm pull-right" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
-            <?php } ?>
-        </h4>
+    <div class="col-sm-12" style="margin-bottom: 20px;">
+        <button id="save-btn" class="btn btn-sm btn-success" v-on:click="savePost">Save</button>
+        <?php if(isset($post->post_id)) { ?>
+            <button class="btn btn-sm" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
+        <?php } ?>
     </div>
-
 
     <div id="main-form">
         <div class="col-sm-12">

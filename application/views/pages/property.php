@@ -608,6 +608,7 @@
             "bJQueryUI": true,
             "bProcessing": true,
             "bFilter": false,
+            "order": [[ 1, "asc" ]],
             "bInfo": false,
             "bServerSide": true,
             "sAjaxSource": base_url + "property/getOverview",
@@ -712,6 +713,7 @@
             "bProcessing": true,
             "bFilter": false,
             "bInfo": false,
+            "aaSorting": [1],
             "bServerSide": true,
             "sAjaxSource": base_url + "property/getOverviewArchive",
             "aoColumnDefs": [{

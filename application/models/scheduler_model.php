@@ -148,41 +148,62 @@ class scheduler_model extends CI_Model {
     /*
      * Scheduler Queue
      */
-    public function get_queue($user_id, $until_date = false) {
+    public function get_queue($user_id, $until_date = false, $start_date = false) {
         date_default_timezone_set('America/Los_Angeles');
 
         if(!$until_date) {
-            $until_date = "2016-12-25";
+            $until_date = date('F j, Y', strtotime('12/31'));
         }
 
         $otp_schedule = $this->get_scheduler_post(array('post_user_id' => $user_id, 'otp' => 1));
+
         $otp_posts = array();
         foreach($otp_schedule as $os) {
             $obj = new stdClass();
-            $schedule_date = date('F j, Y', strtotime($os->otp_date));
+            if(strtotime($until_date) >= strtotime($os->otp_date)) {
 
-            $obj->schedule = $schedule_date . " " . date("g:i a", strtotime($os->otp_time));
-            $obj->type = "One Time Post";
-            $obj->library = $os->post_library;
-            $obj->category = $os->post_library == "user" ? $os->user_category : $os->merlin_category;
-            $obj->post_name = $os->post_name;
+                if($start_date) {
+                    if(strtotime($start_date) >= strtotime($os->otp_date)) {
+                        continue;
+                    }
+                }
 
-            $otp_posts[] = $obj;
+                $schedule_date = date('F j, Y', strtotime($os->otp_date));
+
+                $obj->schedule = $schedule_date . " " . date("g:i a", strtotime($os->otp_time));
+                $obj->time = $os->otp_time;
+                $obj->type = "One Time Post";
+                $obj->library = $os->post_library;
+                $obj->category = $os->post_library == "user" ? $os->user_category : $os->merlin_category;
+                $obj->post_name = $os->post_name;
+                $obj->modules = $os->otp_modules;
+
+                $otp_posts[] = $obj;
+            }
         }
 
-        $weekly_schedule = $this->get_scheduler(array('user_id' => $user_id, 'status' => 'active'));
+        $weekly_schedule = $this->get_scheduler(array('user_id' => $user_id, 'status' => 'Active'));
+
         $weekly_posts = array();
         foreach($weekly_schedule as $ws) {
             $next_schedule = strtotime('next ' . $ws->day);
-            while(strtotime($until_date) > $next_schedule) {
+            while(strtotime($until_date) >= $next_schedule) {
+                if($start_date) {
+                    if(strtotime($start_date) >= $next_schedule) {
+                        $next_schedule = strtotime("+7 day", $next_schedule);
+                        continue;
+                    }
+                }
                 $obj = new stdClass();
                 $next_schedule_date = date('F j, Y', $next_schedule);
 
                 $obj->schedule = $next_schedule_date . " " . date("g:i a", strtotime($ws->time));
+                $obj->time = $ws->time;
                 $obj->type = "Weekly";
                 $obj->library = $ws->library;
                 $obj->category = $ws->library == "user" ? $ws->user_category : $ws->merlin_category;
                 $obj->post_name = "";
+                $obj->modules = $ws->modules;
 
                 $weekly_posts[] = $obj;
                 $next_schedule = strtotime("+7 day", $next_schedule);
