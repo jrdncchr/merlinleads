@@ -4,7 +4,11 @@
         <div class="col-xs-2"></div>
         <div id="registrationForm" class='col-xs-8'>
             <div class="form-horizontal">
-                <h3 class="text-center" style="font-weight: bold;">Registration</h3>
+                <h3 class="text-center" style="font-weight: bold;">Registration
+                    <?php if(isset($reg_plan)) {
+                        echo " - " . $reg_plan->name;
+                    } ?>
+                </h3>
                 <div class="alert alert-info" id="regMessage">
                     <i class="fa fa-info-circle"></i> Please fill up all fields.
                 </div>
@@ -121,6 +125,7 @@
 <div class="spacer"></div>
 
 <script>
+    var regPlanId = "<?php echo isset($reg_plan) ? $reg_plan->id : ''; ?>";
     $(document).ready(function() {
         $("#signupNav").addClass('active');
     });

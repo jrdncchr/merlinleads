@@ -44,8 +44,8 @@ class User_Model extends CI_Model {
             $CI =& get_instance();
             $CI->load->model('email_model');
             $this->session->set_userdata('registerEmail', $user['email']);
-            $this->email_model->sendConfirmationEmail($_POST['email'], $user['confirmation_key']);
-            $this->email_model->sendNewUserNotification($user);
+//            $this->email_model->sendConfirmationEmail($_POST['email'], $user['confirmation_key']);
+//            $this->email_model->sendNewUserNotification($user);
             return true;
         }
         return false;

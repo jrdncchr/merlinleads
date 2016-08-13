@@ -118,15 +118,10 @@ class Pages extends MY_Controller
         $this->load->model('user_model');
         $confirm = $this->user_model->confirm_email($key);
         if ($confirm == "OK") {
-            $this->load->model('settings_model');
-            $general = transformArrayToKeyValue($this->settings_model->get(array('category' => 'general')));
             $user = $this->user_model->get_user_by_confirmation_key($key);
 
-            $this->load->model('package_model');
-            $package = $this->package_model->getPackage($general['trial_period_package']->v);
-
             $this->load->library('stripe_library');
-            $this->stripe_library->add_subscription($user->stripe_customer_id, $package->stripe_plan_id);
+            $this->stripe_library->add_subscription($user->stripe_customer_id, $user->stripe_reg_plan_id);
 
             $this->session->set_flashdata("message",
                 "<div class='alert alert-success'>

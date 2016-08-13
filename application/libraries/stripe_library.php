@@ -24,13 +24,16 @@ class Stripe_Library {
 		$subscriptions = [];
 		foreach ($result->data as $subscription) {
 			$plan = $subscription->plan;
+
             if($plan) {
                 $pkg = $CI->package_model->get_package_details($plan->id);
+                if($pkg) {
 
-                $features = json_decode($pkg->features_json);
-                $plan->features = $features;
-                $subscription->plan = $plan;
-                $subscriptions[] = $subscription;
+                    $features = json_decode($pkg->features_json);
+                    $plan->features = $features;
+                    $subscription->plan = $plan;
+                    $subscriptions[] = $subscription;
+                }
             }
 		}
 		if(sizeof($subscriptions) > 0) {
@@ -66,6 +69,16 @@ class Stripe_Library {
 
 		return $count;
 	}
+
+    public function retrieve_plan($plan_id) {
+        $result = array('valid' => false);
+        try {
+            $plan = \Stripe\Plan::retrieve($plan_id);
+            $result['plan'] = $plan;
+            $result['success'] = true;
+        } catch(\Stripe\Error\InvalidRequest $e) {}
+        return $result;
+    }
 
 	public function get_main_subscription_id($customer_id) {
 		$result = Stripe_Customer::retrieve($customer_id)->subscriptions->all();

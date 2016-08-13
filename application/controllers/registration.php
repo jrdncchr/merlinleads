@@ -19,6 +19,21 @@ class Registration extends MY_Controller {
         $this->_render('pages/registration');
     }
 
+    public function plan($id = "") {
+        if($id) {
+            $this->load->library('stripe_library');
+            $result = $this->stripe_library->retrieve_plan($id);
+            if($result['success']) {
+                $this->data['reg_plan'] = $result['plan'];
+                $this->index();
+            } else {
+                show_404();
+            }
+        } else {
+            show_404();
+        }
+    }
+
     public function create() {
         if ($_POST) {
             $customer = Stripe_Customer::create(array('email' => $_POST['email']));
@@ -47,7 +62,17 @@ class Registration extends MY_Controller {
                 'confirmation_key' => $key,
                 'stripe_customer_id' => $customer->id,
             );
-            $this->load->model('email_model');
+            if(isset($_POST['reg_plan_id'])) {
+                $user['stripe_reg_plan_id'] = $_POST['reg_plan_id'];
+            } else {
+                $this->load->model('settings_model');
+                $general = transformArrayToKeyValue($this->settings_model->get(array('category' => 'general')));
+                $this->load->model('package_model');
+                $package = $this->package_model->getPackage($general['trial_period_package']->v);
+                $user['stripe_reg_plan_id'] = $package->stripe_plan_id;
+            }
+
+
             if ($this->user_model->add($user)) {
                 echo "OK";
             }
