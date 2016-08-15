@@ -31,17 +31,21 @@ $(document).ready(function() {
     $('#registerBtn').click(function() {
         if (validate()) {
             loading("info", "Registering, please wait...");
+            var postData = {
+                firstname: encodeURIComponent($('#firstname').val()),
+                lastname: encodeURIComponent($('#lastname').val()),
+                password: encodeURIComponent($('#password').val()),
+                phone: encodeURIComponent($('#phone').val()),
+                email: $('#email').val(),
+                country: encodeURIComponent($('#country').val()),
+                state: encodeURIComponent($('#state').val())
+            };
+            if(regPlanId != "") {
+                postData.reg_plan_id = regPlanId;
+            }
             $.ajax({
                 url: base_url + "registration/create",
-                data: {
-                    firstname: encodeURIComponent($('#firstname').val()),
-                    lastname: encodeURIComponent($('#lastname').val()),
-                    password: encodeURIComponent($('#password').val()),
-                    phone: encodeURIComponent($('#phone').val()),
-                    email: $('#email').val(),
-                    country: encodeURIComponent($('#country').val()),
-                    state: encodeURIComponent($('#state').val())
-                },
+                data: postData,
                 type: "POST",
                 success: function(data) {
                     if (data === "OK") {
