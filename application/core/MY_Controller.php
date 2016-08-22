@@ -44,7 +44,6 @@ class MY_Controller extends CI_Controller
             $this->load->library('stripe_library');
             $this->load->model('package_model');
             $this->load->model('seo_builder_admin');
-
             /*
              * Fetch the subscription in Stripe then store it in a session.
              * This will make loading faster, since the next fetching will be in the session.
@@ -72,6 +71,8 @@ class MY_Controller extends CI_Controller
             $this->data['seo_builder'] = $this->seo_builder_admin->checkAuth($this->user->id);
             $this->data['user'] = $this->user;
             $this->data['main_f'] = $this->main_f;
+
+//            var_dump($this->subscription);exit;
         }
     }
 

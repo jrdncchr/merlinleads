@@ -340,8 +340,9 @@
                         <img class="img img-thumbnail" src="<?php echo $twitter['user_info']->profile_image_url ?>" />
                         <?php echo $twitter['user_info']->description; ?>
                         <br /><br />
+                    <?php } else { ?>
+                        <p class="text-warning">You have NOT yet authorized Twitter integration into your account yet.</p>
                     <?php } ?>
-                    <p class="text-warning">You have NOT yet authorized Twitter integration into your account yet.</p>
                     <a class="btn btn-sm btn-primary" href="<?php echo $twitter['auth_url']; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
                 <?php } else { ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
@@ -386,7 +387,9 @@
                         <?php if(!$linkedIn['expired_access_token']) { ?>
                             <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized LinkedIn integration into your account! </p>
                             <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
+                            <?php if(isset($linkedIn['user']->pictureUrl)): ?>
                             <img class="img img-thumbnail" src="<?php echo $linkedIn['user']->pictureUrl; ?>" />
+                            <?php endif; ?>
                             <?php echo $linkedIn['user']->formattedName; ?>
                             <br /><br />
                             <p><i>Authorize your LinkedIn integration again before it expires.</i></p>

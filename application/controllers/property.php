@@ -45,8 +45,6 @@ class Property extends MY_Controller {
          $this->data['available_modules'] = $this->modules_model->get_modules($this->main_f);
         $this->data['subscription'] = $this->subscription;
         $this->title = "Merlin Leads &raquo; Property";
-//        $this->data['user'] = $this->session->userdata('user');
-//        $this->js[] = "custom/property.js";
         $this->_renderL('pages/property');
     }
 

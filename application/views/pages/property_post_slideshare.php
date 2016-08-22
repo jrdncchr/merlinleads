@@ -260,7 +260,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <script>
         $(document).ready(function () {
             $("#propertiesLink").addClass("active");

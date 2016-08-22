@@ -110,7 +110,7 @@ function activateAdvanceEvents() {
                             $('#generateSlideBtn').hide();
                             $('#generateOptions').hide();
                             $('#downloadDiv').show();
-                            $('#postDiv').show();
+                            //$('#postDiv').show();
                             $('#postSuccessMessage').html("").hide();
                             $('#postInputs').show();
                             loading('success', 'Generating slide successful...');

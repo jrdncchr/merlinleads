@@ -94,10 +94,12 @@ class Stripe_Library {
 	public function get_main_subscription($customer_id) {
 		$result = Stripe_Customer::retrieve($customer_id)->subscriptions->all();
 		foreach ($result->data as $subscription) {
-			$plan = $subscription->plan;
-			if($plan->statement_descriptor == "MERLINLEADS.COM") {
-				return $subscription;
-			}
+            if($subscription['customer'] == $customer_id) {
+                $plan = $subscription->plan;
+                if($plan->statement_descriptor == "MERLINLEADS.COM") {
+                    return $subscription;
+                }
+            }
 		}
 		return false;
 	}

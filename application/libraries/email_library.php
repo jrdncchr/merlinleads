@@ -25,6 +25,7 @@ class Email_Library {
         $mail = new SendGrid\Mail($from, $subject, $to, $content);
         $sg = new \SendGrid($this->api_key);
         $response = $sg->client->mail()->send()->post($mail);
+        var_dump($response);exit;
         return $response->statusCode();
     }
 

@@ -87,11 +87,11 @@ class Modules_Model extends CI_Model {
 //	        						$list[] = $m->module_name;
 // 	        					}
 //	        					break;
-//                            case 'Slideshare':
-//                                if(isset($features->slideshare_slide_generator)) {
-//                                    $list[] = $m->module_name;
-//                                }
-//                                break;
+                            case 'Slideshare':
+                                if(isset($features->slideshare_slide_generator)) {
+                                    $list[] = $m->module_name;
+                                }
+                                break;
 //                            case 'Facebook':
 //                                if(isset($features->facebook_posting)) {
 //                                    $list[] = $m->module_name;

@@ -161,8 +161,18 @@ class Api_Model extends CI_Model {
     }
 
     public function get_twitter_auth_url() {
-        $oauth_token = $this->generate_twitter_oauth_token();
-        return "https://api.twitter.com/oauth/authorize?oauth_token=$oauth_token";
+        $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY);
+        $request_token = $connection->oauth("oauth/request_token", array("oauth_callback" => "http://localhost/merlinleads/twitter/callback"));
+
+        $oauth_token = $request_token['oauth_token'];
+        $token_secret = $request_token['oauth_token_secret'];
+        setcookie("token_secret", " ", time()-3600);
+        setcookie("token_secret", $token_secret, time()+60*10);
+        setcookie("oauth_token", " ", time()-3600);
+        setcookie("oauth_token", $oauth_token, time()+60*10);
+        $this->session->set_userdata('twitter_oauth_token', $oauth_token);
+        $url = $connection->url("oauth/authorize", array("oauth_token" => $oauth_token));
+        return $url;
     }
 
     public function generate_twitter_oauth_token() {
@@ -204,6 +214,7 @@ class Api_Model extends CI_Model {
             $response = curl_exec($ch);
             curl_close($ch);
 
+            var_dump($response);exit;
             return $response;
         }
 
@@ -211,7 +222,9 @@ class Api_Model extends CI_Model {
 
         $nonce = time();
         $timestamp = time();
-        $oauth = array('oauth_callback' => 'http://merlinleads.net/demo/twitter/callback',
+//        $oauth_callback = "http://merlinleads.net/demo/twitter/callback";
+        $oauth_callback = "http://127.0.0.1/merlinleads/twitter/callback";
+        $oauth = array('oauth_callback' => $oauth_callback,
             'oauth_consumer_key' => TWITTER_KEY,
             'oauth_nonce' => $nonce,
             'oauth_signature_method' => 'HMAC-SHA1',

@@ -1,7 +1,7 @@
 {
     "require" : {
         "facebook/php-sdk-v4" : "~5.0",
-        "abraham/twitteroauth": "^0.6.2",
+        "abraham/twitteroauth": "^0.6.4",
         "stripe/stripe-php": "^3.16",
         "sendgrid/sendgrid": "~5.0.4"
     }
