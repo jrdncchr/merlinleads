@@ -8,7 +8,6 @@ class Admin2 extends MY_Controller
 
     public function __construct()
     {
-    
         parent::__construct();
         $this->load->library('session');
         $user = $this->session->userdata('user');
@@ -242,5 +241,50 @@ class Admin2 extends MY_Controller
         }
     }
 
+    public function events($id = 0)
+    {
+        $this->load->model('events_model');
+        $action = $this->input->post('action');
+        if ($action) {
+            switch ($action) {
+                case 'property_events_list':
+                    $result = $this->events_model->get();
+                    echo json_encode(array("data" => $result));
+                    break;
+                case 'property_events_save':
+                    $event = $this->input->post('event');
+                    $result = $this->events_model->save($event);
+                    echo json_encode($result);
+                    break;
+                case 'property_events_templates':
+                    $this->load->model('events_templates_model');
+                    $event_id = $this->input->post('event_id');
+                    $result = $this->events_templates_model->get(array('event_id' => $event_id));
+                    echo json_encode(array("data" => $result));
+                    break;
+                case 'property_events_templates_save':
+                    $this->load->model('events_templates_model');
+                    $template = $this->input->post('template');
+                    $result = $this->events_templates_model->save($template);
+                    echo json_encode($result);
+                    break;
+                case 'property_events_templates_delete':
+                    $this->load->model('events_templates_model');
+                    $template_id = $this->input->post('template_id');
+                    $result = $this->events_templates_model->delete($template_id);
+                    echo json_encode($result);
+                    break;
+                default:
+                    echo json_encode(array("success" => false));
+            }
+        } else {
+            if ($id > 0) {
+                $this->data['event'] = $this->events_model->get(array('id' => $id), false);
+                $this->_renderA('pages/admin/events/event', 'Events');
+            } else {
+                $this->_renderA('pages/admin/events/index', 'Events');
+            }
+        }
+    }
 
 }

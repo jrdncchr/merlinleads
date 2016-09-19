@@ -1,5 +1,39 @@
+#9-12-2016
+CREATE TABLE `properties_events_templates` (
+  `id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `content` varchar(1000) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `properties_events_templates`
+  ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `properties_events_templates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `properties_events_templates` ADD `is_default` TINYINT NOT NULL DEFAULT '0' AFTER `content`;
+ALTER TABLE `properties_events_templates` ADD `name` VARCHAR(45) NOT NULL AFTER `event_id`;
 
+CREATE TABLE `properties_events_templates_custom` (
+  `id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `content` varchar(1000) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `properties_events_templates_custom`
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `properties_events_templates_custom`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+CREATE TABLE `merlinle_mldb`.`properties_events_settings` ( `id` INT NOT NULL AUTO_INCREMENT , `event_id` INT NOT NULL , `template_id` INT NOT NULL , `template_type` VARCHAR(45) NOT NULL , `active` TINYINT NOT NULL DEFAULT '0' , `modules` VARCHAR(100) NOT NULL , `last_update` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `properties_events_settings` ADD `user_id` INT NOT NULL AFTER `id`;
+ALTER TABLE `properties_events_settings` CHANGE `template_type` `template_type` VARCHAR(45) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'merlin';
+ALTER TABLE `properties_events_settings` CHANGE `active` `active` BOOLEAN NOT NULL DEFAULT FALSE;
+  ALTER TABLE `properties_events` ADD `description` VARCHAR(500) NOT NULL AFTER `name`;
+
+CREATE TABLE `merlinle_mldb`.`properties_events` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(100) NOT NULL , `active` TINYINT NOT NULL DEFAULT '1' , `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 #7-18-2016
 
 #7-11-2016

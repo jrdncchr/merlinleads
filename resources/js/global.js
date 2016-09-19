@@ -73,6 +73,8 @@ $(function() {
             })
 
         .on("hidden.bs.modal", function() {
+            $(this).find('.notice').hide();
+
             var globalFormModal = $("#globalFormModal");
             globalFormModal.find('.modal-error').hide().html("");
             globalFormModal.find('input, textarea, select')
@@ -95,16 +97,18 @@ $(function() {
     });
     $(".modal")
     .on("hidden.bs.modal", function() {
-        var modal = $('.modal');
+        if(!$(this).hasClass('no-callback')) {
+            var modal = $('.modal');
             modal.find('notice').hide().removeClass('alert alert-danger');
             modal.find('input, textarea, select')
-            .not('input[type=hidden],input[type=button],input[type=submit],input[type=reset],input[type=image],button')
-            .filter(':enabled')
-            .each(function() {
-                $(this).parent().removeClass('has-error');
-                $(this).val('');
-            });
+                .not('input[type=hidden],input[type=button],input[type=submit],input[type=reset],input[type=image],button')
+                .filter(':enabled')
+                .each(function() {
+                    $(this).parent().removeClass('has-error');
+                    $(this).val('');
+                });
             modal.find('.notice').removeClass('alert alert-danger').html('');
+        }
     });
 
 

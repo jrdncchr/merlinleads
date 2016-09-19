@@ -8,7 +8,108 @@
 </head>
 <body>
     <style scoped="scoped">
+
+        @media only screen and (max-width: 1000px) {
+
+            .calc-table tr, .calc-table td, .calc-table th {
+                max-width: 100% !important;
+            }
+
+            /* Force table to not be like tables anymore */
+            .no-more-tables table,
+            .no-more-tables thead,
+            .no-more-tables tbody,
+            .no-more-tables th,
+            .no-more-tables td,
+            .no-more-tables tr {
+                display: block;
+            }
+
+            /* Hide table headers (but not display: none;, for accessibility) */
+            .no-more-tables thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .no-more-tables tr {
+                border: 1px solid #ccc;
+            }
+
+            .no-more-tables td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                white-space: normal;
+                text-align:left;
+                width: 100%;
+            }
+
+            .no-more-tables td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 5px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align:left;
+                font-weight: bold;
+            }
+
+            .no-more-tables td input {
+                margin-top: 20px;
+            }
+
+            @-moz-document url-prefix() {
+                .no-more-tables td:before {
+                    /* Now like a table header */
+                    position: absolute;
+                    /* Top/left values mimic padding */
+                    top: 6px;
+                    left: 6px;
+                    width: 45%;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                    text-align:left;
+                    font-weight: bold;
+                }
+                .no-more-tables td input {
+                    margin-top: 0;
+                }
+            }
+            /*
+            Label the data
+            */
+            .no-more-tables td:before { content: attr(data-title); }
+
+            .no-more-tables tr.cfa-color-blue {
+                color: darkblue !important;
+                border-top: 20px solid #ccc;
+            }
+            .no-more-tables tr.cfa-color-red {
+                color: darkred !important;
+                border-top: 20px solid #ccc;
+            }
+            .no-more-tables tr.cfa-color-violet {
+                color: darkmagenta !important;
+                border-top: 20px solid #ccc;
+            }
+            #calculateBtn {
+                width: 100%;
+            }
+        }
+
+        #calculateBtn {
+            margin: 20px 0;
+            padding: 10px 20px;
+        }
+
         .calc-table {
+            width: 100%;
             font-size: 12px !important;
         }
         .calc-table input {
@@ -17,206 +118,263 @@
         input[type="text"]:disabled {
             background: white !important;
             border: 1px solid green;
+            width: 100%;
         }
         input[type="text"]:enabled {
             background: lightyellow;
+            width: 100%;
         }
-
         .calc-green {
             background-color: lightgreen;
         }
+        .cfa-has-error {
+            border-color: red !important;
+        }
+        #cfa-error {
+            color: red;
+            display: none;
+        }
     </style>
-    <table class="table table-bordered calc-table">
-        <thead>
-            <tr>
-                <th>ARV</th>
-                <th>Purchase<br />Price</th>
-                <th>Cost of<br />Rehab</th>
-                <th>Total<br />Cost</th>
-                <th>LTV</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" class="form-control" id="calc-arv" /></td>
-                <td><input type="text" class="form-control" id="calc-purchase-price" /></td>
-                <td><input type="text" class="form-control" id="calc-cost-of-rehab" /></td>
-                <td class="calc-green"><input type="text" class="form-control" id="calc-total-cost" disabled /></td>
-                <td class="calc-green"><input type="text" class="form-control" id="calc-ltv" disabled /></td>
-            </tr>
-        </tbody>
-    </table>
-    <br />
 
-    <table class="table table-bordered calc-table">
-        <thead>
-        <tr>
-            <th>Rental<br />Income</th>
-            <th>Vacancy<br />Rate(%)</th>
-            <th>Monthly<br />Insurance</th>
-            <th>Monthly<br />Taxes</th>
-            <th>Maint.</th>
-            <th>Prop<br />Manag.</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td><input type="text" class="form-control" id="calc-rental-income" /></td>
-            <td><input type="text" class="form-control" id="calc-vacancy-rate" /></td>
-            <td><input type="text" class="form-control" id="calc-monthly-insurance" /></td>
-            <td><input type="text" class="form-control" id="calc-monthly-taxes" /></td>
-            <td><input type="text" class="form-control" id="calc-maint" /></td>
-            <td><input type="text" class="form-control" id="calc-prop-manag" /></td>
-        </tr>
-        </tbody>
-    </table>
-    <br />
 
-    <table class="table table-bordered calc-table">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Percentage<br />Borrowed(%)</th>
-            <th>Your<br />Money<br />Into Deal</th>
-            <th>Loan<br />Amount</th>
-            <th>Amort.<br />Period</th>
-            <th>Interest<br/>Rate(%)</th>
-            <th width="5%"></th>
-            <th>P & I</th>
-            <th>Cash<br />Flow</th>
-            <th>Cash on<br />Cash<br />ROI</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Paying Cash</td>
-                <td><input class="form-control" type="text" id="calc-percent-0" /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-ymid-0" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-0" disabled /></td>
-                <td><input class="form-control" type="text" id="calc-amort-period-0" /></td>
-                <td><input class="form-control" type="text" id="calc-interest-rate-0" /></td>
-                <td></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-pi-0" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-0" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-roi-0" disabled /></td>
-            </tr>
-            <tr>
-                <td>Leverage</td>
-                <td><input class="form-control" type="text" id="calc-percent-1" /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-ymid-1" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-1" disabled /></td>
-                <td><input class="form-control" type="text" id="calc-amort-period-1" /></td>
-                <td><input class="form-control" type="text" id="calc-interest-rate-1" /></td>
-                <td></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-pi-1" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-1" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-roi-1" disabled /></td>
-            </tr>
-            <tr>
-                <td>Leverage</td>
-                <td><input class="form-control" type="text" id="calc-percent-2" /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-ymid-2" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-2" disabled /></td>
-                <td><input class="form-control" type="text" id="calc-amort-period-2" /></td>
-                <td><input class="form-control" type="text" id="calc-interest-rate-2" /></td>
-                <td></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-pi-2" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-2" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-roi-2" disabled /></td>
-            </tr>
-            <tr>
-                <td>Leverage</td>
-                <td><input class="form-control" type="text" id="calc-percent-3" /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-ymid-3" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-3" disabled /></td>
-                <td><input class="form-control" type="text" id="calc-amort-period-3" /></td>
-                <td><input class="form-control" type="text" id="calc-interest-rate-3" /></td>
-                <td></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-pi-3" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-3" disabled /></td>
-                <td class="calc-green"><input class="form-control" type="text" id="calc-roi-3" disabled /></td>
-            </tr>
-        </tbody>
-    </table>
-    <button onclick="cfa_calc()">Calculate</button>
+
+    <div id="cfa-div">
+        <p id="cfa-error">Something is wrong. Please validate and complete all yellow fields to calculate.</p>
+        <div class="no-more-tables">
+            <table class="table table-bordered calc-table">
+                <thead>
+                <tr>
+                    <th>ARV</th>
+                    <th>Purchase<br />Price</th>
+                    <th>Cost of<br />Rehab</th>
+                    <th>Total<br />Cost</th>
+                    <th>LTV</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td data-title="ARV"><input type="text" class="form-control" id="calc-arv" /></td>
+                    <td data-title="Purchase Price"><input type="text" class="form-control" id="calc-purchase-price" /></td>
+                    <td data-title="Cost Rehab"><input type="text" class="form-control" id="calc-cost-of-rehab" /></td>
+                    <td data-title="Total Cost" class="calc-green"><input type="text" class="form-control" id="calc-total-cost" disabled /></td>
+                    <td data-title="LTV" class="calc-green"><input type="text" class="form-control" id="calc-ltv" disabled /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+        <div class="no-more-tables">
+            <table class="table table-bordered calc-table" width="100%">
+                <thead>
+                <tr>
+                    <th>Rental<br />Income</th>
+                    <th>Vacancy<br />Rate(%)</th>
+                    <th>Monthly<br />Insurance</th>
+                    <th>Monthly<br />Taxes</th>
+                    <th>Maint.</th>
+                    <th>Prop<br />Manag.</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td data-title="Rental Income"><input type="text" class="form-control" id="calc-rental-income" /></td>
+                    <td data-title="Vacancy Rate(%)"><input type="text" class="form-control" id="calc-vacancy-rate" /></td>
+                    <td data-title="Monthly Insurance"><input type="text" class="form-control" id="calc-monthly-insurance" /></td>
+                    <td data-title="Monthly Taxes"><input type="text" class="form-control" id="calc-monthly-taxes" /></td>
+                    <td data-title="Maint."><input type="text" class="form-control" id="calc-maint" /></td>
+                    <td data-title="Prop Manag."><input type="text" class="form-control" id="calc-prop-manag" /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+
+        <div class="no-more-tables">
+            <table class="table table-bordered calc-table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Percentage<br />Borrowed(%)</th>
+                    <th>Your<br />Money<br />Into Deal</th>
+                    <th>Loan<br />Amount</th>
+                    <th>Amort.<br />Period</th>
+                    <th>Interest<br/>Rate(%)</th>
+                    <th width="5%"></th>
+                    <th>P & I</th>
+                    <th>Cash<br />Flow</th>
+                    <th>Cash on<br />Cash<br />ROI</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Paying Cash</td>
+                    <td data-title="Percentage Borrowed(%)"><input class="form-control" type="text" id="calc-percent-0" value="0" /></td>
+                    <td data-title="Your Money Into Deal" class="calc-green"><input class="form-control" type="text" id="calc-ymid-0" disabled /></td>
+                    <td data-title="Loan Amount" class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-0" disabled /></td>
+                    <td data-title="Amort. Period"><input class="form-control" type="text" id="calc-amort-period-0" /></td>
+                    <td data-title="Interest Rate(%)"><input class="form-control" type="text" id="calc-interest-rate-0" /></td>
+                    <td></td>
+                    <td data-title="P & I" class="calc-green"><input class="form-control" type="text" id="calc-pi-0" disabled /></td>
+                    <td data-title="Cash Flow" class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-0" disabled /></td>
+                    <td data-title="Cash on Cash ROI" class="calc-green"><input class="form-control" type="text" id="calc-roi-0" disabled /></td>
+                </tr>
+                <tr class="cfa-color-red">
+                    <td>Leverage</td>
+                    <td data-title="Percentage Borrowed(%)"><input class="form-control" type="text" id="calc-percent-1" value="50" /></td>
+                    <td data-title="Your Money Into Deal" class="calc-green"><input class="form-control" type="text" id="calc-ymid-1" disabled /></td>
+                    <td data-title="Loan Amount" class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-1" disabled /></td>
+                    <td data-title="Amort. Period"><input class="form-control" type="text" id="calc-amort-period-1" /></td>
+                    <td data-title="Interest Rate(%)"><input class="form-control" type="text" id="calc-interest-rate-1" /></td>
+                    <td></td>
+                    <td data-title="P & I" class="calc-green"><input class="form-control" type="text" id="calc-pi-1" disabled /></td>
+                    <td data-title="Cash Flow" class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-1" disabled /></td>
+                    <td data-title="Cash on Cash ROI" class="calc-green"><input class="form-control" type="text" id="calc-roi-1" disabled /></td>
+                </tr>
+                <tr class="cfa-color-violet">
+                    <td>Leverage</td>
+                    <td data-title="Percentage Borrowed(%)"><input class="form-control" type="text" value="80" id="calc-percent-2" /></td>
+                    <td data-title="Your Money Into Deal" class="calc-green"><input class="form-control" type="text" id="calc-ymid-2" disabled /></td>
+                    <td data-title="Loan Amount" class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-2" disabled /></td>
+                    <td data-title="Amort. Period"><input class="form-control" type="text" id="calc-amort-period-2" /></td>
+                    <td data-title="Interest Rate(%)"><input class="form-control" type="text" id="calc-interest-rate-2" /></td>
+                    <td></td>
+                    <td data-title="P & I" class="calc-green"><input class="form-control" type="text" id="calc-pi-2" disabled /></td>
+                    <td data-title="Cash Flow" class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-2" disabled /></td>
+                    <td data-title="Cash on Cash ROI" class="calc-green"><input class="form-control" type="text" id="calc-roi-2" disabled /></td>
+                </tr>
+                <tr class="cfa-color-blue">
+                    <td>Leverage</td>
+                    <td data-title="Percentage Borrowed(%)"><input class="form-control" type="text" id="calc-percent-3"  value="99" /></td>
+                    <td data-title="Your Money Into Deal" class="calc-green"><input class="form-control" type="text" id="calc-ymid-3" disabled /></td>
+                    <td data-title="Loan Amount" class="calc-green"><input class="form-control" type="text" id="calc-loan-amount-3" disabled /></td>
+                    <td data-title="Amort. Period"><input class="form-control" type="text" id="calc-amort-period-3" /></td>
+                    <td data-title="Interest Rate(%)"><input class="form-control" type="text" id="calc-interest-rate-3" /></td>
+                    <td></td>
+                    <td data-title="P & I" class="calc-green"><input class="form-control" type="text" id="calc-pi-3" disabled /></td>
+                    <td data-title="Cash Flow" class="calc-green"><input class="form-control" type="text" id="calc-cash-flow-3" disabled /></td>
+                    <td data-title="Cash on Cash ROI" class="calc-green"><input class="form-control" type="text" id="calc-roi-3" disabled /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button id="calculateBtn">Calculate</button>
+    </div>
+
+    <br />
+    <script>
+        jQuery( document ).ready(function( $ ) {
+            $('#calculateBtn').on('click', function() {
+                if(validate_cfa()) {
+                    $('#cfa-error').hide();
+                    cfa_calc();
+                } else {
+                    $('#cfa-error').show();
+                }
+            });
+
+            function validate_cfa() {
+                var valid = true;
+                $('#cfa-div').find('input[type="text"]:enabled').each(function() {
+                    if(!$(this).val() || isNaN($(this).val())) {
+                        valid = false;
+                        $(this).addClass('cfa-has-error');
+                    } else {
+                        $(this).removeClass('cfa-has-error');
+                    }
+                });
+                return valid;
+            }
+
+            function cfa_calc() {
+                var calc_arv = parseFloat($('#calc-arv').val()),
+                        calc_purchase_price = parseFloat($('#calc-purchase-price').val()),
+                        calc_cost_of_rehab = parseFloat($('#calc-cost-of-rehab').val()),
+                        calc_rental_income = parseFloat($('#calc-rental-income').val()),
+                        calc_vacancy_rate = parseFloat($('#calc-vacancy-rate').val()),
+                        calc_monthly_insurance = parseFloat($('#calc-monthly-insurance').val()),
+                        calc_monthly_taxes = parseFloat($('#calc-monthly-taxes').val()),
+                        calc_maint = parseFloat($('#calc-maint').val()),
+                        calc_prop_manag = parseFloat($('#calc-prop-manag').val());
+
+                //total cost
+                var total_cost = calc_purchase_price + calc_cost_of_rehab;
+                $('#calc-total-cost').val(myRound(total_cost, 2));
+
+                //ltv
+                var ltv = Math.round((total_cost / calc_arv) * 100);
+                $('#calc-ltv').val(ltv + "%");
+
+                //ymid
+                $('#calc-ymid-0').html("$" + total_cost);
+
+                for(var i = 0; i <= 3; i++) {
+                    //ymid
+                    var cash_flow = 0, roi = 0, ymid = 0;
+                    var percent = $('#calc-percent-' + i).val();
+                    if(parseInt(percent) == 0 || percent == '') {
+                        ymid = total_cost;
+                        $('#calc-ymid-' + i).val(myRound(ymid, 2));
+                        $('#calc-loan-amount-' + i).val(0);
+                        $('#calc-pi-' + i).val('');
+
+                        //cash flow
+                        cash_flow = calc_rental_income - Math.round(0) - (calc_rental_income * (calc_vacancy_rate / 100)) - calc_monthly_insurance - calc_monthly_taxes - calc_maint - calc_prop_manag;
+                        $('#calc-cash-flow-' + i).val(Math.round(cash_flow));
+
+                        roi = (cash_flow * 12 / ymid) * 100;
+                        $('#calc-roi-' + i).val(Math.round(roi) + '%');
+                    } else {
+                        percent = percent / 100;
+                        ymid = total_cost - (total_cost * percent);
+                        $('#calc-ymid-' + i).val(myRound(ymid, 2));
+
+                        var loan_amount = total_cost * percent;
+                        $('#calc-loan-amount-' + i).val(myRound(loan_amount, 2));
+
+                        //p&i
+                        var interest_rate = parseInt($('#calc-interest-rate-' + i).val());
+                        var amortization_period = parseInt($('#calc-amort-period-' + i).val());
+                        var pni = pmt((interest_rate / 100)/12, amortization_period*12, -loan_amount, 0, 0);
+                        $('#calc-pi-' + i).val(Math.round(pni));
+
+                        //cash flow
+                        cash_flow = calc_rental_income - Math.round(pni) - (calc_rental_income * (calc_vacancy_rate / 100)) - calc_monthly_insurance - calc_monthly_taxes - calc_maint - calc_prop_manag;
+                        $('#calc-cash-flow-' + i).val(Math.round(cash_flow));
+
+                        //roi
+                        roi = (cash_flow * 12 / ymid) * 100;
+                        $('#calc-roi-' + i).val(Math.round(roi) + '%');
+                    }
+                }
+            }
+
+            function pmt(rate_per_period, number_of_payments, present_value, future_value, type){
+                if(rate_per_period != 0.0){
+                    // Interest rate exists
+                    var q = Math.pow(1 + rate_per_period, number_of_payments);
+                    return -(rate_per_period * (future_value + (q * present_value))) / ((-1 + q) * (1 + rate_per_period * (type)));
+
+                } else if(number_of_payments != 0.0){
+                    // No interest rate, but number of payments exists
+                    return -(future_value + present_value) / number_of_payments;
+                }
+
+                return 0;
+            }
+
+            function myRound(value, places) {
+                var multiplier = Math.pow(10, places);
+
+                return (Math.round(value * multiplier) / multiplier);
+            }
+        });
+
+
+    </script>
 </body>
 
-<script>
-    function cfa_calc() {
-        var calc_arv = parseInt($('#calc-arv').val()),
-                calc_purchase_price = parseInt($('#calc-purchase-price').val()),
-                calc_cost_of_rehab = parseInt($('#calc-cost-of-rehab').val()),
-                calc_rental_income = parseInt($('#calc-rental-income').val()),
-                calc_vacancy_rate = parseInt($('#calc-vacancy-rate').val()),
-                calc_monthly_insurance = parseInt($('#calc-monthly-insurance').val()),
-                calc_monthly_taxes = parseInt($('#calc-monthly-taxes').val()),
-                calc_maint = parseInt($('#calc-maint').val()),
-                calc_prop_manag = parseInt($('#calc-prop-manag').val());
 
-        //total cose
-        var total_cost = calc_purchase_price + calc_cost_of_rehab;
-        $('#calc-total-cost').val(total_cost);
-
-        //ltv
-        var ltv = Math.round((total_cost / calc_arv) * 100);
-        $('#calc-ltv').val(ltv + "%");
-
-        //ymid
-        $('#calc-ymid-0').html("$" + total_cost);
-
-        for(var i = 0; i <= 3; i++) {
-            //ymid
-            var cash_flow = 0, roi = 0, ymid = 0;
-            var percent = $('#calc-percent-' + i).val();
-            if(parseInt(percent) == 0 || percent == '') {
-                ymid = total_cost;
-                $('#calc-ymid-' + i).val(ymid);
-                $('#calc-loan-amount-' + i).val(0);
-                $('#calc-pi-' + i).val('');
-
-                //cash flow
-                cash_flow = calc_rental_income - Math.round(0) - (calc_rental_income * (calc_vacancy_rate / 100)) - calc_monthly_insurance - calc_monthly_taxes - calc_maint - calc_prop_manag;
-                $('#calc-cash-flow-' + i).val(Math.round(cash_flow));
-
-                roi = (cash_flow * 12 / ymid) * 100;
-                $('#calc-roi-' + i).val(Math.round(roi) + '%');
-            } else {
-                percent = percent / 100;
-                ymid = total_cost - (total_cost * percent);
-                $('#calc-ymid-' + i).val(ymid);
-
-                var loan_amount = total_cost * percent;
-                $('#calc-loan-amount-' + i).val(loan_amount);
-
-                //p&i
-                var interest_rate = parseInt($('#calc-interest-rate-' + i).val());
-                var amortization_period = parseInt($('#calc-amort-period-' + i).val());
-                var pni = pmt((interest_rate / 100)/12, amortization_period*12, -loan_amount, 0, 0);
-                $('#calc-pi-' + i).val(Math.round(pni));
-
-                //cash flow
-                cash_flow = calc_rental_income - Math.round(pni) - (calc_rental_income * (calc_vacancy_rate / 100)) - calc_monthly_insurance - calc_monthly_taxes - calc_maint - calc_prop_manag;
-                $('#calc-cash-flow-' + i).val(Math.round(cash_flow));
-
-                //roi
-                roi = (cash_flow * 12 / ymid) * 100;
-                $('#calc-roi-' + i).val(Math.round(roi) + '%');
-            }
-        }
-    }
-
-    function pmt(rate_per_period, number_of_payments, present_value, future_value, type){
-        if(rate_per_period != 0.0){
-            // Interest rate exists
-            var q = Math.pow(1 + rate_per_period, number_of_payments);
-            return -(rate_per_period * (future_value + (q * present_value))) / ((-1 + q) * (1 + rate_per_period * (type)));
-
-        } else if(number_of_payments != 0.0){
-            // No interest rate, but number of payments exists
-            return -(future_value + present_value) / number_of_payments;
-        }
-
-        return 0;
-    }
-</script>
 </html>

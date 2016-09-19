@@ -28,6 +28,9 @@
     <a id="czSideLink" href="<?php echo base_url() . 'admin/cities_zipcodes'; ?>">Cities / Zip Codes</a>
 </li>
 <li>
+    <a id="eventsSideLink" href="<?php echo base_url() . 'admin2/events'; ?>">Events</a>
+</li>
+<li>
     <a id="settingsSideLink" href="<?php echo base_url() . 'admin/settings'; ?>">Settings</a>
 </li>
 <hr />

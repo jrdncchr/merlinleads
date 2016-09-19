@@ -323,13 +323,14 @@ class Property extends MY_Controller {
             $po = $this->property_model->getOverview($id);
             if ($user->id == $po->user_id) {
                 $this->session->set_userdata('property_id', $po->property_id);
-
+                $this->load->model('profile_model');
                 // PROPERTY
                 $selected_module = $this->session->userdata('selectedModule');
                 $property = $this->property_model->getProperty($po->property_id);
                 $selectedProfile = explode(',', $this->session->userdata('selectedProfile'));
-                $this->data['selected_profile'] = "<option value='$selectedProfile[0]'>$selectedProfile[1]</option>";
+                $this->data['selected_profile'] = $selectedProfile[0];
                 $this->data['selected_module'] = $selected_module;
+                $this->data['profiles'] = $this->profile_model->getProfilesByUser($user->id);
                 $this->load->model('input_model');
                 $this->data['states'] = $this->input_model->getCountryStates($property->country, $property->state_abbr);
                 $this->data['property_categories'] = $this->input_model->getPropertyCategories();
@@ -415,7 +416,8 @@ class Property extends MY_Controller {
             'zipcode' => $_POST['zipcode'], 'country' => $_POST['country'],
             'state_name' => $state[1], 'state_abbr' => $state[0], 'area' => $_POST['area'],
             'mls_description' => $_POST['mlsDescription'], 'mls_id' => $_POST['mlsID'], 'bullets' => $_POST['bullets'],
-            'school_district' => $_POST['schooldDistrict'], 'highschool' => $_POST['highschool'], 'middleschool' => $_POST['middleschool'], 'elementaryschool' => $_POST['elementaryschool'],
+            'school_district' => $_POST['schooldDistrict'], 'highschool' => $_POST['highschool'],
+            'middleschool' => $_POST['middleschool'], 'elementaryschool' => $_POST['elementaryschool'],
             'no_bedrooms' => $_POST['noBedrooms'], 'no_bathrooms' => $_POST['noBathrooms'],
             'building_sqft' => $_POST['buildingSqFt'], 'year_built' => $_POST['yearBuilt'], 'lot_size' => $_POST['lotSize'],
             'main' => $_POST['main'], 'secondary' => $_POST['secondary'],
@@ -1240,6 +1242,54 @@ class Property extends MY_Controller {
             return "Social";
         } else if ($module == "Youtube" || $module == "Slideshare") {
             return "Media";
+        }
+    }
+
+    function event_notification($property_id = 0)
+    {
+        $this->load->model('events_model');
+        $this->load->model('events_templates_model');
+
+        $action = $this->input->post('action');
+        if ($action) {
+            switch ($action) {
+                case 'get_templates' :
+                    $event_id = $this->input->post('event_id');
+                    $type = $this->input->post('type');
+                    if ($type == 'merlin') {
+                        $result = $this->events_templates_model->get(array('event_id' => $event_id));
+                    } else {
+                        $result = $this->events_templates_model->get_custom(array('event_id' => $event_id));
+                    }
+                    echo json_encode($result);
+                    break;
+                case 'save_event_settings' :
+                    $event_settings = $this->input->post('event_settings');
+                    $result = $this->events_model->save_event_settings($event_settings);
+                    echo json_encode($result);
+                    break;
+                default:
+                    echo json_encode(array('success' => false));
+            }
+        } else {
+            if ((int)$property_id > 0) {
+                $po = $this->property_model->getOverview($property_id);
+                if ($this->user->id == $po->user_id) {
+                    $this->data['property'] = $this->property_model->getProperty($po->property_id);
+                    $this->data['classified_module'] = $this->property_module_model->getClassifiedsModule($this->data['property']->id);
+                    $this->data['merlin_templates'] = $this->events_templates_model->get(array('active' => 1));
+                    $this->data['custom_templates'] = $this->events_templates_model->get_custom(array('user_id' => $this->user->id));
+
+                    $event_settings = $this->events_model->get_event_settings();
+                    if (!$event_settings) {
+                        $this->events_model->add_event_settings($this->user);
+                        $event_settings = $this->events_model->get_event_settings();
+                    }
+                    $this->data['event_settings'] = $event_settings;
+
+                    $this->_renderL('pages/event_notification');
+                }
+            }
         }
     }
 

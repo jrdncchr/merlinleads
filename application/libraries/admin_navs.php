@@ -92,6 +92,13 @@ class Admin_Navs {
                     )
                 );
                 break;
+            case "Events":
+                $nav = array(
+                    "nav" => array(
+                        array("title" => "Properties", "url" => "admin2/events", "id" => "eventsPropertiesTopLink")
+                    )
+                );
+                break;
             default:
                 $nav = array();
 

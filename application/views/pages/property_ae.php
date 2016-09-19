@@ -51,7 +51,11 @@ PROPERTY
                    data-toggle="popover" data-placement="top" data-content="Select a Profile"></i>
             </label>
             <div class="input-group input-group-sm col-xs-9">
-                <select class="form-control required" id="profile" readonly="true"><?php echo $selected_profile; ?></select>
+                <select class="form-control required" id="profile">
+                    <?php foreach($profiles as $p): ?>
+                        <option value="<?php echo $p->id; ?>" <?php echo $property->profile_id == $p->id ? 'selected' : ''; ?>><?php echo $p->name; ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>
             </div>
         </div>
