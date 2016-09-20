@@ -40,8 +40,9 @@ class events_model extends CI_Model
         $this->db->join($this->tbl, 'properties_events.id = properties_events_settings.event_id');
         $result = $this->db->get_where($this->tbl_properties_events_settings, $where);
         if ($list) {
-            foreach ($result->result() as &$r) {
-                $r->active = (bool) $r->active;
+            $events = $result->result();
+            foreach ($events as &$event) {
+                $event->active = (bool) $event->active;
             }
         }
         return $list ? $result->result() : $result->row();

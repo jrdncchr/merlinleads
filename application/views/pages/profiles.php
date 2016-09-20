@@ -2,7 +2,7 @@
 <div class="col-xs-12">
     <p><a href="<?php echo base_url() . 'property' ?>">&Leftarrow; Return to Properties</a></p>
     <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Profiles</h4>
-    <hr style="margin: 15px;" />
+    <hr style="margin: 15px 0;" />
 
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-xs-3">

@@ -20,7 +20,11 @@ class Property_Model extends CI_Model {
 
     // Propert Overview
     public function getOverviews($userId) {
-        $result = $this->db->get_where('properties_overview', array('user_id' => $userId));
+        $this->db->select('po.*, p.profile_id');
+        $this->db->from('properties_overview po');
+        $this->db->join('properties p', 'po.property_id = p.id', 'left');
+        $this->db->where('po.user_id', $userId);
+        $result = $this->db->get();
         return $result->num_rows() > 0 ? $result->result() : [];
     }
 

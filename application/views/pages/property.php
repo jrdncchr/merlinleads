@@ -90,29 +90,36 @@
                 <li class="active"><a href="#properties-active" data-toggle="tab">Active</a></li>
                 <li><a href="#properties-archive" data-toggle="tab">Archived</a></li>
                 <li><a href="#properties-edit" data-toggle="tab">Edit</a></li>
+                <li role="presentation" class="pull-right">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="profile_filter"> Show only properties with selected profile
+                        </label>
+                    </div>
+                </li>
             </ul>
 
             <div class="tab-content">
                 <div id="properties-active" class="tab-pane active">
-                    <table class="display table table-striped" cellspacing="0" width="100%" id="properties" style="max-width: none !important;">
+                    <table class="display table table-striped" cellspacing="0" width="100%" id="properties">
                         <thead>
                         <tr>
-                            <th width="10%">Actions</th>
-                            <th width="18%">Property</th>
-<!--                            <th width="10%">Status</th>-->
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/craiglist.png'; ?>"
+                            <th width="15%">Actions</th>
+                            <th></th>
+                            <th width="20%">Property Name</th>
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/craiglist.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Craigslist"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/ebay.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/ebay.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Ebay Classified"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/backpage.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/backpage.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Backpage"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/youtube.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/youtube.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Youtube"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Slideshare"></th>
 <!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/twitter.png'; ?><!--"-->
@@ -130,33 +137,32 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="6" class="dataTables_empty">Loading data from server</td>
+                            <td colspan="6" class="dataTables_empty">Fetching properties, please wait...</td>
                         </tr>
                         </tbody>
                     </table>
                     <br/>
                 </div>
-                <div id="properties-archive" class="table-responsive tab-pane">
-                    <table cellpadding="0" cellspacing="0" border="0" class="display table table-striped"
-                           id="propertiesArchive">
+                <div id="properties-archive" class="tab-pane">
+                    <table class="display table table-striped" cellspacing="0" width="100%" id="propertiesArchive">
                         <thead>
                         <tr>
-                            <th width="10%">Actions</th>
-                            <th width="18%">Property</th>
-                            <!--                            <th width="10%">Status</th>-->
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/craiglist.png'; ?>"
+                            <th width="15%">Actions</th>
+                            <th></th>
+                            <th width="20%">Property Name</th>
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/craiglist.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Craigslist"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/ebay.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/ebay.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Ebay Classified"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/backpage.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/backpage.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Backpage"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/youtube.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/youtube.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Youtube"></th>
-                            <th width="6%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
+                            <th width="10%"><img src="<?php echo base_url() . IMG . 'logo/slideshare.png'; ?>"
                                                 class="center-block helper" data-container="body" data-toggle="popover"
                                                 data-placement="top" data-content="Slideshare"></th>
 <!--                            <th width="6%"><img src="--><?php //echo base_url() . IMG . 'logo/twitter.png'; ?><!--"-->
@@ -174,7 +180,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="6" class="dataTables_empty">Loading data from server</td>
+                            <td colspan="6" class="dataTables_empty">Fetching properties, please wait...</td>
                         </tr>
                         </tbody>
                     </table>
@@ -186,12 +192,13 @@
                         <thead>
                         <tr>
                             <th width="20%">Actions</th>
+                            <th></th>
                             <th>Property</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="6" class="dataTables_empty">Loading data from server</td>
+                            <td colspan="6" class="dataTables_empty">Fetching properties, please wait...</td>
                         </tr>
                         </tbody>
                     </table>
@@ -203,6 +210,19 @@
 </div>
 
 <script>
+/* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            var checked = $('#profile_filter').is(':checked') ? true : false;
+            if(checked) {
+                var selectedProfile = $('#profile').val().split(',');
+                return selectedProfile[0] == data[1];
+            }
+            return true;
+
+        }
+    );
+
     $(document).ready(function () {
         $("#propertiesLink").addClass("active");
         $("#propertyNav").addClass("active");
@@ -220,19 +240,15 @@
         });
     }
 
+    var propertiesDt, archiveDt, editDt;
     function setupPropertyDT() {
-        var propertiesDt = $("#properties").dataTable({
+        $("#properties").dataTable({
             "bJQueryUI": true,
             "bProcessing": true,
-//            "bFilter": false,
-//            "bInfo": false,
-//            "sScrollX": "100%",
+            "aaSorting": [2],
+            "bDestroy": true,
             "sScrollXInner": <?php echo sizeof($available_modules) > 3 ? "'120%'" : "'100%'"; ?>,
             "bScrollCollapse": true,
-//            "bPaginate": false,
-            fixedColumns: {
-                leftColumns: 2
-            },
             "ajax": base_url + "property/getPropertyOverviewDetails",
             "columns": [
                 { 'data' : 'poId', 'render': function(data, type, row) {
@@ -256,8 +272,8 @@
                             </div>';
                 }
                 },
+                { 'data' : 'profileId', visible: false },
                 { 'data' : 'propertyName' },
-                //{ 'data' : 'status' },
                 { 'data' : 'craiglistRegular',
                     'render' : function(data, type, row) {
                         var regBg = "#d9534f";
@@ -364,16 +380,15 @@
             }, 2000);
         });
 
-        //new $.fn.dataTable.FixedColumns( propertiesDt, {
-        //    "iLeftColumns": 2,
-        //    "iLeftWidth": 800
-        //} );
+        propertiesDt = $("#properties").DataTable();
 
         $("#propertiesArchive").dataTable({
             "bJQueryUI": true,
             "bProcessing": true,
-//            "bFilter": false,
-            "bInfo": false,
+            "aaSorting": [2],
+            "bDestroy": true,
+            "sScrollXInner": <?php echo sizeof($available_modules) > 3 ? "'120%'" : "'100%'"; ?>,
+            "bScrollCollapse": true,
             "ajax": base_url + "property/getPropertyOverviewDetails/Archive",
             "columns": [
                 { 'data' : 'poId', 'render': function(data, type, row) {
@@ -395,8 +410,8 @@
                             </div>';
                 }
                 },
+                { 'data' : 'profileId', visible: false },
                 { 'data' : 'propertyName' },
-                //{ 'data' : 'status' },
                 { 'data' : 'craiglistRegular',
                     'render' : function(data, type, row) {
                         var regBg = "#d9534f";
@@ -503,9 +518,15 @@
             }, 2000);
         });
 
+        archiveDt = $("#propertiesArchive").DataTable();
+
         $("#propertiesEdit").dataTable({
             "bJQueryUI": true,
             "bProcessing": true,
+            "aaSorting": [2],
+            "bDestroy": true,
+            "sScrollXInner": <?php echo sizeof($available_modules) > 3 ? "'120%'" : "'100%'"; ?>,
+            "bScrollCollapse": true,
             "ajax": base_url + "property/getPropertyOverviewDetails/Edit",
             "bAutoWidth": false,
             "columns": [
@@ -522,6 +543,7 @@
                             </div>';
                     }
                 },
+                { 'data' : 'profileId', visible: false },
                 { 'data': 'propertyName' }
             ]
         }).promise().done(function() {
@@ -529,6 +551,8 @@
                 activatePopovers();
             }, 2000);
         });
+
+        editDt = $("#propertiesEdit").DataTable();
 
     }
 
@@ -541,6 +565,12 @@
     }
 
     function activateEvents() {
+        $('#profile_filter').on('change', function() {
+            propertiesDt.draw();
+            archiveDt.draw();
+            editDt.draw();
+        });
+
         $('#addPropertyBtn').click(function() {
             setup('add', 0);
         });

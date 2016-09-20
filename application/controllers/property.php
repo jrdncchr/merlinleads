@@ -488,8 +488,7 @@ class Property extends MY_Controller {
                 $row['propertyId'] = $po->property_id;
                 $row['status'] = $po->status;
                 $row['propertyName'] = $po->name;
-
-//                var_dump($po);
+                $row['profileId'] = $po->profile_id;
 
                 //CRAIGLIST
                 $craiglist = json_decode($po->craiglist);
@@ -533,11 +532,9 @@ class Property extends MY_Controller {
                 //BLOG
                 $row['blog'] = $this->m2_post_model->count(array('module' => 'BLOG', 'user_id' => $user->id, 'property_id' => $po->property_id));
 
-
                 $data[] = $row;
             }
         }
-
 
         echo json_encode(array('data' => $data));
     }
