@@ -49,8 +49,27 @@ class events_templates_model extends CI_Model
      */
     public function get_custom($where = array(), $list = true)
     {
+        $this->db->select('properties_events_templates_custom.*, properties_events.name as event, properties_events.id as event_id');
+        $this->db->join('properties_events', 'properties_events.id = properties_events_templates_custom.event_id', 'left');
         $result = $this->db->get_where($this->tbl_custom, $where);
         return $list ? $result->result() : $result->row();
+    }
+
+    public function save_custom($data)
+    {
+        if (isset($data['id']) && $data['id'] != "") {
+            $this->db->where('id', $data['id']);
+            $this->db->update($this->tbl_custom, $data);
+        } else {
+            $this->db->insert($this->tbl_custom, $data);
+        }
+        return array('success' => true);
+    }
+
+    public function delete_custom($id)
+    {
+        $this->db->delete($this->tbl_custom, array('id' => $id));
+        return array('success' => true);
     }
 
 } 

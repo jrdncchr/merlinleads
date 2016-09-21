@@ -1265,6 +1265,21 @@ class Property extends MY_Controller {
                     $result = $this->events_model->save_event_settings($event_settings);
                     echo json_encode($result);
                     break;
+                case 'save_custom_template' :
+                    $template = $this->input->post('template');
+                    $template['user_id'] = $this->user->id;
+                    $result = $this->events_templates_model->save_custom($template);
+                    echo json_encode($result);
+                    break;
+                case 'custom_templates_list' :
+                    $result = $this->events_templates_model->get_custom(array('user_id' => $this->user->id));
+                    echo json_encode(array("data" => $result));
+                    break;
+                case 'delete_custom_template' :
+                    $template_id = $this->input->post('template_id');
+                    $result = $this->events_templates_model->delete_custom($template_id);
+                    echo json_encode($result);
+                    break;
                 default:
                     echo json_encode(array('success' => false));
             }
@@ -1272,17 +1287,31 @@ class Property extends MY_Controller {
             if ((int)$property_id > 0) {
                 $po = $this->property_model->getOverview($property_id);
                 if ($this->user->id == $po->user_id) {
-                    $this->data['property'] = $this->property_model->getProperty($po->property_id);
-                    $this->data['classified_module'] = $this->property_module_model->getClassifiedsModule($this->data['property']->id);
+                    // Event Settings
                     $this->data['merlin_templates'] = $this->events_templates_model->get(array('active' => 1));
                     $this->data['custom_templates'] = $this->events_templates_model->get_custom(array('user_id' => $this->user->id));
-
                     $event_settings = $this->events_model->get_event_settings();
                     if (!$event_settings) {
                         $this->events_model->add_event_settings($this->user);
                         $event_settings = $this->events_model->get_event_settings();
                     }
                     $this->data['event_settings'] = $event_settings;
+                    $this->data['events'] = $this->events_model->get();
+
+                    // Key Factors
+                    $property = $this->property_model->getProperty($po->property_id);
+                    $classified = $this->property_module_model->getClassifiedsModule($property->id);
+                    $key_factors = array(
+                        'property_id' => $property->id,
+                        'property_name' => $po->name,
+                        'sale_type' => $property->sale_type,
+                        'price' => $classified->price,
+                        'video' => $classified->youtube_url
+                    );
+                    $this->session->set_userdata('en_key_factors', $key_factors);
+                    $this->load->model('input_model');
+                    $this->data['sale_types'] = $this->input_model->getSaleTypes($key_factors['sale_type']);
+                    $this->data['key_factors'] = $key_factors;
 
                     $this->_renderL('pages/event_notification');
                 }
