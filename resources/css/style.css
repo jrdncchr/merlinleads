@@ -494,3 +494,12 @@ tr.selected td {
 .danero-switch input[type=checkbox]:checked + label {
     left: 43px;
 }
+
+.social {
+    cursor: pointer;
+}
+.account-on {
+    color: #00438A;
+    border-bottom: 3px solid #00438A;
+    padding-bottom: 2px;
+}

@@ -30,14 +30,6 @@
     .scheduler_block p.modules {
         line-height: 5px;
     }
-    .social {
-        cursor: pointer;
-    }
-    .account-on {
-        color: #00438A;
-        border-bottom: 3px solid #00438A;
-        padding-bottom: 2px;
-    }
     .merlin-block {
         background-color: #C2EAE9;
     }

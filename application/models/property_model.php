@@ -96,6 +96,27 @@ class Property_Model extends CI_Model {
         return "OK";
     }
 
+    /*
+     * Added for Event Notification
+     */
+    public function update_property($id, $data) {
+        $result = array('success' => false);
+        $this->db->where('id', $id);
+        if ($this->db->update('properties', $data)) {
+            $result = array('success' => true);
+        }
+        return $result;
+    }
+
+    public function update_property_classified($property_id, $data) {
+        $result = array('success' => false);
+        $this->db->where('property_id', $property_id);
+        if ($this->db->update('properties_modules_classifieds', $data)) {
+            $result = array('success' => true);
+        }
+        return $result;
+    }
+
     public function deleteProperty($po) {
         $this->db->where('id', $po->property_id);
         $this->db->delete('properties');

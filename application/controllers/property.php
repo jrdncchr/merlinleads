@@ -1280,6 +1280,11 @@ class Property extends MY_Controller {
                     $result = $this->events_templates_model->delete_custom($template_id);
                     echo json_encode($result);
                     break;
+                case 'save_key_factors' :
+                    $key_factors = $this->input->post('key_factors');
+                    $result = $this->_save_key_factors($key_factors);
+                    echo json_encode($result);
+                    break;
                 default:
                     echo json_encode(array('success' => false));
             }
@@ -1308,7 +1313,7 @@ class Property extends MY_Controller {
                         'price' => $classified->price,
                         'video' => $classified->youtube_url
                     );
-                    $this->session->set_userdata('en_key_factors', $key_factors);
+                    $this->session->set_userdata('key_factors', $key_factors);
                     $this->load->model('input_model');
                     $this->data['sale_types'] = $this->input_model->getSaleTypes($key_factors['sale_type']);
                     $this->data['key_factors'] = $key_factors;
@@ -1317,6 +1322,70 @@ class Property extends MY_Controller {
                 }
             }
         }
+    }
+
+    function _save_key_factors($key_factors)
+    {
+        $this->load->model('events_model');
+        $en_settings = $this->events_model->get_event_settings(array('user_id' => $this->user->id)); // only retrieves active
+        $old_key_factors = $this->session->userdata('key_factors');
+
+        // Sale Type
+        if ($key_factors['sale_type'] != $old_key_factors['sale_type']) {
+            $result = $this->property_model->update_property($key_factors['property_id'], array('sale_type' => $key_factors['sale_type']));
+            if ($result['success']) {
+                if ($en_settings) {
+                    if ($key_factors['sale_type'] == 'Sold') {
+                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'sold');
+                        if ($ens) {
+                            // send notification !
+                        }
+                    } else {
+                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
+                        if ($ens) {
+                            // send notification !
+                        }
+                    }
+                }
+            }
+        }
+
+        // Price
+        if ($key_factors['price'] != $old_key_factors['price']) {
+            $result = $this->property_model->update_property_classified($key_factors['property_id'], array('price' => $key_factors['price']));
+            if ($result['success']) {
+                if ($en_settings) {
+                    $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'price_change');
+                    if ($ens) {
+                        // send notification !
+                    }
+                }
+            }
+        }
+
+        // Video | Youtube URL
+        if ($key_factors['video'] != $old_key_factors['video']) {
+            $result = $this->property_model->update_property_classified($key_factors['property_id'], array('youtube_url' => $key_factors['video']));
+            if ($result['success']) {
+                if ($en_settings) {
+                    $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'video');
+                    if ($ens) {
+                        // send notification !
+                    }
+                }
+            }
+        }
+
+        return array('success' => true);
+    }
+
+    function _get_event_notification_settings_by_event_key($en_settings, $key) {
+        foreach ($en_settings as $en) {
+            if ($en->event_key == $key) {
+                return $en;
+            }
+        }
+        return null;
     }
 
 }

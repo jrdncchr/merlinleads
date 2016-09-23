@@ -55,7 +55,8 @@ class events_model extends CI_Model
             $updated_settings = array(
                 'template_id' => $es['template_id'],
                 'template_type' => $es['template_type'],
-                'active' => $es['active'] == 'true' ? 1 : 0
+                'active' => $es['active'] == 'true' ? 1 : 0,
+                'modules' => $es['modules']
             );
             $this->db->update($this->tbl_properties_events_settings, $updated_settings);
         }

@@ -60,6 +60,22 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group pull-right">
+                                            <label>Modules</label>
+                                            <div class="form-control-static">
+                                                <i v-if="es.modules.indexOf('facebook') == -1" class="fa fa-facebook-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                <i v-else="es.modules.indexOf('facebook') != -1" class="fa fa-facebook-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+
+                                                <i v-if="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                <i v-else="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+
+                                                <i v-if="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                <i v-else="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,25 +102,25 @@
                     <br />
                     <div class="notice"></div>
                     <div class="form-group">
-                        <label for="sale_type" class="col-sm-2 control-label">Sale Type</label>
+                        <label for="sale_type" class="col-sm-2 control-label">* Sale Type</label>
                         <div class="col-sm-10">
-                            <select class="form-control required" id="saleType"><?php echo $sale_types; ?></select>
+                            <select class="form-control required" id="saleType" v-model="key_factors.sale_type"><?php echo $sale_types; ?></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="price" class="col-sm-2 control-label">Price</label>
+                        <label for="price" class="col-sm-2 control-label">* Price</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="price" placeholder="Price" value="<?php echo $key_factors['price']; ?>" />
+                            <input type="text" class="form-control" id="price" placeholder="Price" v-model="key_factors.price" value="{{ key_factors.price }}" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="video_url" class="col-sm-2 control-label">Video URL</label>
+                        <label for="video_url" class="col-sm-2 control-label">* Video URL</label>
                         <div class="col-sm-10">
-                            <input type="url" class="form-control" id="video_url" placeholder="Video URL" value="<?php echo $key_factors['video']; ?>" />
+                            <input type="url" class="form-control" id="video_url" placeholder="Video URL" v-model="key_factors.video" value="{{ key_factors.video }}" />
                         </div>
                     </div>
                 </div>
-                <button class="pull-right btn btn-sm btn-success">Save</button>
+                <button class="pull-right btn btn-sm btn-success" v-on:click="saveKeyFactors">Save</button>
             </div>
         </div>
     </div>
@@ -168,7 +184,8 @@
             event_id : '',
             name : '',
             content: ''
-        }
+        },
+        key_factors: <?php echo json_encode($key_factors); ?>
     };
 
     var vm = new Vue({
@@ -214,9 +231,43 @@
                         $('#form-modal').modal('hide');
                     }
                 }, 'json');
+            },
+            saveKeyFactors: function() {
+                if(validator.validateForm($('#key_factors'))) {
+                    loading('info', 'Saving...');
+                    $.post(actionUrl, { action: 'save_key_factors', key_factors: data.key_factors }, function(res) {
+                        if(res.success) {
+                            loading('success', 'Saved');
+                        }
+                    }, 'json');
+                }
+            },
+            toggleModule: function(en, event) {
+                if ($(event.currentTarget).hasClass('account-on')) {
+                    $(event.currentTarget).removeClass('account-on fa-3x');
+                    en.modules = getActiveModules($(event.currentTarget).parent());
+                } else {
+                    $(event.currentTarget).addClass('account-on fa-3x');
+                    en.modules = getActiveModules($(event.currentTarget).parent());
+                }
+                console.log(en.modules);
             }
         }
     });
+
+    function getActiveModules(parent) {
+        var modules = "";
+        $(parent).find('i').each(function() {
+            if ($(this).hasClass('fa-facebook-square') && $(this).hasClass('account-on')) {
+                modules += "facebook|";
+            } else if ($(this).hasClass('fa-twitter-square') && $(this).hasClass('account-on')) {
+                modules += "twitter|";
+            } else if ($(this).hasClass('fa-linkedin-square') && $(this).hasClass('account-on')) {
+                modules += "linkedin|";
+            }
+        });
+        return modules.slice(0, -1);
+    }
 
     $(function() {
         setupDataTables();
