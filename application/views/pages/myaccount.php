@@ -343,7 +343,7 @@
                     <?php } else { ?>
                         <p class="text-warning">You have NOT yet authorized Twitter integration into your account yet.</p>
                     <?php } ?>
-                    <a class="btn btn-sm btn-primary" href="<?php echo $twitter['auth_url']; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
+                    <a class="btn btn-sm btn-primary" href="<?php echo isset($twitter['auth_url']) ? $twitter['auth_url'] : '#'; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
                 <?php } else { ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
                     <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i
@@ -355,7 +355,7 @@
             <div class="tab-pane <?php echo $redirect == 'facebook' ? 'active' : '' ?>" id="integration-facebook">
                 <?php
                 if(isset($main_f->facebook_feed_posting)) { ?>
-                    <?php if(isset($fb['valid_access_token'])) { ?>
+                    <?php if($fb['valid_access_token']) { ?>
                         <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Facebook integration into your account! </p>
                         <p>Expiry Date: <b><?php echo $fb['expires_at']; ?></b></p>
                         <img class="img img-thumbnail" src="//graph.facebook.com/<?php echo $fb['user']['id']?>/picture" />

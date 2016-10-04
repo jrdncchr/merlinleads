@@ -15,6 +15,13 @@
                 <div class="alert alert-info">
                     <i class="fa fa-question-circle"></i> Click the title to show options.
                 </div>
+                <?php if (!$facebook['valid_access_token'] || !$twitter['valid_access_token'] || !$linkedin['valid_access_token']): ?>
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-circle"></i> You have not integrated your Facebook account yet. <a href="<?php echo base_url() . 'main/myaccount/facebook'; ?>">Setup Now</a> <br />
+                        <i class="fa fa-exclamation-circle"></i> You have not integrated your Linked In account yet. <a href="<?php echo base_url() . 'main/myaccount/linkedin'; ?>">Setup Now</a> <br />
+                        <i class="fa fa-exclamation-circle"></i> You have not integrated your Twitter account yet. <a href="<?php echo base_url() . 'main/myaccount/twitter'; ?>">Setup Now</a> <br />
+                    </div>
+                <?php endif; ?>
                 <div class="panel-group" role="tablist" aria-multiselectable="true">
 
                     <div class="panel panel-default" style="margin-bottom:20px;" v-for="es in event_settings">
@@ -62,18 +69,23 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group pull-right">
-                                            <label>Modules</label>
-                                            <div class="form-control-static">
-                                                <i v-if="es.modules.indexOf('facebook') == -1" class="fa fa-facebook-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
-                                                <i v-else="es.modules.indexOf('facebook') != -1" class="fa fa-facebook-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
-
-                                                <i v-if="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
-                                                <i v-else="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
-
-                                                <i v-if="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
-                                                <i v-else="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
-
-                                            </div>
+                                            <section v-if="social_accounts.facebook.valid_access_token || social_accounts.twitter.valid_access_token || social_accounts.facebook.valid_access_token">
+                                                <label>Social Accounts Available</label>
+                                                <div class="form-control-static">
+                                                    <section v-if="social_accounts.facebook.valid_access_token">
+                                                        <i v-if="es.modules.indexOf('facebook') == -1" class="fa fa-facebook-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                        <i v-else="es.modules.indexOf('facebook') != -1" class="fa fa-facebook-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+                                                    </section>
+                                                    <section v-if="social_accounts.facebook.valid_access_token">
+                                                        <i v-if="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                        <i v-else="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+                                                    </section>
+                                                    <section v-if="social_accounts.facebook.valid_access_token">
+                                                        <i v-if="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
+                                                        <i v-else="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
+                                                    </section>
+                                                </div>
+                                            </section>
                                         </div>
                                     </div>
                                 </div>
@@ -185,8 +197,15 @@
             name : '',
             content: ''
         },
-        key_factors: <?php echo json_encode($key_factors); ?>
+        key_factors: <?php echo json_encode($key_factors); ?>,
+        social_accounts: {
+            facebook: <?php echo json_encode($facebook); ?>,
+            linked_in: <?php echo json_encode($linked_in); ?>,
+            twitter: <?php echo json_encode($twitter); ?>
+        }
     };
+
+    console.log(data);
 
     var vm = new Vue({
         el: "#app",

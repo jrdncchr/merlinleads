@@ -118,3 +118,26 @@
         </div>
     </div>
 </div>
+
+<!-- Event Notification Modal -->
+<div class="modal fade" id="event_notification_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-bell"></i> Event Notification</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <span style="font-weight: bold;"></span><br />
+                    We have detected that your event notification for this event is turned on.
+                </p>
+                <p>Would you like post the content notification?</p>
+                <a href="#" style="font-size: 14px;">&RightArrow; View Event Notification Settings</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm" id="event_notification_yes">Yes</button>
+                <button type="button" class="btn btn-default btn-sm" id="event_notification_no">No</button>
+            </div>
+        </div>
+    </div>
+</div>

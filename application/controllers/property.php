@@ -267,14 +267,13 @@ class Property extends MY_Controller {
             $available_property = $available['property'];
             //get property count
             $property_count = $this->property_model->getPropertiesCountByUser($user->id);
-
             /*
              * ------- FOR NUMBER OF PROPERTY FEATURE
              */
             if ($property_count < $available_property || $user->type == "admin" || $available_property == "*") {
                 $this->load->model('input_model');
                 $selectedProfile = explode(',', $this->session->userdata('selectedProfile'));
-                $this->data['selected_profile'] = "<option value='$selectedProfile[0]'>$selectedProfile[1]</option>";
+                $this->data['selected_profile'] = $selectedProfile[0];
                 $this->data['selected_module'] = $this->session->userdata('selectedModule');
                 $this->data['property_categories'] = $this->input_model->getPropertyCategories();
                 $this->data['sale_types'] = $this->input_model->getSaleTypes();
@@ -301,6 +300,9 @@ class Property extends MY_Controller {
                 $this->data['h2'] = "Add New Property";
                 $this->data['user'] = $user;
                 $this->data['redirect'] = "";
+
+                $this->load->model('profile_model');
+                $this->data['profiles'] = $this->profile_model->getProfilesByUser($user->id);
 
                 $this->bower_components['js'][] = "cropper/dist/cropper.min.js";
                 $this->bower_components['css'][] = "cropper/dist/cropper.min.css";
@@ -1260,6 +1262,11 @@ class Property extends MY_Controller {
                     }
                     echo json_encode($result);
                     break;
+                case 'get_event_setting' :
+                    $event_key = $this->input->post('event_key');
+                    $event_setting = $this->events_model->get_event_setting(array('event_key' => $event_key, 'user_id' => $this->user->id));
+                    echo json_encode($event_setting);
+                    break;
                 case 'save_event_settings' :
                     $event_settings = $this->input->post('event_settings');
                     $result = $this->events_model->save_event_settings($event_settings);
@@ -1314,6 +1321,12 @@ class Property extends MY_Controller {
                         'video' => $classified->youtube_url
                     );
                     $this->session->set_userdata('key_factors', $key_factors);
+
+                    // Social Accounts
+                    $this->data['facebook'] = $this->api_model->facebook_verify_access_key($this->user);
+                    $this->data['linked_in'] = $this->api_model->linkedin_verify_access_key($this->user);
+                    $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+
                     $this->load->model('input_model');
                     $this->data['sale_types'] = $this->input_model->getSaleTypes($key_factors['sale_type']);
                     $this->data['key_factors'] = $key_factors;
@@ -1330,7 +1343,7 @@ class Property extends MY_Controller {
         $en_settings = $this->events_model->get_event_settings(array('user_id' => $this->user->id)); // only retrieves active
         $old_key_factors = $this->session->userdata('key_factors');
 
-        // Sale Type
+        // Sold | Back on the Market
         if ($key_factors['sale_type'] != $old_key_factors['sale_type']) {
             $result = $this->property_model->update_property($key_factors['property_id'], array('sale_type' => $key_factors['sale_type']));
             if ($result['success']) {
@@ -1342,6 +1355,26 @@ class Property extends MY_Controller {
                         }
                     } else {
                         $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
+                        if ($ens) {
+                            // send notification !
+                        }
+                    }
+                }
+            }
+        }
+
+        // Back on the Market | Off the Market
+        if ($key_factors['status'] != $old_key_factors['status']) {
+            $result = $this->property_model->update_property_overview_by_property_id($key_factors['property_id'], array('status' => $key_factors['status']));
+            if ($result['success']) {
+                if ($en_settings) {
+                    if ($key_factors['status'] == 'Active') {
+                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
+                        if ($ens) {
+                            // send notification !
+                        }
+                    } else {
+                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'off_the_market');
                         if ($ens) {
                             // send notification !
                         }
@@ -1379,7 +1412,16 @@ class Property extends MY_Controller {
         return array('success' => true);
     }
 
-    function _get_event_notification_settings_by_event_key($en_settings, $key) {
+    function post_event_notification()
+    {
+        $event_key = $this->input->post('event_key');
+        $this->load->model('events_model');
+        $event_setting = $this->events_model->get_event_setting(array('event_key' => $event_key));
+        echo json_encode(array('success' => true));
+    }
+
+    function _get_event_notification_settings_by_event_key($en_settings, $key)
+    {
         foreach ($en_settings as $en) {
             if ($en->event_key == $key) {
                 return $en;

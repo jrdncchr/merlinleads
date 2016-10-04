@@ -712,6 +712,27 @@
     }
 
     function archiveProperty(id) {
+        $.post(base_url + 'property/event_notification', {action: 'get_event_setting', event_key: 'off_the_market'}, function(res) {
+            if (res.active) {
+                $('#event_notification_modal').find('.modal-body span').html('Off the Market');
+                $('#event_notification_modal').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $('#event_notification_yes').on('click', function() {
+                    archiveNow(id, true);
+                });
+                $('#event_notification_no').on('click', function() {
+                    archiveNow(id, false);
+                });
+            } else {
+                archiveNow(id, false);
+            }
+        }, 'json');
+    }
+
+    function archiveNow(id, send) {
         loading("info", "Archiving property, please wait...");
         $.ajax({
             url: base_url + 'property/archiveProperty',
@@ -725,14 +746,57 @@
                     var archiveTable = $('#propertiesArchive').dataTable();
                     archiveTable.fnReloadAjax();
                     loading("success", "Archiving property successful!");
+                    if (send) {
+                        sendEventNotification('off_the_market', id);
+                    }
                 } else {
                     loading("danger", data);
+                }
+            }
+        });
+        $('#event_notification_modal').modal('hide');
+    }
+
+    function sendEventNotification(event_key, id) {
+        loading("info", "Posting...");
+        $.ajax({
+            url: base_url + 'property/post_event_notification',
+            data: {event_key: event_key, property_id: id},
+            type: 'post',
+            dataType: 'json',
+            cache: false,
+            success: function(res) {
+                if (res.success) {
+                    loading("success", "Post succsessful.");
+                } else {
+                    loading("danger", "Posting failed.");
                 }
             }
         });
     }
 
     function activateProperty(id) {
+        $.post(base_url + 'property/event_notification', {action: 'get_event_setting', event_key: 'back_on_the_market'}, function(res) {
+            if (res.active) {
+                $('#event_notification_modal').find('.modal-body span').html('Back on the Market');
+                $('#event_notification_modal').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $('#event_notification_yes').on('click', function() {
+                    activatePropertyNow(id, true);
+                });
+                $('#event_notification_no').on('click', function() {
+                    activatePropertyNow(id, false);
+                });
+            } else {
+                activatePropertyNow(id, false);
+            }
+        }, 'json');
+    }
+
+    function activatePropertyNow(id, send) {
         loading("info", "Activating property, please wait...");
         $.ajax({
             url: base_url + 'property/activateProperty',
@@ -747,12 +811,16 @@
                     var archiveTable = $('#propertiesArchive').dataTable();
                     archiveTable.fnReloadAjax();
                     loading("success", "Activating property successful!");
+                    if (send) {
+                        sendEventNotification('back_on_the_market', id);
+                    }
                 } else {
                     $("#propertyMessage").html(data);
                     loading("danger", "Activating property failed!");
                 }
             }
         });
+        $('#event_notification_modal').modal('hide');
     }
 </script>
 

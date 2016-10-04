@@ -25,6 +25,7 @@ $(document).ready(function() {
     toastr.options = {
         "positionClass": "toast-bottom-right"
     };
+    toastr.options.preventDuplicates = true;
 });
 
 function setColumnSize() {
@@ -46,6 +47,9 @@ function stopLoader() {
 
 function loading(type, message) {
     toastr.clear(toast);
+    if (toast) {
+        toast.remove();
+    }
     if (type === "success") {
         toast = toastr.success(message);
     } else if (type === "info") {

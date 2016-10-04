@@ -46,14 +46,14 @@ PROPERTY
             </div>
         </div>
         <div class="form-group">
-            <label for="type" class="col-xs-3 control-label">Profile
+            <label for="profile" class="col-xs-3 control-label">Profile
                 <i class="fa fa-question-circle text-info helper" data-container="body"
                    data-toggle="popover" data-placement="top" data-content="Select a Profile"></i>
             </label>
             <div class="input-group input-group-sm col-xs-9">
                 <select class="form-control required" id="profile">
                     <?php foreach($profiles as $p): ?>
-                        <option value="<?php echo $p->id; ?>" <?php echo $property->profile_id == $p->id ? 'selected' : ''; ?>><?php echo $p->name; ?></option>
+                        <option value="<?php echo $p->id; ?>" <?php echo $selected_profile == $p->id ? 'selected' : ''; ?>><?php echo $p->name; ?></option>
                     <?php endforeach; ?>
                 </select>
                 <span class="input-group-addon"><li class="fa fa-asterisk"></li></span>

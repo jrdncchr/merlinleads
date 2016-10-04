@@ -19,7 +19,9 @@ class Api_Model extends CI_Model {
      * FACEBOOK
      */
     public function facebook_verify_access_key($user) {
-        $result = array();
+        $result = array(
+            'valid_access_token' => false
+        );
         $fb = new \Facebook\Facebook([
             'app_id' => FB_APP_ID,
             'app_secret' => FB_SECRET_KEY
@@ -34,15 +36,12 @@ class Api_Model extends CI_Model {
             );
 
             if($accessToken->isExpired()) {
-                $result['valid_access_token'] = false;
                 $result['expired_access_token'] = true;
             } else {
                 $result['valid_access_token'] = true;
                 $result['expires_at'] = $tokenMetadata->getExpiresAt()->format('M d, Y');
                 $result['user'] = $this->facebook_get_user($user->fb_access_token);
             }
-        } else {
-            $result['valid_fb_access_token'] = false;
         }
 
         $helper = $fb->getRedirectLoginHelper();
@@ -82,6 +81,7 @@ class Api_Model extends CI_Model {
      */
 
     public function linkedin_verify_access_key($user) {
+        $result['valid_access_token'] = false;
         if($user->li_access_token) {
             $result['access_token'] = $user->li_access_token;
             $result['expired_access_token'] = false;
@@ -94,6 +94,7 @@ class Api_Model extends CI_Model {
                 $get_user = $this->linkedin_get_user_info(json_decode($user->li_access_token));
                 if($get_user['success']) {
                     $result['user'] = $get_user['result'];
+                    $result['valid_access_token'] = true;
                 }
             }
         }
@@ -146,10 +147,12 @@ class Api_Model extends CI_Model {
 
     public function twitter_verify_access_key($user) {
         $result['has_access_key'] = false;
-        $result['auth_url'] = $this->get_twitter_auth_url();
+        $result['valid_access_key'] = false;
         try {
+            $result['auth_url'] = $this->get_twitter_auth_url();
             if($user->twitter_access_token) {
                 $result['has_access_key'] = true;
+                $result['valid_access_key'] = true;
                 $access_token = json_decode($user->twitter_access_token);
                 $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
                 $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);

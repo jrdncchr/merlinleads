@@ -99,10 +99,21 @@ class Property_Model extends CI_Model {
     /*
      * Added for Event Notification
      */
-    public function update_property($id, $data) {
+    public function update_property($id, $data)
+    {
         $result = array('success' => false);
         $this->db->where('id', $id);
         if ($this->db->update('properties', $data)) {
+            $result = array('success' => true);
+        }
+        return $result;
+    }
+
+    public function update_property_overview_by_property_id($property_id, $data)
+    {
+        $result = array('success' => false);
+        $this->db->where('property_id', $property_id);
+        if ($this->db->update('properties_overview', $data)) {
             $result = array('success' => true);
         }
         return $result;

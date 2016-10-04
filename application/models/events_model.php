@@ -33,6 +33,13 @@ class events_model extends CI_Model
     /*
      * Properties Event Settings
      */
+    public function get_event_setting($where = array())
+    {
+        $this->db->join($this->tbl, 'properties_events.id = properties_events_settings.event_id');
+        $result = $this->db->get_where($this->tbl_properties_events_settings, $where);
+        return $result->row();
+    }
+
     public function get_event_settings($where = array(), $list = true)
     {
         $where['properties_events.active'] = 1;
