@@ -1273,10 +1273,34 @@ class Property extends MY_Controller {
                     echo json_encode($result);
                     break;
                 case 'save_custom_template' :
-                    $template = $this->input->post('template');
+
+                    $template = array(
+                        'id' => $this->input->post('id'),
+                        'event_id' => $this->input->post('event_id'),
+                        'content' => $this->input->post('content'),
+                        'name' => $this->input->post('name'),
+                        'attach_type' => $this->input->post('attach_type'),
+                        'custom_link' => $this->input->post('custom_link')
+                    );
+
+                    if (isset($_FILES['file'])) {
+                        $file = $_FILES['file']['name'];
+                        $ext = pathinfo($file, PATHINFO_EXTENSION);
+                        $file_name = $this->user->id . '_' .  $template['id'];
+                        $template['uploaded_file'] = $file_name . "." . $ext;
+                        $upload_result = $this->custom_library->upload_image(EVENT_NOTIFICATION_CUSTOM_TEMPLATES_IMG, $file_name);
+                        if (!$upload_result['success']) {
+                            echo "FAILED";
+                            break;
+                        }
+                    }
+
                     $template['user_id'] = $this->user->id;
                     $result = $this->events_templates_model->save_custom($template);
-                    echo json_encode($result);
+                    if (!$result['success']) {
+                        echo "FAILED";
+                    }
+                    echo "OK";
                     break;
                 case 'custom_templates_list' :
                     $result = $this->events_templates_model->get_custom(array('user_id' => $this->user->id));
@@ -1364,24 +1388,24 @@ class Property extends MY_Controller {
         }
 
         // Back on the Market | Off the Market
-        if ($key_factors['status'] != $old_key_factors['status']) {
-            $result = $this->property_model->update_property_overview_by_property_id($key_factors['property_id'], array('status' => $key_factors['status']));
-            if ($result['success']) {
-                if ($en_settings) {
-                    if ($key_factors['status'] == 'Active') {
-                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
-                        if ($ens) {
-                            // send notification !
-                        }
-                    } else {
-                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'off_the_market');
-                        if ($ens) {
-                            // send notification !
-                        }
-                    }
-                }
-            }
-        }
+//        if ($key_factors['status'] != $old_key_factors['status']) {
+//            $result = $this->property_model->update_property_overview_by_property_id($key_factors['property_id'], array('status' => $key_factors['status']));
+//            if ($result['success']) {
+//                if ($en_settings) {
+//                    if ($key_factors['status'] == 'Active') {
+//                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
+//                        if ($ens) {
+//                            // send notification !
+//                        }
+//                    } else {
+//                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'off_the_market');
+//                        if ($ens) {
+//                            // send notification !
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         // Price
         if ($key_factors['price'] != $old_key_factors['price']) {

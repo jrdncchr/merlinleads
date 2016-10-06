@@ -1,3 +1,6 @@
+#10-5-2016
+ALTER TABLE `properties_events_settings` ADD `attach_type` VARCHAR(30) NOT NULL AFTER `modules`, ADD `custom_link` VARCHAR(500) NOT NULL AFTER `attach_type`, ADD `uploaded_file` VARCHAR(500) NOT NULL AFTER `custom_link`;
+
 #9-12-2016
 CREATE TABLE `properties_events_templates` (
   `id` int(11) NOT NULL,

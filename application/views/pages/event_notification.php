@@ -1,3 +1,10 @@
+<style>
+    img {
+        width: 50%;
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
 <div class="row" id="app">
     <div class="col-sm-12">
         <p><a href="<?php echo base_url() . 'property' ?>">&Leftarrow; Return to Properties</a></p>
@@ -171,6 +178,29 @@
                                     <a class="input-group-addon clip"><i class='fa fa-clipboard'></i></a>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="attach_type">* Link / Attached Image</label>
+                                <select class="form-control" v-model="template.attach_type" id="attach_type">
+                                    <option value="">None</option>
+                                    <option value="Property Link">Property Link</option>
+                                    <option value="Custom Link">Custom Link</option>
+                                    <option value="Image">Upload Image</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="custom_link_div" v-if="template.attach_type == 'Custom Link'">
+                                <label for="custom_link">* Custom Link</label>
+                                <input type="text" id="custom_link" class="form-control" v-model="template.custom_link" value="{{ template.custom_link }}" />
+                            </div>
+                            <div class="form-group" id="upload_image_div" v-if="template.attach_type == 'Image'">
+                                <label for="upload_image">* Upload Image</label>
+                                <div v-if="!template_image">
+                                    <input id="uploaded_file" type="file" v-on:change="onFileChange" accept="image/*" />
+                                </div>
+                                <div v-else>
+                                    <img src="{{ template_image }}" class="img" />
+                                    <button v-on:click="removeImage" class="btn btn-xs">Remove</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -188,14 +218,19 @@
     var actionUrl = '<?php echo base_url() . 'property/event_notification'; ?>';
     var merlinTemplates = <?php echo json_encode($merlin_templates); ?>;
     var customTemplates = <?php echo json_encode($custom_templates); ?>;
+    var imagePath = "<?php echo base_url() . 'resources/uploads/event_notification_custom_templates/'?>";
 
     var data = {
         event_settings: <?php echo json_encode($event_settings); ?>,
+        template_image: '',
         template: {
-            id: '',
+            id : '',
             event_id : '',
             name : '',
-            content: ''
+            content : '',
+            attach_type : '',
+            custom_link : '',
+            uploaded_file: ''
         },
         key_factors: <?php echo json_encode($key_factors); ?>,
         social_accounts: {
@@ -232,13 +267,33 @@
             saveTemplate: function() {
                 if(validator.validateForm($('#form-modal'))) {
                     loading('info', 'Saving...');
-                    $.post(actionUrl, { action: 'save_custom_template', template: data.template }, function(res) {
-                        if(res.success) {
-                            dt.fnReloadAjax();
-                            loading('success', 'Saved');
-                            $('#form-modal').modal('hide');
+                    var formData = new FormData();
+                    formData.append('file', data.template.uploaded_file);
+                    formData.append('id', data.template.id);
+                    formData.append('event_id', data.template.event_id);
+                    formData.append('name', data.template.name);
+                    formData.append('content', data.template.content);
+                    formData.append('attach_type', data.template.attach_type);
+                    formData.append('custom_link', data.template.custom_link);
+                    formData.append('action', 'save_custom_template');
+
+                    $.ajax({
+                        url : actionUrl,
+                        type : 'POST',
+                        data : formData,
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,  // tell jQuery not to set contentType
+                        success : function(res) {
+                            console.log(res);
+                            if (res == "OK") {
+                                dt.fnReloadAjax();
+                                loading('success', 'Saved');
+                                $('#form-modal').modal('hide');
+                            } else {
+                                loading('danger', 'Save failed, something is wrong.');
+                            }
                         }
-                    }, 'json');
+                    });
                 }
             },
             deleteTemplate: function() {
@@ -270,6 +325,29 @@
                     en.modules = getActiveModules($(event.currentTarget).parent());
                 }
                 console.log(en.modules);
+            },
+            onFileChange: function(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length) {
+                    return;
+                }
+                data.template.uploaded_file = files[0];
+                this.createImage(files[0]);
+            },
+            createImage: function(file) {
+                var reader = new FileReader();
+                var vm = this;
+
+                reader.onload = (function(theFile){
+                    return function(e){
+                        vm.template_image = e.target.result;
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            },
+            removeImage: function (e) {
+                this.template_image = '';
             }
         }
     });
@@ -322,7 +400,10 @@
                 { data: "date_created", width: "15%" },
                 { data: "id", visible: false },
                 { data: "event_id", visible: false },
-                { data: "content",visible: false }
+                { data: "content", visible: false },
+                { data: "attach_type", visible: false },
+                { data: "custom_link", visible: false },
+                { data: "uploaded_file", visible: false }
             ],
             "fnDrawCallback": function( oSettings ) {
                 var table = $("#dt").dataTable();
@@ -333,6 +414,14 @@
                     data.template.event_id = template.event_id;
                     data.template.name = template.name;
                     data.template.content = template.content;
+                    data.template.attach_type = template.attach_type;
+                    data.template.custom_link = template.custom_link;
+                    data.template.uploaded_file = template.uploaded_file;
+                    if (data.template.uploaded_file) {
+                        data.template_image = imagePath + data.template.uploaded_file;
+                    } else {
+                        data.template_image = '';
+                    }
                     $('#template_delete_btn').show();
                     $('#form-modal').modal({
                         show: true,

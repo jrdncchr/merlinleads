@@ -75,6 +75,28 @@ class Custom_Library {
 
         return $json->id;
     }
+
+    function upload_image($path, $file_name)
+    {
+        $result = array('success' => false);
+
+        $config['upload_path'] = $path;
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = 100;
+        $config['max_width'] = 1024;
+        $config['max_height'] = 768;
+        $config['file_name'] = $file_name;
+        $config['overwrite'] = true;
+
+        $CI =& get_instance();
+        $CI->load->library('upload', $config);
+        if (!$CI->upload->do_upload('file')) {
+            $result['error'] = $CI->upload->display_errors();
+        } else {
+            $result['success'] = true;
+        }
+        return $result;
+    }
     
     
 

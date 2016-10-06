@@ -24,6 +24,11 @@ define('STRIPE_SECRET_KEY', $stripe_keys[1]);
 define('TIME_ADJUST', 8);
 
 /*
+ * Folder Paths
+ */
+define('EVENT_NOTIFICATION_CUSTOM_TEMPLATES_IMG', './resources/uploads/event_notification_custom_templates/');
+
+/*
   |--------------------------------------------------------------------------
   | File and Directory Modes
   |--------------------------------------------------------------------------
