@@ -147,12 +147,12 @@ class Api_Model extends CI_Model {
 
     public function twitter_verify_access_key($user) {
         $result['has_access_key'] = false;
-        $result['valid_access_key'] = false;
+        $result['valid_access_token'] = false;
         try {
             $result['auth_url'] = $this->get_twitter_auth_url();
             if($user->twitter_access_token) {
                 $result['has_access_key'] = true;
-                $result['valid_access_key'] = true;
+                $result['valid_access_token'] = true;
                 $access_token = json_decode($user->twitter_access_token);
                 $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
                 $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
@@ -378,6 +378,58 @@ class Api_Model extends CI_Model {
             }
         }
 
+        return $result;
+    }
+
+    public function post_event_notification($event_notification, $post, $user)
+    {
+        $result = array();
+        $modules = explode('|', $event_notification->modules);
+        foreach($modules as $m) {
+            switch($m) {
+                case 'linkedin' :
+                    $data = array(
+                        'content' => array(
+                            'description' => $post->content
+                        ),
+                        'visibility' => array(
+                            "code" => "anyone"
+                        )
+                    );
+                    if ($post->link) {
+                        $data['content']['submitted-url'] = $post->link;
+                    }
+                    $li = json_decode($user->li_access_token);
+
+                    $r = $this->post_linkedin($data, $li);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
+                case 'facebook' :
+                    $linkData = [
+                        'message' => $post->content,
+                        'privacy' => array('value' => "EVERYONE")
+                    ];
+                    if ($post->link) {
+                        $linkData['link'] = $post->link;
+                    }
+                    $r = $this->post_facebook($linkData, $user->fb_access_token);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                    break;
+                case 'twitter' :
+                    $message = $post->content;
+                    if($post->post_url) {
+                        $this->load->library('Googl');
+                        $short_url = $this->googl->shorten($post->link);
+                        $message .= "\n\n" . $short_url;
+                    }
+                    $r = $this->post_twitter($user->twitter_access_token, $message);
+                    $r['module'] = $m;
+                    $result[] = $r;
+                default:
+            }
+        }
         return $result;
     }
 

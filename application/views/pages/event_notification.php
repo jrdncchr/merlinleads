@@ -4,6 +4,9 @@
         display: block;
         margin-bottom: 10px;
     }
+    section {
+        display: inline;
+    }
 </style>
 <div class="row" id="app">
     <div class="col-sm-12">
@@ -22,11 +25,17 @@
                 <div class="alert alert-info">
                     <i class="fa fa-question-circle"></i> Click the title to show options.
                 </div>
-                <?php if (!$facebook['valid_access_token'] || !$twitter['valid_access_token'] || !$linkedin['valid_access_token']): ?>
+                <?php if (!$facebook['valid_access_token'] || !$twitter['valid_access_token'] || !$linked_in['valid_access_token']): ?>
                     <div class="alert alert-warning">
+                        <?php if (!$facebook['valid_access_token']) : ?>
                         <i class="fa fa-exclamation-circle"></i> You have not integrated your Facebook account yet. <a href="<?php echo base_url() . 'main/myaccount/facebook'; ?>">Setup Now</a> <br />
+                        <?php endif; ?>
+                        <?php if (!$linked_in['valid_access_token']) : ?>
                         <i class="fa fa-exclamation-circle"></i> You have not integrated your Linked In account yet. <a href="<?php echo base_url() . 'main/myaccount/linkedin'; ?>">Setup Now</a> <br />
+                        <?php endif; ?>
+                        <?php if (!$twitter['valid_access_token']) : ?>
                         <i class="fa fa-exclamation-circle"></i> You have not integrated your Twitter account yet. <a href="<?php echo base_url() . 'main/myaccount/twitter'; ?>">Setup Now</a> <br />
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
                 <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -75,7 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group pull-right">
+                                        <div class="form-group text-right">
                                             <section v-if="social_accounts.facebook.valid_access_token || social_accounts.twitter.valid_access_token || social_accounts.facebook.valid_access_token">
                                                 <label>Social Accounts Available</label>
                                                 <div class="form-control-static">
@@ -87,7 +96,7 @@
                                                         <i v-if="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
                                                         <i v-else="es.modules.indexOf('twitter') == -1" class="fa fa-twitter-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
                                                     </section>
-                                                    <section v-if="social_accounts.facebook.valid_access_token">
+                                                    <section v-if="social_accounts.linked_in.valid_access_token">
                                                         <i v-if="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-2x social" v-on:click="toggleModule(es, $event)"></i>
                                                         <i v-else="es.modules.indexOf('linkedin') == -1" class="fa fa-linkedin-square fa-3x social account-on" v-on:click="toggleModule(es, $event)"></i>
                                                     </section>

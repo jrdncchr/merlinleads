@@ -486,6 +486,11 @@ class Template_Model extends CI_Model {
         return $content;
     }
 
+    public function generateTemplateContent($data, $property, $profile, $module)
+    {
+        return $this->generatePropertyCraiglistFull($data, $property, $profile, $module);
+    }
+
     /*
      * Social (Twitter, Facebook)
      */

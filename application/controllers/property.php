@@ -1288,9 +1288,10 @@ class Property extends MY_Controller {
                         $ext = pathinfo($file, PATHINFO_EXTENSION);
                         $file_name = $this->user->id . '_' .  $template['id'];
                         $template['uploaded_file'] = $file_name . "." . $ext;
+                        $this->load->library('custom_library');
                         $upload_result = $this->custom_library->upload_image(EVENT_NOTIFICATION_CUSTOM_TEMPLATES_IMG, $file_name);
                         if (!$upload_result['success']) {
-                            echo "FAILED";
+                            echo $upload_result['error'];
                             break;
                         }
                     }
@@ -1374,38 +1375,12 @@ class Property extends MY_Controller {
                 if ($en_settings) {
                     if ($key_factors['sale_type'] == 'Sold') {
                         $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'sold');
-                        if ($ens) {
-                            // send notification !
-                        }
                     } else {
                         $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
-                        if ($ens) {
-                            // send notification !
-                        }
                     }
                 }
             }
         }
-
-        // Back on the Market | Off the Market
-//        if ($key_factors['status'] != $old_key_factors['status']) {
-//            $result = $this->property_model->update_property_overview_by_property_id($key_factors['property_id'], array('status' => $key_factors['status']));
-//            if ($result['success']) {
-//                if ($en_settings) {
-//                    if ($key_factors['status'] == 'Active') {
-//                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'back_on_the_market');
-//                        if ($ens) {
-//                            // send notification !
-//                        }
-//                    } else {
-//                        $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'off_the_market');
-//                        if ($ens) {
-//                            // send notification !
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         // Price
         if ($key_factors['price'] != $old_key_factors['price']) {
@@ -1413,9 +1388,6 @@ class Property extends MY_Controller {
             if ($result['success']) {
                 if ($en_settings) {
                     $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'price_change');
-                    if ($ens) {
-                        // send notification !
-                    }
                 }
             }
         }
@@ -1426,11 +1398,38 @@ class Property extends MY_Controller {
             if ($result['success']) {
                 if ($en_settings) {
                     $ens = $this->_get_event_notification_settings_by_event_key($en_settings, 'video');
-                    if ($ens) {
-                        // send notification !
-                    }
                 }
             }
+        }
+
+        if (isset($ens)) {
+            $this->load->model('events_templates_model');
+            $this->load->model('property_model');
+            $property = $this->property_model->getProperty($key_factors['property_id']);
+
+            if ($ens->template_type == 'merlin') {
+                $template = $this->events_templates_model->get(array('id' => $ens->template_id));
+
+                $this->load->model('profile_model');
+                $profile = $this->profile_model->getProfile($property->profile_id);
+                $this->load->model('property_module_model');
+                $module = $this->property_module_model->getClassifiedsModule($key_factors['property_id']);
+
+                $this->load->model('template_model');
+                $content = array(
+                    'content' => $this->template_model->generateTemplateContent($template->content, $property, $profile, $module),
+                    'link' => $template->attach_type == 'Property Link' ? $property->webpage : $template->link
+                );
+            } else {
+                $template = $this->events_templates_model->get_custom(array('id' => $ens->template_id));
+                $content = array(
+                    'content' => $template->content,
+                    'link' => $template->attach_type == 'Property Link' ? $property->webpage : $template->link
+                );
+            }
+
+            $this->load->model('api_model');
+            $this->api_model->post_event_notification($ens, $content, $this->user);
         }
 
         return array('success' => true);
