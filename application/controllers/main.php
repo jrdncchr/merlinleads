@@ -77,10 +77,7 @@ class Main extends MY_Controller {
         $this->data['states'] = $this->input_model->getCountryStates($user->country, $user->state_abbr);
 
         //API integrations
-        $this->load->model('api_model');
-        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
-        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
-        $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+       $this->get_account_integrations();
 
         //Cities / Zip Codes
         $this->load->model('city_zipcode_model');
@@ -93,6 +90,13 @@ class Main extends MY_Controller {
         $this->data['user'] = $user;
         $this->js[] = "custom/myaccount.js";
         $this->_renderL('pages/myaccount');
+    }
+
+    public function remove_account_integration($id)
+    {
+        $this->load->model('user_account_model');
+        $this->user_account_model->delete($this->user->id, $id);
+        redirect(base_url() . "main/myaccount/facebook");
     }
 
     public function save_city_zipcode() {

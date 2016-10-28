@@ -71,9 +71,15 @@ class MY_Controller extends CI_Controller
             $this->data['seo_builder'] = $this->seo_builder_admin->checkAuth($this->user->id);
             $this->data['user'] = $this->user;
             $this->data['main_f'] = $this->main_f;
-
-//            var_dump($this->subscription);exit;
         }
+    }
+
+    public function get_account_integrations()
+    {
+        $this->load->model('api_model');
+        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
+        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
+        $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
     }
 
     /*

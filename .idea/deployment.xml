@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="demo.merlinleads">
+  <component name="PublishConfigData" serverName="demo.merlinleads" uploadOnCheckin="4968b224-1f2f-46e0-b85f-49503e111a33">
     <serverData>
       <paths name="demo.merlinleads">
         <serverdata>
@@ -9,7 +9,15 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="merlinleads">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="demo.merlinleads" />
   </component>
 </project>
 

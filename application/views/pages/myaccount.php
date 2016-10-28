@@ -323,6 +323,11 @@
 
 <!-- Advance Div -->
 <div class="tab-pane <?php echo $redirect ? 'active' : '' ?>" id="advance">
+
+    <div class="alert alert-info" style="margin-top: 20px;">
+        <i class="fa fa-question-circle"></i> If you want to add multiple accounts, make sure that the account you want to add is logged in on the selected social media and then click the authorize button. Or make sure that no account is logged in on the selected social media and then click the authorize button, you'll asked to log in the account you want to add.
+    </div>
+
     <div class="tabbable tabs-left" style="margin-top: 20px; text-overflow: ellipsis">
         <ul class="nav nav-tabs">
             <li <?php echo ($redirect == "twitter" || $redirect == "" || $redirect == "integrations") ? ' class="active"' : '' ?>><a href="#integration-twitter" data-toggle="tab">Twitter</a></li>
@@ -331,6 +336,7 @@
         </ul>
 
         <div class="tab-content">
+
             <!-- Twitter -->
             <div class="tab-pane <?php echo ($redirect == "twitter" || $redirect == "" || $redirect == "integrations") ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
                 <?php
@@ -355,23 +361,25 @@
             <div class="tab-pane <?php echo $redirect == 'facebook' ? 'active' : '' ?>" id="integration-facebook">
                 <?php
                 if(isset($main_f->facebook_feed_posting)) { ?>
-                    <?php if($fb['valid_access_token']) { ?>
-                        <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Facebook integration into your account! </p>
-                        <p>Expiry Date: <b><?php echo $fb['expires_at']; ?></b></p>
-                        <img class="img img-thumbnail" src="//graph.facebook.com/<?php echo $fb['user']['id']?>/picture" />
-                        <?php echo $fb['user']['name']; ?>
-                        <br /><br />
-                        <p><i>Authorize your Facebook integration again before it expires.</i></p>
-                        <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
+                    <?php if ($fb['has_valid_access_token']) { ?>
+                        <?php foreach ($fb['accounts'] as $account): ?>
+                            <?php if ($account['expired_access_token']): ?>
+                                <p class="text-warning">Your Facebook access token for account(<?php echo $account['user']['name']; ?>) had already expired, please authorize your Facebook again.</p>
+                            <?php else: ?>
+                                <p class="text-success">You have authorized Facebook integration into your account!</p>
+                                <p>Expiry Date: <b><?php echo $account['expires_at']; ?></b></p>
+                                <img class="img img-thumbnail" src="//graph.facebook.com/<?php echo $account['user']['id']?>/picture" />
+                                <?php echo $account['user']['name']; ?>
+                                <br /><br />
+                                <a href="<?php echo base_url() . 'main/remove_account_integration/' . $account['id']; ?>" class="btn btn-xs btn-danger">Remove Account</a>
+                                <hr />
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     <?php } else { ?>
-                        <?php if(isset($fb['expired_access_token'])) { ?>
-                            <p class="text-warning">Your Facebook access token had already expired, please authorize your Facebook again.</p>
-                        <?php } else { ?>
-                            <p class="text-warning">You have NOT yet authorized Facebook integration into your account yet.</p>
-                        <?php } ?>
-
-                        <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
+                        <p class="text-warning">You have not yet authorized Facebook integration into your account yet.</p>
                     <?php }  ?>
+                    <br />
+                    <a class="btn btn-sm btn-primary" href="<?php echo $fb['login_url']; ?>"><i class="fa fa-facebook-square"></i> Authorize Facebook Posting</a>
                 <?php } else { ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
                     <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i

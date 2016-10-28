@@ -19,28 +19,39 @@ class Api_Model extends CI_Model {
      * FACEBOOK
      */
     public function facebook_verify_access_key($user) {
-        $result = array(
-            'valid_access_token' => false
-        );
+        $result = array('has_valid_access_token' => false);
+
         $fb = new \Facebook\Facebook([
             'app_id' => FB_APP_ID,
             'app_secret' => FB_SECRET_KEY
         ]);
 
-        if($user->fb_access_token) {
-            $oAuth2Client = $fb->getOAuth2Client();
-            $tokenMetadata = $oAuth2Client->debugToken($user->fb_access_token);
-            $accessToken = new Facebook\Authentication\AccessToken(
-                $user->fb_access_token,
-                strtotime($tokenMetadata->getExpiresAt()->format('M d, Y'))
-            );
+        $CI =& get_instance();
+        $CI->load->model('user_account_model');
+        $facebook_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'facebook'));
 
-            if($accessToken->isExpired()) {
-                $result['expired_access_token'] = true;
-            } else {
-                $result['valid_access_token'] = true;
-                $result['expires_at'] = $tokenMetadata->getExpiresAt()->format('M d, Y');
-                $result['user'] = $this->facebook_get_user($user->fb_access_token);
+        if (sizeof($facebook_accounts) > 0) {
+            foreach ($facebook_accounts as $account) {
+                if ($account->access_token) {
+                    $oAuth2Client = $fb->getOAuth2Client();
+                    $tokenMetadata = $oAuth2Client->debugToken($account->access_token);
+                    $accessToken = new Facebook\Authentication\AccessToken(
+                        $account->access_token,
+                        strtotime($tokenMetadata->getExpiresAt()->format('M d, Y'))
+                    );
+
+                    if ($accessToken->isExpired()) {
+                        $a['expired_access_token'] = true;
+                    } else {
+                        $a['expired_access_token'] = false;
+                        $a['valid_access_token'] = true;
+                        $a['expires_at'] = $tokenMetadata->getExpiresAt()->format('M d, Y');
+                        $a['user'] = $this->facebook_get_user($account->access_token);
+                        $a['id'] = $account->id;
+                        $result['has_valid_access_token'] = true;
+                    }
+                    $result['accounts'][] = $a;
+                }
             }
         }
 

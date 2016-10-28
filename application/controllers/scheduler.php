@@ -17,10 +17,7 @@ class scheduler extends MY_Controller
 
     public function index()
     {
-        $this->load->model('api_model');
-        $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
-        $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
-        $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+        $this->get_account_integrations();
 
         $this->load->model('profile_model');
         $this->data['profile'] = $this->profile_model->getProfilesByUser($this->user->id);
@@ -43,10 +40,10 @@ class scheduler extends MY_Controller
         switch($action) {
             case 'save' :
                 $scheduler = $this->input->post('scheduler');
-                if(isset($scheduler['scheduler_id'])) {
+                $scheduler['user_id'] = $this->user->id;
+                if (isset($scheduler['scheduler_id'])) {
                     $result = $this->scheduler_model->update_scheduler($scheduler['scheduler_id'], $scheduler);
                 } else {
-                    $scheduler['user_id'] = $this->user->id;
                     $result = $this->scheduler_model->add_scheduler($scheduler);
                 }
                 echo json_encode($result);

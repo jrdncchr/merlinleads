@@ -26,7 +26,7 @@ define('TIME_ADJUST', 8);
 /*
  * Folder Paths
  */
-define('EVENT_NOTIFICATION_CUSTOM_TEMPLATES_IMG', './resources/uploads/event_notification_custom_templates/');
+define('EVENT_NOTIFICATION_CUSTOM_TEMPLATES_IMG', FCPATH . 'resources/uploads/event_notification_custom_templates/');
 
 /*
   |--------------------------------------------------------------------------

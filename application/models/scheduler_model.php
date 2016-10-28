@@ -34,13 +34,14 @@ class scheduler_model extends CI_Model {
         if($result->num_rows() > 0) {
             $scheduler = $result->result();
             foreach($scheduler as $s) {
-                if($s->library == "user") {
+                if ($s->library == "user") {
                     $category_details = $this->db->get_where($this->scheduler_category_table, array('category_id' => $s->category_id));
                     $s->category = $category_details->row();
                 } else if($s->library == "merlin") {
                     $category_details = $this->db->get_where($this->merlin_category_table, array('category_id' => $s->category_id));
                     $s->category = $category_details->row();
                 }
+                $s->user_accounts = $this->db->get_where('scheduler_user_account', array('scheduler_id' => $s->scheduler_id))->result();
                 $list[] = $s;
             }
         }
@@ -48,13 +49,20 @@ class scheduler_model extends CI_Model {
     }
 
     public function add_scheduler($scheduler) {
+        $user_accounts = $scheduler['user_accounts'];
+        unset($scheduler['user_accounts']);
         $this->db->insert($this->scheduler_table, $scheduler);
-        return array('success' => true, 'inserted_id' => $this->db->insert_id());
+        $scheduler_id = $this->db->insert_id();
+        $this->save_scheduler_user_accounts($scheduler_id, $user_accounts);
+        return array('success' => true, 'inserted_id' => $scheduler_id);
     }
 
     public function update_scheduler($id, $scheduler) {
+        $user_accounts = $scheduler['user_accounts'];
+        unset($scheduler['user_accounts']);
         $this->db->where('scheduler_id', $id);
         $this->db->update($this->scheduler_table, $scheduler);
+        $this->save_scheduler_user_accounts($id, $user_accounts);
         return array('success' => true);
     }
 
@@ -62,6 +70,27 @@ class scheduler_model extends CI_Model {
         $this->db->where('scheduler_id', $id);
         $this->db->delete($this->scheduler_table);
         return array('success' => true);
+    }
+
+    /*
+     * Scheduler User Accounts
+     */
+
+    public function save_scheduler_user_accounts($scheduler_id, $user_accounts)
+    {
+        foreach ($user_accounts as $ua) {
+            $result = $this->db->get_where('scheduler_user_account', array('scheduler_id' => $scheduler_id, 'user_account_id' => $ua['id']));
+            if ($result->num_rows() > 0) {
+                if ($ua['status'] == 'off') {
+                    $this->db->where(array('scheduler_id' => $scheduler_id, 'user_account_id' => $ua['id']));
+                    $this->db->delete('scheduler_user_account');
+                }
+            } else {
+                if ($ua['status'] == 'on') {
+                    $this->db->insert('scheduler_user_account', array('scheduler_id' => $scheduler_id, 'user_account_id' => $ua['id']));
+                }
+            }
+        }
     }
 
     /*

@@ -20,8 +20,9 @@
 
     .scheduler_block {
         text-align: center;
-        margin-bottom: 7px !important;
+        margin-bottom: 3px !important;
         cursor: pointer;
+        padding: 10px 10px;;
     }
     .scheduler_block:hover {
         font-weight: bold;
@@ -37,7 +38,12 @@
         background-color: #F8EFB6;
     }
     .block-inactive {
-        background-color: #808080;
+        background-color: #d3d3d3;
+        color: #808080;
+    }
+
+    .account-on {
+        border-color: 1px solid blue;;
     }
 </style>
 
@@ -97,23 +103,9 @@
                                     <input type="hidden" class="s_profile_id" value="<?php echo $s->profile_id; ?>" />
                                     <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
                                     <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
+                                    <input type="hidden" class="s_user_accounts" value="<?php echo htmlentities(json_encode($s->user_accounts)); ?>" />
                                     <p><?php echo $s->category->category_name; ?></p>
-                                    <p class="modules">
-                                    <?php
-                                    $modules = explode(',', $s->modules);
-                                    foreach($modules as $m) {
-                                        if($m == "Facebook") {
-                                            echo "<i class='fa fa-facebook'></i> ";
-                                        } else if($m == "Twitter") {
-                                            echo "<i class='fa fa-twitter'></i> ";
-                                        } else if($m == "LinkedIn") {
-                                            echo "<i class='fa fa-linkedin'></i> ";
-                                        } else if($m == "All") {
-                                            echo "<i class='fa fa-asterisk'></i> ";
-                                        }
-                                    }
-                                    ?>
-                                    </p>
+
                                     </div>
                                 <?php } ?>
                             <?php endforeach; ?>
@@ -192,8 +184,14 @@
                     <label>* Accounts</label>
                     <div id="accounts">
                         <?php if(isset($main_f->facebook_feed_posting)) { ?>
-                            <?php if(isset($fb['valid_access_token'])) { ?>
-                                <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
+                            <?php if(isset($fb['has_valid_access_token'])) { ?>
+                                <?php foreach ($fb['accounts'] as $account): ?>
+                                    <?php if (!$account['expired_access_token']): ?>
+                                        <img class="img img-thumbnail account" src="//graph.facebook.com/<?php echo $account['user']['id']?>/picture"
+                                             data-toggle="popover" data-placement="top" data-content="<?php echo $account['user']['name']; ?>"
+                                             data-id="<?php echo $account['id']; ?>" />
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             <?php } ?>
                         <?php } ?>
 
@@ -217,7 +215,7 @@
                             <span class="text-danger">No accounts setup yet. <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup Now.</a></span>
                         <?php } ?>
 
-                        <br />
+                        <br /><br />
                         <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup your social accounts now.</a>
                     </div>
                 </div>
@@ -237,6 +235,8 @@
     var schedulerId = 0;
 
     $(function() {
+        activatePopovers();
+
         $('#add-timeslot-btn').on('click', function() {
             schedulerId = 0;
             $('#delete-btn').hide();
@@ -246,9 +246,7 @@
                 backdrop: 'static',
                 keyboard: false
             });
-            modal.find('.fa-facebook-square').removeClass('account-on');
-            modal.find('.fa-twitter-square').removeClass('account-on');
-            modal.find('.fa-linkedin-square').removeClass('account-on');
+            modal.find('.account').removeClass('account-on');
             modal.find('.modal-title').html('Add Timeslot');
         });
 
@@ -261,7 +259,8 @@
                 day : selectedBlock.find('.s_day').val(),
                 library : selectedBlock.find('.s_library').val(),
                 property_id : selectedBlock.find('.s_property_id').val(),
-                profile_id : selectedBlock.find('.s_profile_id').val()
+                profile_id : selectedBlock.find('.s_profile_id').val(),
+                user_accounts : JSON.parse(selectedBlock.find('.s_user_accounts').val())
             };
 
             $('#delete-btn').show();
@@ -289,25 +288,34 @@
                 $('#profile').val(scheduler.profile_id);
             }
 
-            if(selectedBlock.find('.fa-facebook').length > 0) {
-                modal.find('.fa-facebook-square').addClass('account-on');
-            } else {
-                modal.find('.fa-facebook-square').removeClass('account-on');
-            }
-            if(selectedBlock.find('.fa-twitter').length > 0) {
-                modal.find('.fa-twitter-square').addClass('account-on');
-            } else {
-                modal.find('.fa-twitter-square').removeClass('account-on');
-            }
-            if(selectedBlock.find('.fa-linkedin').length > 0) {
-                modal.find('.fa-linkedin-square').addClass('account-on');
-            } else {
-                modal.find('.fa-linkedin-square').removeClass('account-on');
-            }
+            $('#accounts').find('.account').each(function() {
+                for (var i in scheduler.user_accounts) {
+                    if ($(this).data('id') == scheduler.user_accounts[i].user_account_id) {
+                        $(this).addClass('account-on');
+                        break;
+                    }
+                }
+            });
+
+
+//            if (selectedBlock.find('.fa-facebook').length > 0) {
+//                modal.find('.fa-facebook-square').addClass('account-on');
+//            } else {
+//                modal.find('.fa-facebook-square').removeClass('account-on');
+//            }
+//            if (selectedBlock.find('.fa-twitter').length > 0) {
+//                modal.find('.fa-twitter-square').addClass('account-on');
+//            } else {
+//                modal.find('.fa-twitter-square').removeClass('account-on');
+//            }
+//            if (selectedBlock.find('.fa-linkedin').length > 0) {
+//                modal.find('.fa-linkedin-square').addClass('account-on');
+//            } else {
+//                modal.find('.fa-linkedin-square').removeClass('account-on');
+//            }
         });
 
-        $('.social').on('click', function() {
-            var modal = $('#form-modal');
+        $('.account').on('click', function() {
             if(!$(this).hasClass('account-on')) {
                 $(this).addClass('account-on');
             } else {
@@ -341,6 +349,7 @@
         $('#form-modal').on("hidden.bs.modal", function() {
             $('#category-section').hide();
             $('#category-merlin-options').hide();
+            $('#form-modal').find('.account').removeClass('account-on');
         });
 
         $('#save-btn').on('click', function() {
@@ -359,25 +368,22 @@
                     data.scheduler.property_id = $('#property').val();
                     data.scheduler.profile_id = $('#profile').val();
                 }
-                var modules = "";
-                $('#accounts').find('.social').each(function() {
-                    if($(this).hasClass('account-on')) {
-                        if($(this).hasClass('account-facebook')) {
-                            modules += "Facebook";
-                        } else if($(this).hasClass('account-twitter')) {
-                            modules += "Twitter";
-                        } else if($(this).hasClass('account-linkedin')) {
-                            modules += "LinkedIn";
-                        }
-                        modules += ",";
+                var user_accounts = [];
+                $('#accounts').find('.account').each(function() {
+                    var account = {};
+                    account.id = $(this).data('id');
+                    if ($(this).hasClass('account-on')) {
+                        account.status = "on";
+                    } else {
+                        account.status = "off";
                     }
+                    user_accounts.push(account);
                 });
-                modules = modules.substring(0, modules.length - 1);
-                if(modules == "") {
+                if (!user_accounts.length) {
                     validator.displayAlertError($('#form-modal'), true, "Select at least one account.");
                     return false;
                 }
-                data.scheduler.modules = modules;
+                data.scheduler.user_accounts = user_accounts;
                 if(schedulerId > 0) {
                     data.scheduler.scheduler_id = schedulerId;
                 }
@@ -407,5 +413,13 @@
                 }, 'json');
             }
         })
-    })
+    });
+
+    function activatePopovers() {
+        $(document).find(".account").each(function() {
+            $(this).popover({
+                'trigger': 'hover'
+            });
+        });
+    }
 </script>

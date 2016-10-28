@@ -63,20 +63,28 @@ class Facebook extends MY_Controller {
             }
         }
 
-        $this->load->model('user_model');
-        $update = array(
-            'fb_access_token' => (string) $access_token
+        $facebook_access_token = (string) $access_token;
+        $this->load->model('api_model');
+        $facebook_user = $this->api_model->facebook_get_user($facebook_access_token);
+
+        $user_account = array(
+            'user_id' => $this->user->id,
+            'account_id' => $facebook_user['id'],
+            'type' => 'facebook',
+            'access_token' => $facebook_access_token
         );
 
-        if($this->user_model->updateInfo($update, $this->user->id)) {
-            $_SESSION['facebook_access_token'] = (string) $access_token;
-            $this->session->set_userdata('facebook_access_token', (string) $access_token);
+        $this->load->model('user_account_model');
+        if ($this->user_account_model->save($user_account)) {
+            $_SESSION['facebook_access_token'] = $facebook_access_token;
+            $this->session->set_userdata('facebook_access_token', $facebook_access_token);
             redirect(base_url() . "main/myaccount/facebook");
         }
     }
 
 
-    function post() {
+    function post()
+    {
         $message = $this->input->post('headline') .  "\n\n" . $this->input->post('body') . "\n\n" . $this->input->post('keywords');
         $linkData = [
             'link' => $this->input->post('link'),
