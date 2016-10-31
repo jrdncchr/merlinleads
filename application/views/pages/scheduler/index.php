@@ -41,10 +41,6 @@
         background-color: #d3d3d3;
         color: #808080;
     }
-
-    .account-on {
-        border-color: 1px solid blue;;
-    }
 </style>
 
 <h4 style="text-align: center; font-weight: bold; margin-bottom: 15px;">Scheduler - Weekly</h4>
@@ -64,6 +60,7 @@
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
     </ul>
+    <hr style="border-style: dotted" />
 </div>
 
 
@@ -93,19 +90,18 @@
                             <?php foreach($scheduler as $s): ?>
                                 <?php if($s->day == $d && $s->time == $t) { ?>
                                     <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : 'user-block'; ?> <?php echo $s->status != 'Active' ? 'block-inactive' : 'k'; ?>">
-                                    <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
-                                    <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
-                                    <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />
-                                    <input type="hidden" class="s_time" value="<?php echo $s->time; ?>" />
-                                    <input type="hidden" class="s_library" value="<?php echo $s->library; ?>" />
-                                    <input type="hidden" class="s_category_id" value="<?php echo $s->category_id; ?>" />
-                                    <input type="hidden" class="s_property_id" value="<?php echo $s->property_id; ?>" />
-                                    <input type="hidden" class="s_profile_id" value="<?php echo $s->profile_id; ?>" />
-                                    <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
-                                    <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
-                                    <input type="hidden" class="s_user_accounts" value="<?php echo htmlentities(json_encode($s->user_accounts)); ?>" />
-                                    <p><?php echo $s->category->category_name; ?></p>
-
+                                        <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
+                                        <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
+                                        <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />
+                                        <input type="hidden" class="s_time" value="<?php echo $s->time; ?>" />
+                                        <input type="hidden" class="s_library" value="<?php echo $s->library; ?>" />
+                                        <input type="hidden" class="s_category_id" value="<?php echo $s->category_id; ?>" />
+                                        <input type="hidden" class="s_property_id" value="<?php echo $s->property_id; ?>" />
+                                        <input type="hidden" class="s_profile_id" value="<?php echo $s->profile_id; ?>" />
+                                        <input type="hidden" class="s_date" value="<?php echo $s->date; ?>" />
+                                        <input type="hidden" class="s_status" value="<?php echo $s->status; ?>" />
+                                        <input type="hidden" class="s_user_accounts" value="<?php echo htmlentities(json_encode($s->user_accounts)); ?>" />
+                                        <p><?php echo $s->category->category_name; ?></p>
                                     </div>
                                 <?php } ?>
                             <?php endforeach; ?>
@@ -296,23 +292,6 @@
                     }
                 }
             });
-
-
-//            if (selectedBlock.find('.fa-facebook').length > 0) {
-//                modal.find('.fa-facebook-square').addClass('account-on');
-//            } else {
-//                modal.find('.fa-facebook-square').removeClass('account-on');
-//            }
-//            if (selectedBlock.find('.fa-twitter').length > 0) {
-//                modal.find('.fa-twitter-square').addClass('account-on');
-//            } else {
-//                modal.find('.fa-twitter-square').removeClass('account-on');
-//            }
-//            if (selectedBlock.find('.fa-linkedin').length > 0) {
-//                modal.find('.fa-linkedin-square').addClass('account-on');
-//            } else {
-//                modal.find('.fa-linkedin-square').removeClass('account-on');
-//            }
         });
 
         $('.account').on('click', function() {

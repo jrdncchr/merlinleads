@@ -15,6 +15,7 @@
         <li role="presentation" class="active"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
     </ul>
+    <hr style="border-style: dotted" />
 </div>
 
 <button id="add-btn" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add Category</button>

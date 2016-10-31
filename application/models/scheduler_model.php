@@ -94,6 +94,27 @@ class scheduler_model extends CI_Model {
     }
 
     /*
+     * Scheduler OTP User Accounts
+     */
+
+    public function save_scheduler_otp_user_accounts($scheduler_post_id, $user_accounts)
+    {
+        foreach ($user_accounts as $ua) {
+            $result = $this->db->get_where('scheduler_otp_user_account', array('scheduler_post_id' => $scheduler_post_id, 'user_account_id' => $ua['id']));
+            if ($result->num_rows() > 0) {
+                if ($ua['status'] == 'off') {
+                    $this->db->where(array('scheduler_post_id' => $scheduler_post_id, 'user_account_id' => $ua['id']));
+                    $this->db->delete('scheduler_otp_user_account');
+                }
+            } else {
+                if ($ua['status'] == 'on') {
+                    $this->db->insert('scheduler_otp_user_account', array('scheduler_post_id' => $scheduler_post_id, 'user_account_id' => $ua['id']));
+                }
+            }
+        }
+    }
+
+    /*
      * Scheduler Category
      */
     public function get_scheduler_category($where = array(), $list = true) {
@@ -123,22 +144,36 @@ class scheduler_model extends CI_Model {
     /*
      * Scheduler Post
      */
-    public function get_scheduler_post($where = array(), $list = true) {
+    public function get_scheduler_post($where = array(), $list = true)
+    {
         $this->db->select('scheduler_post.*, scheduler_category.category_name as user_category, merlin_category.category_name as merlin_category');
         $this->db->join($this->scheduler_category_table, 'scheduler_category.category_id = scheduler_post.post_category_id', 'left');
         $this->db->join($this->merlin_category_table, 'merlin_category.category_id = scheduler_post.post_category_id', 'left');
         $result = $this->db->get_where($this->scheduler_post_table, $where);
-        return $list ? $result->result() : $result->row();
+        if ($list) {
+            return $result->result();
+        } else {
+            $post = $result->row();
+            $post->user_accounts = $this->db->get_where('scheduler_otp_user_account', array('scheduler_post_id' => $where['post_id']))->result();
+            return $post;
+        }
     }
 
     public function add_scheduler_post($post) {
+        $user_accounts = $post['user_accounts'];
+        unset($post['user_accounts']);
         $this->db->insert($this->scheduler_post_table, $post);
-        return array('success' => true, 'inserted_id' => $this->db->insert_id());
+        $post_id = $this->db->insert_id();
+        $this->save_scheduler_otp_user_accounts($post_id, $user_accounts);
+        return array('success' => true, 'inserted_id' =>$post_id);
     }
 
     public function update_scheduler_post($id, $post) {
+        $user_accounts = $post['user_accounts'];
+        unset($post['user_accounts']);
         $this->db->where('post_id', $id);
         $this->db->update($this->scheduler_post_table, $post);
+        $this->save_scheduler_otp_user_accounts($id, $user_accounts);
         return array('success' => true);
     }
 

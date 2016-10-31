@@ -105,10 +105,7 @@ class scheduler extends MY_Controller
     public function post($action = "", $id = 0)
     {
         if($action == "form") {
-            $this->load->model('api_model');
-            $this->data['fb'] = $this->api_model->facebook_verify_access_key($this->user);
-            $this->data['linkedIn'] = $this->api_model->linkedin_verify_access_key($this->user);
-            $this->data['twitter'] = $this->api_model->twitter_verify_access_key($this->user);
+            $this->get_account_integrations();
 
             $this->data['available_times'] = $this->_getAvailableTimes();
             $category = $this->scheduler_model->get_scheduler_category(
@@ -158,10 +155,10 @@ class scheduler extends MY_Controller
 
             case 'save' :
                 $post = $this->input->post('post');
-                if(isset($post['post_id'])) {
+                $post['post_user_id'] = $this->user->id;
+                if (isset($post['post_id'])) {
                     $result = $this->scheduler_model->update_scheduler_post($post['post_id'], $post);
                 } else {
-                    $post['post_user_id'] = $this->user->id;
                     $result = $this->scheduler_model->add_scheduler_post($post);
                 }
                 echo json_encode($result);

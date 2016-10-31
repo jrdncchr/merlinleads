@@ -1,12 +1,4 @@
 <style>
-    .social {
-        cursor: pointer;
-    }
-    .account-on {
-        color: #00438A;
-        border-bottom: 3px solid #00438A;
-        padding-bottom: 2px;
-    }
     .counter {
         color: darkgray;
         font-size: 12px;
@@ -31,16 +23,10 @@
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
     </ul>
+    <hr style="border-style: dotted" />
 </div>
 
 <div class="row" id="app">
-    <div class="col-sm-12" style="margin-bottom: 20px;">
-        <button id="save-btn" class="btn btn-sm btn-success" v-on:click="savePost">Save</button>
-        <?php if(isset($post->post_id)) { ?>
-            <button class="btn btn-sm" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
-        <?php } ?>
-    </div>
-
     <div id="main-form">
         <div class="col-sm-12">
             <div class="notice"></div>
@@ -60,12 +46,12 @@
             </div>
             <div class="form-group">
                 <label for="post-type">* Type</label>
-                <select id="post-type" class="form-control" v-model="type" v-on:change="toggleTypeView">
-                    <option value="Evergreen">Evergreen</option>
-                    <option value="OTP">One Time Post</option>
+                <select id="post-type" class="form-control" v-model="form.otp" v-on:change="toggleTypeView">
+                    <option value="0">Evergreen</option>
+                    <option value="1">One Time Post</option>
                 </select>
             </div>
-            <div class="row" id="otp-section" style="display: none;">
+            <div class="row" id="otp-section" v-show="form.otp == 1">
                 <div class="col-sm-12" style="margin-top: 15px;">
                     <div class="form-group">
                         <label for="post-otp-date">* Date</label>
@@ -88,9 +74,24 @@
                     <div class="form-group">
                         <label>* Accounts</label>
                         <div id="accounts">
-                            <?php if(isset($main_f->facebook_feed_posting)) { ?>
-                                <?php if(isset($fb['valid_access_token'])) { ?>
-                                    <i class="fa fa-facebook-square fa-2x social account-facebook"></i>
+                            <?php if (isset($main_f->facebook_feed_posting)) { ?>
+                                <?php if (isset($fb['has_valid_access_token'])) { ?>
+                                    <?php foreach ($fb['accounts'] as $account): ?>
+                                        <?php if (!$account['expired_access_token']): ?>
+                                            <?php
+                                            $on = "";
+                                            foreach ($post->user_accounts as $ua) {
+                                                if ($ua->user_account_id == $account['id']) {
+                                                    $on = "account-on";
+                                                    break;
+                                                }
+                                            }
+                                            ?>
+                                            <img class="img img-thumbnail account <?php echo $on; ?>" src="//graph.facebook.com/<?php echo $account['user']['id']?>/picture"
+                                                 data-toggle="popover" data-placement="top" data-content="<?php echo $account['user']['name']; ?>"
+                                                 data-id="<?php echo $account['id']; ?>" />
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                 <?php } ?>
                             <?php } ?>
 
@@ -114,7 +115,7 @@
                                 <span class="text-danger">No accounts setup yet. <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup Now.</a></span>
                             <?php } ?>
 
-                            <br />
+                            <br /><br />
                             <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup your social accounts now.</a>
                         </div>
                     </div>
@@ -138,12 +139,12 @@
                 <input type="text" class="form-control url" id="post-url" v-model="form.post_url" value="{{ form.post_url }}" />
             </div>
 
-            <?php if(isset($fb['valid_access_token'])) { ?>
+            <?php if (isset($fb['has_valid_access_token'])): ?>
             <div class="form-group">
                 <label for="post-facebook-snippet">* Facebook Snippet</label>
                 <textarea class="form-control required" v-model="form.post_facebook_snippet" id="post-facebook-snippet" rows="3">{{ form.post_facebook_snippet }}</textarea>
             </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <?php if(isset($linkedIn['access_token'])) { ?>
                 <?php if(!$linkedIn['expired_access_token']) { ?>
@@ -182,6 +183,14 @@
                 </div>
             </div>
             <br />
+        </div>
+        <div class="col-sm-12" style="margin-bottom: 20px;">
+            <hr style="border-style: dotted" />
+            <button id="save-btn" class="btn btn-sm btn-success" v-on:click="savePost">Save</button>
+            <?php if(isset($post->post_id)) { ?>
+                <button class="btn btn-sm" v-on:click="deletePost" style="margin-right: 10px;">Delete</button>
+            <?php } ?>
+
         </div>
     </div>
 
@@ -305,10 +314,10 @@
 
     var data = {
         type : 'Evergreen',
-        post_id: <?php echo isset($post) ? json_encode($post->post_id) : '\'\'' ?>,
         merlin_category : <?php echo isset($post) ? json_encode($post->merlin_category) : '\'\'' ?>,
         user_category : <?php echo isset($post) ? json_encode($post->user_category) : '\'\'' ?>,
         form : {
+            post_id: <?php echo isset($post) ? json_encode($post->post_id) : '\'\'' ?>,
             post_name : <?php echo isset($post) ? json_encode($post->post_name) : '\'\'' ?>,
             post_library: <?php echo isset($post) ? json_encode($post->post_library) : '\'user\'' ?>,
             post_category_id : <?php echo isset($post) ? json_encode($post->post_category_id) : '\'\'' ?>,
@@ -339,27 +348,6 @@
         el: '#app',
         data: data,
         methods: {
-            toggleTypeView: function() {
-                if(data.type == "OTP") {
-                    data.form.otp = 1;
-                    $('#otp-section').show();
-                    if(!this.is_merlin) {
-                        $('#evergreen-section').hide();
-                    }
-                    $('#post-category').removeClass('required');
-                    $('#post-otp-date').addClass('required');
-                    $('#post-otp-time').addClass('required');
-                    $('#accounts-section').show();
-                } else {
-                    data.form.otp = 0;
-                    $('#otp-section').hide();
-                    $('#evergreen-section').show();
-                    $('#post-category').addClass('required');
-                    $('#post-otp-date').removeClass('required');
-                    $('#post-otp-time').removeClass('required');
-                    $('#accounts-section').hide();
-                }
-            },
             showFormModal: function() {
                 $('#form-modal').modal({
                     show: true,
@@ -419,25 +407,22 @@
             savePost: function() {
                 if(validator.validateForm($('#main-form'))) {
                     if(data.form.otp == 1) {
-                        var modules = "";
-                        $('#accounts').find('.social').each(function() {
-                            if($(this).hasClass('account-on')) {
-                                if($(this).hasClass('account-facebook')) {
-                                    modules += "Facebook";
-                                } else if($(this).hasClass('account-twitter')) {
-                                    modules += "Twitter";
-                                } else if($(this).hasClass('account-linkedin')) {
-                                    modules += "LinkedIn";
-                                }
-                                modules += ",";
+                        var user_accounts = [];
+                        $('#accounts').find('.account').each(function() {
+                            var account = {};
+                            account.id = $(this).data('id');
+                            if ($(this).hasClass('account-on')) {
+                                account.status = "on";
+                            } else {
+                                account.status = "off";
                             }
+                            user_accounts.push(account);
                         });
-                        modules = modules.substring(0, modules.length - 1);
-                        if(modules == "") {
+                        if (!user_accounts.length) {
                             validator.displayAlertError($('#main-form'), true, "Select at least one account.");
                             return false;
                         }
-                        data.form.otp_modules = modules;
+                        data.form.user_accounts = user_accounts;
                     }
                     loading('info', 'Saving post, please wait...');
                     $.post(actionUrl, {action: 'save', post: data.form}, function(res) {
@@ -494,28 +479,13 @@
         updateCount2($('#post-twitter-snippet'));
 
 
-        $('.social').on('click', function() {
-            var modal = $('#form-modal');
-            if(!$(this).hasClass('account-on')) {
+        $('.account').on('click', function() {
+            if (!$(this).hasClass('account-on')) {
                 $(this).addClass('account-on');
             } else {
                 $(this).removeClass('account-on');
             }
         });
-
-        <?php if(isset($post))  { ?>
-            var modules = <?php echo json_encode($post->otp_modules); ?>;
-            var split = modules.split(',');
-            for(var i = 0; i < split.length; i++) {
-                if(split[i] == "Facebook") {
-                    $('.account-facebook').addClass('account-on');
-                } else if(split[i] == "Twitter") {
-                    $('.account-twitter').addClass('account-on');
-                }  else if(split[i] == "LinkedIn") {
-                    $('.account-linkedin').addClass('account-on');
-                }
-            }
-        <?php } ?>
 
     });
 </script>

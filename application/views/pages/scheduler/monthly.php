@@ -61,6 +61,7 @@
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/category'; ?>">Categories</a></li>
         <li role="presentation"><a href="<?php echo base_url() . 'scheduler/post'; ?>">Posts</a></li>
     </ul>
+    <hr style="border-style: dotted" />
 </div>
 
 <div class="row" style="margin-top: 20px;">
