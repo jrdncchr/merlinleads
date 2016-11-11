@@ -23,14 +23,15 @@ class twitter extends MY_Controller {
         $access_token = $oauth->oauth("oauth/access_token",
             array("oauth_verifier" => $_GET['oauth_verifier']));
 
-        $this->load->model('user_model');
-        $update = array(
-            'twitter_access_token' => (string) json_encode($access_token)
+        $user_account = array(
+            'user_id' => $this->user->id,
+            'account_id' => $access_token['user_id'],
+            'type' => 'twitter',
+            'access_token' => (string) json_encode($access_token)
         );
 
-        if($this->user_model->updateInfo($update, $this->user->id)) {
-            $_SESSION['twitter_access_token'] = (string) json_encode($access_token);
-            $this->session->set_userdata('twitter_access_token', (string) json_encode($access_token));
+        $this->load->model('user_account_model');
+        if ($this->user_account_model->save($user_account)) {
             redirect(base_url() . "main/myaccount/twitter");
         }
 

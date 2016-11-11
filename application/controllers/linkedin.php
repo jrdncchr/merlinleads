@@ -14,45 +14,25 @@ class linkedin extends MY_Controller {
     }
 
     public function auth() {
-        if($_GET['state'] == $_SESSION['li_state']) {
-            if(isset($_GET['code'])) {
+        $linkedIn = new Happyr\LinkedIn\LinkedIn(LI_CLIENT_ID, LI_SECRET_KEY);
 
-                $params = array(
-                    'grant_type' => 'authorization_code',
-                    'client_id' => LI_CLIENT_ID,
-                    'client_secret' => LI_SECRET_KEY,
-                    'code' => $_GET['code'],
-                    'redirect_uri' => LI_CALLBACK
-                );
+        if ($linkedIn->isAuthenticated()) {
+            $access_token = $linkedIn->getAccessToken();
+            $user = $linkedIn->get('v1/people/~:(id)');
 
-                // Access Token request
-                $url = 'https://www.linkedin.com/uas/oauth2/accessToken?' . http_build_query($params);
+            $user_account = array(
+                'user_id' => $this->user->id,
+                'account_id' => $user['id'],
+                'type' => 'linkedin',
+                'access_token' => $access_token->getToken()
+            );
 
-                $ch = curl_init();
-
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_TIMEOUT, '3');
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-                $xmlstr = curl_exec($ch);
-                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
-                if($http_code == 200) {
-                    $token = json_decode($xmlstr);
-                    $token->expires_in = date("M d, Y", time() + $token->expires_in);
-                    $this->load->model('user_model');
-                    $update = array(
-                        'li_access_token' => (string) json_encode($token)
-                    );
-
-                    if($this->user_model->updateInfo($update, $this->user->id)) {
-                        redirect(base_url() . "main/myaccount/linkedin");
-                    }
-                }
+            $this->load->model('user_account_model');
+            if ($this->user_account_model->save($user_account)) {
+                redirect(base_url() . "main/myaccount/linkedin");
             }
-        } else {
-            exit("Something went wrong.");
         }
+        exit("Something went wrong.");
     }
 
     public function post() {

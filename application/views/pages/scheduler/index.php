@@ -179,31 +179,35 @@
                 <div class="form-group">
                     <label>* Accounts</label>
                     <div id="accounts">
-                        <?php if(isset($main_f->facebook_feed_posting)) { ?>
-                            <?php if(isset($fb['has_valid_access_token'])) { ?>
+                        <?php if (isset($main_f->facebook_feed_posting)) { ?>
+                            <?php if (isset($fb['has_valid_access_token'])) { ?>
                                 <?php foreach ($fb['accounts'] as $account): ?>
                                     <?php if (!$account['expired_access_token']): ?>
                                         <img class="img img-thumbnail account" src="//graph.facebook.com/<?php echo $account['user']['id']?>/picture"
-                                             data-toggle="popover" data-placement="top" data-content="<?php echo $account['user']['name']; ?>"
+                                             data-toggle="popover" data-placement="top" data-content="Facebook - <?php echo $account['user']['name']; ?>"
                                              data-id="<?php echo $account['id']; ?>" />
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             <?php } ?>
                         <?php } ?>
 
-
-                        <?php if(isset($main_f->twitter_feed_posting)) { ?>
-                            <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
-                                <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
+                        <?php if (isset($main_f->twitter_feed_posting)) { ?>
+                            <?php if (isset($twitter['has_valid_access_token'])) { ?>
+                                <?php foreach ($twitter['accounts'] as $account): ?>
+                                    <img class="img img-thumbnail account" src="<?php echo $account['user_info']->profile_image_url ?>"
+                                         data-toggle="popover" data-placement="top" data-content="Twitter - <?php echo $account['user_info']->name; ?>"
+                                         data-id="<?php echo $account['id']; ?>"/>
+                                <?php endforeach; ?>
                             <?php } ?>
                         <?php } ?>
 
-
-                        <?php if(isset($main_f->linkedin_feed_posting)) { ?>
-                            <?php if(isset($linkedIn['access_token'])) { ?>
-                                <?php if(!$linkedIn['expired_access_token']) { ?>
-                                    <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
-                                <?php } ?>
+                        <?php if (isset($main_f->linkedin_feed_posting)) { ?>
+                            <?php if (isset($linkedIn['has_valid_access_token'])) { ?>
+                                <?php foreach ($linkedIn['accounts'] as $account): ?>
+                                    <img class="img img-thumbnail account" src="<?php echo $account['user_info']['pictureUrl']; ?>" width="63" height="63"
+                                         data-toggle="popover" data-placement="top" data-content="LinkedIn - <?php echo $account['user_info']['formattedName']; ?>"
+                                         data-id="<?php echo $account['id']; ?>"/>
+                                <?php endforeach; ?>
                             <?php } ?>
                         <?php } ?>
 

@@ -92,39 +92,31 @@ class Api_Model extends CI_Model {
      */
 
     public function linkedin_verify_access_key($user) {
-        $result['valid_access_token'] = false;
-        if($user->li_access_token) {
-            $result['access_token'] = $user->li_access_token;
-            $result['expired_access_token'] = false;
-            // check if expired
-            $li = json_decode($user->li_access_token);
-            $result['expires_at'] = $li->expires_in;
-            if (time() > strtotime($li->expires_in)) {
-                $result['expired_access_token'] = true;
-            } else {
-                $get_user = $this->linkedin_get_user_info(json_decode($user->li_access_token));
-                if($get_user['success']) {
-                    $result['user'] = $get_user['result'];
-                    $result['valid_access_token'] = true;
-                }
+        $result['has_valid_access_token'] = false;
+
+        $CI =& get_instance();
+        $CI->load->model('user_account_model');
+        $linkedin_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'linkedin'));
+
+        if (sizeof($linkedin_accounts) > 0) {
+            foreach ($linkedin_accounts as $account) {
+                $result['has_valid_access_token'] = true;
+                $linkedIn = new Happyr\LinkedIn\LinkedIn(LI_CLIENT_ID, LI_SECRET_KEY);
+                $linkedIn->setAccessToken($account->access_token);
+                $a['user_info'] = $linkedIn->get('v1/people/~:(id,first-name,last-name,formatted-name,picture-url)');
+                $a['id'] = $account->id;
+                $result['accounts'][] = $a;
             }
         }
-        $params = array(
-            'response_type' => 'code',
-            'client_id' => LI_CLIENT_ID,
-            'scope' => 'w_share',
-            'state' => uniqid('', true),
-            'redirect_uri' => LI_CALLBACK
-        );
 
-        $_SESSION['li_state'] = $params['state'];
-
-        $result['auth_url'] = 'https://www.linkedin.com/uas/oauth2/authorization?' . http_build_query($params);
+        $linkedIn = new Happyr\LinkedIn\LinkedIn(LI_CLIENT_ID, LI_SECRET_KEY);
+        $result['auth_url'] = $linkedIn->getLoginUrl(array('redirect_uri' => LI_CALLBACK));
         return $result;
     }
 
     public function linkedin_get_user_info($li) {
         $result['success'] = false;
+
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "https://api.linkedin.com/v1/people/~:(id,email-address,first-name,last-name,formatted-name,picture-url)?format=json");
@@ -133,7 +125,7 @@ class Api_Model extends CI_Model {
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $li->access_token,
+                'Authorization: Bearer ' . $li,
                 'Content-Type: application/json',
                 'Connection: Closed',
                 'x-li-format: json'
@@ -143,6 +135,7 @@ class Api_Model extends CI_Model {
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $body = substr($xmlstr, $header_size);
             curl_close($ch);
+
             $result['result'] = json_decode($body);
             $result['success'] = true;
         } catch(Exception $e) {
@@ -157,26 +150,33 @@ class Api_Model extends CI_Model {
      */
 
     public function twitter_verify_access_key($user) {
-        $result['has_access_key'] = false;
-        $result['valid_access_token'] = false;
-        try {
-            $result['auth_url'] = $this->get_twitter_auth_url();
-            if($user->twitter_access_token) {
-                $result['has_access_key'] = true;
-                $result['valid_access_token'] = true;
-                $access_token = json_decode($user->twitter_access_token);
-                $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
-                $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
-                $result['user_info'] = $content;
+        $result['has_valid_access_token'] = false;
+
+        $CI =& get_instance();
+        $CI->load->model('user_account_model');
+        $twitter_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'twitter'));
+
+        if (sizeof($twitter_accounts) > 0) {
+            foreach ($twitter_accounts as $account) {
+                try {
+                    $result['has_valid_access_token'] = true;
+                    $access_token = json_decode($account->access_token);
+                    $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY, $access_token->oauth_token, $access_token->oauth_token_secret);
+                    $content = $connection->get("users/show", ["user_id" => $access_token->user_id]);
+                    $a['user_info'] = $content;
+                    $a['id'] = $account->id;
+                    $result['accounts'][] = $a;
+                }catch(Exception $e) {}
             }
-        }catch(Exception $e) {}
+        }
+        $result['auth_url'] = $this->get_twitter_auth_url();
 
         return $result;
     }
 
     public function get_twitter_auth_url() {
         $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY);
-        $request_token = $connection->oauth("oauth/request_token", array("oauth_callback" => "http://demo.merlinleads.net/twitter/callback"));
+        $request_token = $connection->oauth("oauth/request_token", array("oauth_callback" => "http://localhost/merlinleads/twitter/callback"));
 
         $oauth_token = $request_token['oauth_token'];
         $token_secret = $request_token['oauth_token_secret'];
@@ -274,36 +274,36 @@ class Api_Model extends CI_Model {
         $this->db->insert('scheduler_posted_post', $post);
     }
 
-    public function ot_post($post, $user) {
+    public function ot_post($post, $user_accounts) {
         $result = array();
-        $modules = explode(',', $post->otp_modules);
-        foreach($modules as $m) {
-            switch($m) {
+        foreach($user_accounts as $ua) {
+            switch($ua->type) {
                 /*
                  * LinkedIn
                  */
-                case 'LinkedIn' :
-                    $data = array(
-                        'content' => array(
-                            'description' => $post->post_linkedin_snippet
-                        ),
-                        'visibility' => array(
-                            "code" => "anyone"
+                case 'linkedin' :
+                    $options = array('json'=>
+                        array(
+                            'content' => array(
+                                'description' => $post->post_linkedin_snippet
+                            ),
+                            'visibility' => array(
+                                'code' => 'anyone'
+                            )
                         )
                     );
                     if($post->post_url) {
-                        $data['content']['submitted-url'] = $post->post_url;
+                        $options['json']['content']['submitted-url'] = $post->post_url;
                     }
-                    $li = json_decode($user->li_access_token);
 
-                    $r = $this->post_linkedin($data, $li);
-                    $r['module'] = $m;
+                    $r = $this->post_linkedin($options, $ua->access_token);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                     break;
                 /*
                  * Facebook
                  */
-                case 'Facebook' :
+                case 'facebook' :
                     $linkData = [
                         'message' => $post->post_facebook_snippet,
                         'privacy' => array('value' => "EVERYONE")
@@ -311,20 +311,20 @@ class Api_Model extends CI_Model {
                     if($post->post_url) {
                         $linkData['link'] = $post->post_url;
                     }
-                    $r = $this->post_facebook($linkData, $user->fb_access_token);
-                    $r['module'] = $m;
+                    $r = $this->post_facebook($linkData, $ua->access_token);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                     break;
 
-                case 'Twitter' :
+                case 'twitter' :
                     $message = $post->post_twitter_snippet;
                     if($post->post_url) {
                         $this->load->library('Googl');
                         $short_url = $this->googl->shorten($post->post_url);
                         $message .= "\n\n" . $short_url;
                     }
-                    $r = $this->post_twitter($user->twitter_access_token, $message);
-                    $r['module'] = $m;
+                    $r = $this->post_twitter($ua->access_token, $message);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                 default:
             }
@@ -333,36 +333,36 @@ class Api_Model extends CI_Model {
         return $result;
     }
 
-    public function post($scheduler, $post, $user) {
+    public function post($scheduler, $post, $user_accounts) {
         $result = array();
-        $modules = explode(',', $scheduler->modules);
-        foreach($modules as $m) {
-            switch($m) {
+        foreach($user_accounts as $ua) {
+            switch($ua->type) {
                 /*
                  * LinkedIn
                  */
-                case 'LinkedIn' :
-                    $data = array(
-                        'content' => array(
-                            'description' => $post->post_linkedin_snippet
-                        ),
-                        'visibility' => array(
-                            "code" => "anyone"
+                case 'linkedin' :
+                    $options = array('json'=>
+                        array(
+                            'content' => array(
+                                'description' => $post->post_linkedin_snippet
+                            ),
+                            'visibility' => array(
+                                'code' => 'anyone'
+                            )
                         )
                     );
                     if($post->post_url) {
-                        $data['content']['submitted-url'] = $post->post_url;
+                        $options['json']['content']['submitted-url'] = $post->post_url;
                     }
-                    $li = json_decode($user->li_access_token);
 
-                    $r = $this->post_linkedin($data, $li);
-                    $r['module'] = $m;
+                    $r = $this->post_linkedin($options, $ua->access_token);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                     break;
                 /*
                  * Facebook
                  */
-                case 'Facebook' :
+                case 'facebook' :
                     $linkData = [
                         'message' => $post->post_facebook_snippet,
                         'privacy' => array('value' => "EVERYONE")
@@ -370,20 +370,20 @@ class Api_Model extends CI_Model {
                     if($post->post_url) {
                         $linkData['link'] = $post->post_url;
                     }
-                    $r = $this->post_facebook($linkData, $user->fb_access_token);
-                    $r['module'] = $m;
+                    $r = $this->post_facebook($linkData, $ua->access_token);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                     break;
 
-                case 'Twitter' :
+                case 'twitter' :
                     $message = $post->post_twitter_snippet;
                     if($post->post_url) {
                         $this->load->library('Googl');
                         $short_url = $this->googl->shorten($post->post_url);
                         $message .= "\n\n" . $short_url;
                     }
-                    $r = $this->post_twitter($user->twitter_access_token, $message);
-                    $r['module'] = $m;
+                    $r = $this->post_twitter($ua->access_token, $message);
+                    $r['module'] = $ua->type;
                     $result[] = $r;
                 default:
             }
@@ -483,32 +483,15 @@ class Api_Model extends CI_Model {
     }
 
 
-    public function post_linkedin($data, $li) {
+    public function post_linkedin($options, $access_token) {
         $result['success'] = false;
         try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://api.linkedin.com/v1/people/~/shares");
-            curl_setopt($ch, CURLOPT_HEADER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $li->access_token,
-                'Content-Type: application/json',
-                'Connection: Closed',
-                'x-li-format: json'
-            ));
-
-            $xmlstr = curl_exec($ch);
-            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-            $body = substr($xmlstr, $header_size);
-            curl_close($ch);
-            $body = json_decode($body);
-            if(isset($body->updateKey)) {
+            $linkedIn = new Happyr\LinkedIn\LinkedIn(LI_CLIENT_ID, LI_SECRET_KEY);
+            $linkedIn->setAccessToken($access_token);
+            $body = $linkedIn->post('v1/people/~/shares', $options);
+            if (isset($body['updateKey'])) {
                 $result['success'] = true;
-                $result['link'] = $body->updateUrl;
+                $result['link'] = $body['updateUrl'];
             }
         } catch(Exception $e) {
             $result['error'] = $e->getMessage();

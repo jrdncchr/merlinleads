@@ -3,6 +3,11 @@
         "facebook/php-sdk-v4" : "~5.0",
         "abraham/twitteroauth": "^0.6.4",
         "stripe/stripe-php": "^3.16",
-        "sendgrid/sendgrid": "~5.0.4"
+        "sendgrid/sendgrid": "~5.0.4",
+        "php-http/curl-client": "^1.6",
+        "guzzlehttp/psr7": "^1.3",
+        "php-http/message": "^1.4",
+        "happyr/linkedin-api-client": "^1.0",
+        "php-http/guzzle6-adapter": "^1.1"
     }
 }

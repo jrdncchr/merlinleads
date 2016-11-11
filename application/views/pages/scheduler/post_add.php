@@ -75,7 +75,7 @@
                         <label>* Accounts</label>
                         <div id="accounts">
                             <?php if (isset($main_f->facebook_feed_posting)) { ?>
-                                <?php if (isset($fb['has_valid_access_token'])) { ?>
+                                <?php if ($fb['has_valid_access_token']) { ?>
                                     <?php foreach ($fb['accounts'] as $account): ?>
                                         <?php if (!$account['expired_access_token']): ?>
                                             <?php
@@ -95,23 +95,46 @@
                                 <?php } ?>
                             <?php } ?>
 
-
-                            <?php if(isset($main_f->twitter_feed_posting)) { ?>
-                                <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
-                                    <i class="fa fa-twitter-square fa-2x social account-twitter"></i>
+                            <?php if (isset($main_f->twitter_feed_posting)) { ?>
+                                <?php if ($twitter['has_valid_access_token']) { ?>
+                                    <?php foreach ($twitter['accounts'] as $account): ?>
+                                        <?php
+                                        $on = "";
+                                        foreach ($post->user_accounts as $ua) {
+                                            if ($ua->user_account_id == $account['id']) {
+                                                $on = "account-on";
+                                                break;
+                                            }
+                                        }
+                                        ?>
+                                        <img class="img img-thumbnail account <?php echo $on; ?>" src="<?php echo $account['user_info']->profile_image_url ?>"
+                                             data-toggle="popover" data-placement="top" data-content="Twitter - <?php echo $account['user_info']->name; ?>"
+                                             data-id="<?php echo $account['id']; ?>"/>
+                                    <?php endforeach; ?>
                                 <?php } ?>
                             <?php } ?>
 
 
-                            <?php if(isset($main_f->linkedin_feed_posting)) { ?>
-                                <?php if(isset($linkedIn['access_token'])) { ?>
-                                    <?php if(!$linkedIn['expired_access_token']) { ?>
-                                        <i class="fa fa-linkedin-square fa-2x social account-linkedin"></i>
-                                    <?php } ?>
+                            <?php if (isset($main_f->linkedin_feed_posting)) { ?>
+                                <?php if ($linkedIn['has_valid_access_token']) { ?>
+                                    <?php foreach ($linkedIn['accounts'] as $account): ?>
+                                        <?php
+                                        $on = "";
+                                        foreach ($post->user_accounts as $ua) {
+                                            if ($ua->user_account_id == $account['id']) {
+                                                $on = "account-on";
+                                                break;
+                                            }
+                                        }
+                                        ?>
+                                        <img class="img img-thumbnail account  <?php echo $on; ?>" src="<?php echo $account['user_info']['pictureUrl']; ?>" width="63" height="63"
+                                             data-toggle="popover" data-placement="top" data-content="LinkedIn - <?php echo $account['user_info']['formattedName']; ?>"
+                                             data-id="<?php echo $account['id']; ?>"/>
+                                    <?php endforeach; ?>
                                 <?php } ?>
                             <?php } ?>
 
-                            <?php if(!$user->fb_access_token && !$user->twitter_access_token && !$user->li_access_token) { ?>
+                            <?php if (!$fb['has_valid_access_token'] && !$twitter['has_valid_access_token'] && !$linkedIn['has_valid_access_token']) { ?>
                                 <span class="text-danger">No accounts setup yet. <a href="<?php echo base_url() . 'main/myaccount/integrations'; ?>">Setup Now.</a></span>
                             <?php } ?>
 
@@ -139,30 +162,28 @@
                 <input type="text" class="form-control url" id="post-url" v-model="form.post_url" value="{{ form.post_url }}" />
             </div>
 
-            <?php if (isset($fb['has_valid_access_token'])): ?>
+            <?php if ($fb['has_valid_access_token']): ?>
             <div class="form-group">
                 <label for="post-facebook-snippet">* Facebook Snippet</label>
                 <textarea class="form-control required" v-model="form.post_facebook_snippet" id="post-facebook-snippet" rows="3">{{ form.post_facebook_snippet }}</textarea>
             </div>
             <?php endif; ?>
 
-            <?php if(isset($linkedIn['access_token'])) { ?>
-                <?php if(!$linkedIn['expired_access_token']) { ?>
+            <?php if ($linkedIn['has_valid_access_token']) { ?>
             <div class="form-group">
                 <label for="post-linkedin-snippet">* LinkedIn Snippet</label>
                 <textarea class="form-control required" maxlength="600" v-model="form.post_linkedin_snippet" id="post-linkedin-snippet" rows="3">{{ form.post_linkedin_snippet }}</textarea>
                 <span  class="pull-right counter">0/600 characters</span>
             </div>
-            <?php }
-            }?>
+            <?php }?>
 
-            <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
+            <?php if ($twitter['has_valid_access_token']): ?>
             <div class="form-group">
                 <label for="post-twitter-snippet">* Twitter Snippet</label>
                 <textarea class="form-control required" maxlength="140" v-model="form.post_twitter_snippet" id="post-twitter-snippet" rows="3">{{ form.post_twitter_snippet }}</textarea>
                 <span class="pull-right counter">0/140 characters</span>
             </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <br />
             <div class="well">
@@ -470,14 +491,22 @@
         }
     }
 
+    function activatePopovers() {
+        $(document).find(".account").each(function() {
+            $(this).popover({
+                'trigger': 'hover'
+            });
+        });
+    }
+
     $(function() {
+        activatePopovers();
         $('#post-otp-date').datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('#post-linkedin-snippet').keyup(updateCount).keydown(updateCount);
         $('#post-twitter-snippet').keyup(updateCount).keydown(updateCount);
         updateCount2($('#post-linkedin-snippet'));
         updateCount2($('#post-twitter-snippet'));
-
 
         $('.account').on('click', function() {
             if (!$(this).hasClass('account-on')) {

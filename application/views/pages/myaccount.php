@@ -340,27 +340,31 @@
             <!-- Twitter -->
             <div class="tab-pane <?php echo ($redirect == "twitter" || $redirect == "" || $redirect == "integrations") ? 'active' : '' ?>" id="integration-twitter" style="margin-left: 145px;">
                 <?php
-                if(isset($main_f->twitter_feed_posting)) { ?>
-                    <?php if($twitter['has_access_key']  && isset($twitter['user_info'])) { ?>
-                        <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Twitter integration into your account! </p>
-                        <img class="img img-thumbnail" src="<?php echo $twitter['user_info']->profile_image_url ?>" />
-                        <?php echo $twitter['user_info']->description; ?>
-                        <br /><br />
-                    <?php } else { ?>
+                if (isset($main_f->twitter_feed_posting)): ?>
+                    <?php if ($twitter['has_valid_access_token']): ?>
+                        <?php foreach ($twitter['accounts'] as $account): ?>
+                            <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized Twitter integration into your account! </p>
+                            <img class="img img-thumbnail" src="<?php echo $account['user_info']->profile_image_url ?>" />
+                            <?php echo $account['user_info']->name; ?>
+                            <br /><br />
+                            <a href="<?php echo base_url() . 'main/remove_account_integration/' . $account['id']; ?>" class="btn btn-xs btn-danger">Remove Account</a>
+                            <hr />
+                        <?php endforeach; ?>
+                    <?php else:  ?>
                         <p class="text-warning">You have NOT yet authorized Twitter integration into your account yet.</p>
-                    <?php } ?>
+                    <?php endif; ?>
                     <a class="btn btn-sm btn-primary" href="<?php echo isset($twitter['auth_url']) ? $twitter['auth_url'] : '#'; ?>"><i class="fa fa-twitter-square"></i> Authorize Twitter Posting</a>
-                <?php } else { ?>
+                <?php else: ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
                     <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i
                             class="fa fa-shopping-cart"></i> Upgrade Subscription</a></h4>
-                <?php } ?>
+                <?php endif; ?>
             </div>
 
             <!-- Facebook -->
             <div class="tab-pane <?php echo $redirect == 'facebook' ? 'active' : '' ?>" id="integration-facebook">
                 <?php
-                if(isset($main_f->facebook_feed_posting)) { ?>
+                if (isset($main_f->facebook_feed_posting)) { ?>
                     <?php if ($fb['has_valid_access_token']) { ?>
                         <?php foreach ($fb['accounts'] as $account): ?>
                             <?php if ($account['expired_access_token']): ?>
@@ -390,29 +394,25 @@
             <!-- Linked In -->
             <div class="tab-pane <?php echo $redirect == 'linkedin' ? 'active' : '' ?>" id="integration-linkedin">
                 <?php
-                if(isset($main_f->linkedin_feed_posting)) { ?>
-                    <?php if(isset($linkedIn['access_token'])) { ?>
-                        <?php if(!$linkedIn['expired_access_token']) { ?>
+                if (isset($main_f->linkedin_feed_posting)): ?>
+                    <?php if ($linkedIn['has_valid_access_token']): ?>
+                        <?php foreach ($linkedIn['accounts'] as $account): ?>
                             <p class="text-success"><i class="fa fa-check-circle"></i> You have authorized LinkedIn integration into your account! </p>
-                            <p>Expiry Date: <b><?php echo $linkedIn['expires_at']; ?></b></p>
-                            <?php if(isset($linkedIn['user']->pictureUrl)): ?>
-                            <img class="img img-thumbnail" src="<?php echo $linkedIn['user']->pictureUrl; ?>" />
-                            <?php endif; ?>
-                            <?php echo $linkedIn['user']->formattedName; ?>
+                            <img class="img img-thumbnail img-responsive" src="<?php echo $account['user_info']['pictureUrl']; ?>" width="80" height="80" />
+                            <?php echo $account['user_info']['formattedName']; ?>
                             <br /><br />
-                            <p><i>Authorize your LinkedIn integration again before it expires.</i></p>
-                        <?php } else { ?>
-                            <p class="text-warning">Your LinkedIn access token had already expired, please authorize your LinkedIn again.</p>
-                        <?php }  ?>
-                    <?php } else {  ?>
+                            <a href="<?php echo base_url() . 'main/remove_account_integration/' . $account['id']; ?>" class="btn btn-xs btn-danger">Remove Account</a>
+                            <hr />
+                        <?php endforeach; ?>
+                    <?php else:  ?>
                         <p class="text-warning">You have NOT yet authorized LinkedIn integration into your account yet.</p>
-                    <?php } ?>
+                    <?php endif; ?>
                     <a href="<?php echo $linkedIn['auth_url']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-linkedin-square"></i> Authorize LinkedIn Posting</a>
-                <?php } else { ?>
+                <?php else: ?>
                     <p class="text-warning"><i class="fa fa-exclamation-circle"></i> Sorry your package/plan doesn't allow you to use this feature.</p>
                     <a href="<?php echo base_url() . "main/upgrade"; ?>" class="btn btn-sm btn-primary"><i
                             class="fa fa-shopping-cart"></i> Upgrade Subscription</a></h4>
-                <?php } ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

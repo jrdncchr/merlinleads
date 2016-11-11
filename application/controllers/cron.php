@@ -13,11 +13,11 @@ class Cron extends CI_Controller {
         $this->api_model->load();
 
         $time = str_replace('_', ' ', $time);
-        $date = date('Y-m-d');
         $day = date('l');
+        // $day = "Monday";
 
         $this->load->model('scheduler_model');
-        $this->load->model('user_model');
+        $this->load->model('user_account_model');
 
         /*
          * WEEKLY SCHEDULED
@@ -25,18 +25,20 @@ class Cron extends CI_Controller {
         $schedulers = $this->scheduler_model->get_scheduler(array('time' => $time, 'day' => $day, 'status' => 'Active'));
 
         foreach($schedulers as $s) {
-            $user = $this->user_model->get($s->user_id);
-            $post = $this->scheduler_model->get_scheduler_next_post($s);
-            $result = $this->api_model->post($s, $post, $user);
-            foreach($result as $r) {
-                if($r['success']) {
-                    $posted_post = array(
-                        'scheduler_id' => $s->scheduler_id,
-                        'link' => $r['link'],
-                        'module' => $r['module'],
-                        'post_id' => $post->post_id
-                    );
-                    $posted_posts[] = $posted_post;
+            $user_accounts = $this->user_account_model->get_scheduler_user_accounts($s->scheduler_id);
+            if ($user_accounts) {
+                $post = $this->scheduler_model->get_scheduler_next_post($s);
+                $result = $this->api_model->post($s, $post, $user_accounts);
+                foreach($result as $r) {
+                    if($r['success']) {
+                        $posted_post = array(
+                            'scheduler_id' => $s->scheduler_id,
+                            'link' => $r['link'],
+                            'module' => $r['module'],
+                            'post_id' => $post->post_id
+                        );
+                        $posted_posts[] = $posted_post;
+                    }
                 }
             }
         }
@@ -44,17 +46,20 @@ class Cron extends CI_Controller {
         /*
          * ONE TIME POST
          */
+        $date = date('Y-m-d');
+        // $date = '2016-11-02';
         $otp = $this->scheduler_model->get_scheduler_post(array('otp' => 1, 'otp_date' => $date, 'otp_time' => $time));
-        foreach($otp as $p) {
-            $user = $this->user_model->get($p->post_user_id);
-            $result = $this->api_model->ot_post($p, $user);
-            foreach($result as $r) {
+        foreach ($otp as $p) {
+            $user_accounts = $this->user_account_model->get_scheduler_otp_user_accounts($p->post_id);
+            $result = $this->api_model->ot_post($p, $user_accounts);
+            foreach ($result as $r) {
                 if($r['success']) {
                     $posted_post = array(
-                        'scheduler_id' => null,
+                        'scheduler_id' => $p->post_id,
+                        'otp' => 1,
                         'link' => $r['link'],
                         'module' => $r['module'],
-                        'post_id' => $p->post_id
+                        'post_id' => 0
                     );
                     $posted_posts[] = $posted_post;
                 }
@@ -65,6 +70,5 @@ class Cron extends CI_Controller {
             $this->api_model->insertPosts($posted_posts[$i]);
         }
     }
-
 
 }

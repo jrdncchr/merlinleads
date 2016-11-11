@@ -35,4 +35,26 @@ class user_account_model extends CI_Model
         $this->db->delete($this->tbl, array('user_id' => $user_id, 'id' => $id));
     }
 
+    public function get_scheduler_user_accounts($scheduler_id)
+    {
+        $this->db->select('ua.*');
+        $this->db->join('user_accounts ua', 'ua.id = sua.user_account_id', 'left');
+        $result = $this->db->get_where('scheduler_user_account sua', array('scheduler_id' => $scheduler_id));
+        if ($result->num_rows() > 0) {
+            return $result->result();
+        }
+        return null;
+    }
+
+    public function get_scheduler_otp_user_accounts($scheduler_post_id)
+    {
+        $this->db->select('ua.*');
+        $this->db->join('user_accounts ua', 'ua.id = soua.user_account_id', 'left');
+        $result = $this->db->get_where('scheduler_otp_user_account soua', array('scheduler_post_id' => $scheduler_post_id));
+        if ($result->num_rows() > 0) {
+            return $result->result();
+        }
+        return null;
+    }
+
 } 
