@@ -35,7 +35,6 @@
                     <th>Type</th>
                     <th>Library</th>
                     <th>Category</th>
-                    <th>Modules</th>
                     <th>Post Name</th>
                 </tr>
                 </thead>
@@ -92,21 +91,6 @@
                     }
                 },
                 {data: "category", width: "15%"},
-                {data: "modules", width: "10%", render:
-                    function(data, type, row) {
-                        var modules = "";
-                        if (data.toLowerCase().indexOf("twitter") != -1){
-                            modules += '<i class="fa fa-twitter"></i> &nbsp;';
-                        }
-                        if (data.toLowerCase().indexOf("facebook") != -1){
-                            modules += '<i class="fa fa-facebook"></i> &nbsp;';
-                        }
-                        if (data.toLowerCase().indexOf("linkedin") != -1){
-                            modules += '<i class="fa fa-linkedin"></i> &nbsp;';
-                        }
-                        return modules;
-                    }
-                },
                 {data: "post_name", width: "25%"}
             ]
         });

@@ -29,7 +29,7 @@ class Api_Model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('user_account_model');
         $facebook_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'facebook'));
-
+        $result['accounts'] = array();
         if (sizeof($facebook_accounts) > 0) {
             foreach ($facebook_accounts as $account) {
                 if ($account->access_token) {
@@ -97,7 +97,7 @@ class Api_Model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('user_account_model');
         $linkedin_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'linkedin'));
-
+        $result['accounts'] = array();
         if (sizeof($linkedin_accounts) > 0) {
             foreach ($linkedin_accounts as $account) {
                 $result['has_valid_access_token'] = true;
@@ -155,7 +155,7 @@ class Api_Model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('user_account_model');
         $twitter_accounts = $CI->user_account_model->get(array('user_id' => $user->id, 'type' => 'twitter'));
-
+        $result['accounts'] = array();
         if (sizeof($twitter_accounts) > 0) {
             foreach ($twitter_accounts as $account) {
                 try {
@@ -176,7 +176,7 @@ class Api_Model extends CI_Model {
 
     public function get_twitter_auth_url() {
         $connection = new \Abraham\TwitterOAuth\TwitterOAuth(TWITTER_KEY, TWITTER_SECRET_KEY);
-        $request_token = $connection->oauth("oauth/request_token", array("oauth_callback" => "http://localhost/merlinleads/twitter/callback"));
+        $request_token = $connection->oauth("oauth/request_token", array("oauth_callback" => "http://demo.merlinleads.net/twitter/callback"));
 
         $oauth_token = $request_token['oauth_token'];
         $token_secret = $request_token['oauth_token_secret'];

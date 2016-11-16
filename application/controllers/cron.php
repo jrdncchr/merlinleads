@@ -46,8 +46,8 @@ class Cron extends CI_Controller {
         /*
          * ONE TIME POST
          */
-        $date = date('Y-m-d');
-        // $date = '2016-11-02';
+//        $date = date('Y-m-d');
+         $date = '2016-07-28';
         $otp = $this->scheduler_model->get_scheduler_post(array('otp' => 1, 'otp_date' => $date, 'otp_time' => $time));
         foreach ($otp as $p) {
             $user_accounts = $this->user_account_model->get_scheduler_otp_user_accounts($p->post_id);

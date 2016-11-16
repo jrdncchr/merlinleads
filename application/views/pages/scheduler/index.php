@@ -91,7 +91,6 @@
                                 <?php if($s->day == $d && $s->time == $t) { ?>
                                     <div class="scheduler_block panel panel-default <?php echo $s->library == 'merlin' ? 'merlin-block' : 'user-block'; ?> <?php echo $s->status != 'Active' ? 'block-inactive' : 'k'; ?>">
                                         <input type="hidden" class="s_scheduler_id" value="<?php echo $s->scheduler_id; ?>" />
-                                        <input type="hidden" class="s_modules" value="<?php echo $s->modules; ?>" />
                                         <input type="hidden" class="s_day" value="<?php echo $s->day; ?>" />
                                         <input type="hidden" class="s_time" value="<?php echo $s->time; ?>" />
                                         <input type="hidden" class="s_library" value="<?php echo $s->library; ?>" />

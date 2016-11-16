@@ -135,11 +135,7 @@
                                                 <div class='badge <?php echo $class; ?>'>
                                                     <span><?php echo $post->time; ?></span>
                                                     <span><?php echo $post->category; ?></span>
-                                                        <span>
-                                                            <?php echo strpos($post->modules, 'Facebook')!== FALSE ? '<i class="fa fa-facebook"></i>&nbsp;' : ''; ?>
-                                                            <?php echo strpos($post->modules, 'Twitter') !== FALSE ? '<i class="fa fa-twitter"></i>&nbsp;' : ''; ?>
-                                                            <?php echo strpos($post->modules, 'LinkedIn') !== FALSE ? '<i class="fa fa-linkedin"></i>&nbsp;' : ''; ?>
-                                                        </span>
+
                                                 </div>
                                             <?php endforeach;
                                         endif; ?>
@@ -158,11 +154,6 @@
                                                     <div class='badge <?php echo $class; ?>'>
                                                         <span><?php echo $post->time; ?></span>
                                                         <span><?php echo $post->category; ?></span>
-                                                        <span>
-                                                            <?php echo strpos($post->modules, 'Facebook') !== FALSE ? '<i class="fa fa-facebook"></i>&nbsp;' : ''; ?>
-                                                            <?php echo strpos($post->modules, 'Twitter') !== FALSE  ? '<i class="fa fa-twitter"></i>&nbsp;' : ''; ?>
-                                                            <?php echo strpos($post->modules, 'LinkedIn') !== FALSE  ? '<i class="fa fa-linkedin"></i>&nbsp;' : ''; ?>
-                                                        </span>
                                                     </div>
                                                 <?php endforeach;
                                             endif; ?>

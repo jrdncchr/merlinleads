@@ -18,6 +18,10 @@ class Main extends MY_Controller {
         $this->load->model('user_model');
     }
 
+    public function phpinfo() {
+        phpinfo();exit;
+    }
+
     /*
      * Pages
      */

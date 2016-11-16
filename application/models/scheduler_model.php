@@ -240,7 +240,6 @@ class scheduler_model extends CI_Model {
                 $obj->library = $os->post_library;
                 $obj->category = $os->post_library == "user" ? $os->user_category : $os->merlin_category;
                 $obj->post_name = $os->post_name;
-                $obj->modules = $os->otp_modules;
 
                 $otp_posts[] = $obj;
             }
@@ -267,7 +266,6 @@ class scheduler_model extends CI_Model {
                 $obj->library = $ws->library;
                 $obj->category = $ws->library == "user" ? $ws->user_category : $ws->merlin_category;
                 $obj->post_name = "";
-                $obj->modules = $ws->modules;
 
                 $weekly_posts[] = $obj;
                 $next_schedule = strtotime("+7 day", $next_schedule);

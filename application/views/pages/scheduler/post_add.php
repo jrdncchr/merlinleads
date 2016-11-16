@@ -349,7 +349,6 @@
             otp : <?php echo isset($post) ? json_encode($post->otp) : '0' ?>,
             otp_date : <?php echo isset($post) ? json_encode($post->otp_date) : '\'\'' ?>,
             otp_time : <?php echo isset($post) ? json_encode($post->otp_time) : '\'\'' ?>,
-            otp_modules : <?php echo isset($post) ? json_encode($post->otp_modules) : '\'\'' ?>,
             bp : <?php echo isset($post) ? json_encode($post->bp) : '0' ?>,
             bp_category_id : <?php echo isset($post) ? json_encode($post->bp_category_id) : '\'\'' ?>,
             bp_profile_id : <?php echo isset($post) ? json_encode($post->bp_profile_id) : '\'\'' ?>,
